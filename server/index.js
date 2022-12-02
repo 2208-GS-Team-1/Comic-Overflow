@@ -10,10 +10,11 @@ const init = async () => {
     console.log(ex);
   }
 };
-console.log("User methods in here:");
-console.log(Object.keys(User.prototype));
-console.log("Book methods in here:");
-console.log(Object.keys(Book.prototype));
-console.log("Review methods in here:");
-console.log(Object.keys(Review.prototype));
+// vv uncomment if you want to see the magic methods in the console on "npm run start:dev"
+// console.log("User methods in here:");
+// console.log(Object.keys(User.prototype));
+// console.log("Book methods in here:");
+// console.log(Object.keys(Book.prototype));
+// console.log("Review methods in here:");
+// console.log(Object.keys(Review.prototype));
 init();

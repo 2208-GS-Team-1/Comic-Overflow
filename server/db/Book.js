@@ -39,7 +39,7 @@ const Book = db.define("book", {
     type: Sequelize.DATEONLY,
   },
   isbn: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     unique: true, // can this be unique if we allow null?
   },
 
