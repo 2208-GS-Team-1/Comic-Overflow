@@ -1,17 +1,17 @@
 const db = require("./db");
-const { STRING, UUID, UUIDV4 } = db.Sequelize;
+const Sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const JWT = process.env.JWT;
 
 const User = db.define("user", {
   id: {
-    type: UUID,
+    type: Sequelize.UUID,
     primaryKey: true,
-    defaultValue: UUIDV4,
+    defaultValue: Sequelize.UUIDV4,
   },
   username: {
-    type: STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
@@ -19,7 +19,7 @@ const User = db.define("user", {
     unique: true,
   },
   password: {
-    type: STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
