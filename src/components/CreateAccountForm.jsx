@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Box, Button, TextField } from '@mui/material';
+import { flexbox } from '@mui/system';
 
 const validationSchema = yup.object({
 	email: yup
@@ -38,21 +39,6 @@ function CreateAccountForm(props) {
 		},
 	});
 
-	/**
-	 *
-	 * Checks if values, which is an object with each field as keys, are valid.
-	 * Returns an errors object, where keys are the fields that have errors,
-	 * and their associated values are the error message as a string.
-	 *
-	 */
-	const handleValidation = values => {
-		const errors = {};
-		// Check values here.
-		if (!values.email) errors.email = 'Required';
-		if (!values.password) errors.password = 'Required';
-		return errors;
-	};
-
 	return (
 		<div>
 			<h2>Create an Account</h2>
@@ -62,42 +48,79 @@ function CreateAccountForm(props) {
 			</h4>
 
 			<Box component="form" onSubmit={formik.handleSubmit}>
-				{/* <Field type="email" name="email" placeholder="Email" /> */}
-				<TextField
-					name="email"
-					type="email"
-					label="Email"
-					variant="outlined"
-					value={formik.values.email}
-					onChange={formik.handleChange}
-				/>
+				<Box margin={1}>
+					<TextField
+						name="username"
+						type="username"
+						label="Username*"
+						variant="outlined"
+						fullWidth
+						value={formik.values.username}
+						onBlur={formik.handleBlur}
+						onChange={formik.handleChange}
+						error={formik.touched.username && Boolean(formik.errors.username)}
+						helperText={formik.touched.username && formik.errors.username}
+					/>
+				</Box>
 
-				<TextField
-					name="password"
-					type="password"
-					label="Password"
-					variant="outlined"
-					value={formik.values.password}
-					onChange={formik.handleChange}
-				/>
+				<Box margin={1}>
+					<TextField
+						name="email"
+						type="email"
+						label="Email*"
+						fullWidth
+						variant="outlined"
+						value={formik.values.email}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						error={formik.touched.email && Boolean(formik.errors.email)}
+						helperText={formik.touched.email && formik.errors.email}
+					/>
+				</Box>
 
-				<TextField
-					name="firstName"
-					type="firstName"
-					label="First Name"
-					variant="outlined"
-					value={formik.values.firstName}
-					onChange={formik.handleChange}
-				/>
+				<Box margin={1}>
+					<TextField
+						name="password"
+						type="password"
+						label="Password*"
+						variant="outlined"
+						fullWidth
+						value={formik.values.password}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						error={formik.touched.password && formik.errors.password}
+						helperText={formik.touched.password && formik.errors.password}
+					/>
+				</Box>
 
-				<TextField
-					name="lastName"
-					type="lastName"
-					label="Last Name"
-					variant="outlined"
-					value={formik.values.lastName}
-					onChange={formik.handleChange}
-				/>
+				<Box margin={1}>
+					<TextField
+						name="firstName"
+						type="firstName"
+						label="First Name"
+						variant="outlined"
+						fullWidth
+						value={formik.values.firstName}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						helperText={formik.touched.firstName && formik.errors.firstName}
+					/>
+				</Box>
+
+				<Box margin={1}>
+					<TextField
+						name="lastName"
+						type="lastName"
+						label="Last Name"
+						variant="outlined"
+						fullWidth
+						value={formik.values.lastName}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						helperText={formik.touched.lastName && formik.errors.lastName}
+					/>
+				</Box>
+
 				<Button type="submit" variant="contained">
 					Submit
 				</Button>
