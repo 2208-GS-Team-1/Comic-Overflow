@@ -1,3 +1,30 @@
-#test{
-    color:green;
+
+/*Below CSS codes are for Slider components*/
+
+.slider {
+    height: calc(100vh - 80px);
+    width: 100vw;
+    position: relative;
+}
+
+.container {
+    width: 100vw;
+    display: flex;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+img {
+    width: 100vw; /*fill view point across*/
+    height: auto;
+}
+
+.icons {
+    width: 200px;
+    display: flex;
+    justify-content: space-evenly;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
