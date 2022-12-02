@@ -1,5 +1,43 @@
 body {
   font-family: verdana;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main Page's header design */
+
+.main_header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(54, 54, 54);
+  height: 140px;
+  border: none;
+  margin: 0;
+  }
+
+.main_header h1 {
+  font-family: 'Dogfish', sans-serif;
+  font-size: 45pt;
+  color: white;
+}
+
+/* Main Page's navbar design */
+
+.navbar {
+  background-color: rgb(255, 246, 235);
+  height: 50px;
+  outline: 1px solid;
+  outline-color: rgb(219, 219, 219);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.navbar a {
+  font-family: 'Dogfish', sans-serif;
+  text-decoration: none;
+  color: rgb(54, 54, 54);
 }
 
 form {

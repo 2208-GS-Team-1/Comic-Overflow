@@ -1,48 +1,34 @@
-import React, { useEffect } from 'react';
-import Home from './Home';
-import Login from './Login';
-import { setUser } from '../store/userSlice';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+// import Home from './Home';
+import Home from './Home/Home.jsx';
 import { Link, Routes, Route } from 'react-router-dom';
-import axios from 'axios';
-import CreateAccountForm from './CreateAccountForm';
+import Books from './Books.jsx';
+import Account from './Account.jsx';
+import Login from './Login.jsx';
 
 const App = () => {
-	const { user } = useSelector(state => state.user);
-	const dispatch = useDispatch();
+	return (
+		<div>
+			<div className="main_header">
+				<h1>Comic Overflow</h1>
+			</div>
 
-	const loginWithToken = async () => {
-		const token = window.localStorage.getItem('token');
-		if (token) {
-			const response = await axios.get('/api/auth', {
-				headers: {
-					authorization: token,
-				},
-			});
-
-			dispatch(setUser(response.data));
-		}
-	};
-
-	useEffect(() => {
-		loginWithToken();
-	}, []);
-
-	return <CreateAccountForm />;
-	// if (!user.id) return <Login />
-	// return (
-	//     <div>
-	//         <h1>Acme Shopping</h1>
-	//         <div>
-	//             <nav>
-	//                 <Link to='/'>Home</Link>
-	//             </nav>
-	//             <Routes>
-	//                 <Route path='/' element={<Home />} />
-	//             </Routes>
-	//         </div>
-	//     </div>
-	// );
+			<div>
+				<nav className="navbar">
+					<Link to="/">Home</Link>
+					<Link to="/books">Books</Link>
+					<Link to="/login">Log-In</Link>
+					<Link to="/createaccount">Create Account</Link>
+				</nav>
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/books" element={<Books />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/createaccount" element={<Account />} />
+				</Routes>
+			</div>
+		</div>
+	);
 };
 
 export default App;

@@ -1,7 +1,7 @@
 {
   "name": "acme-shopping-2207-fsa-pt",
   "version": "1.0.0",
-  "description": "",
+  "description": "- A user should be able to see products - A logged in user should be able to   - see the items in their cart   - add a new product to their cart   - remove an item from their cart   - create an order - A user should be able to see their orders - A user should be able to create an account - A user should be able to see their past orders - A non-logged in user should be able to add to their cart and have those items added to their cart after authenticating - A user should be able to review a product - A user should be able to update their profile - An administrator should be able to add a new product",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
@@ -18,15 +18,18 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/material": "^5.10.16",
+    "@babel/preset-env": "^7.20.2",
     "@reduxjs/toolkit": "^1.9.1",
     "bcrypt": "^5.1.0",
+    "css-loader": "^6.7.2",
     "express": "^4.18.2",
     "formik": "^2.2.9",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",
     "sequelize": "^6.25.3",
     "volleyball": "^1.5.1",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "style-loader": "^3.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
@@ -46,5 +49,13 @@
     "supertest": "^6.3.1",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2208-GS-Team-1/Grace-Shopper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/2208-GS-Team-1/Grace-Shopper/issues"
+  },
+  "homepage": "https://github.com/2208-GS-Team-1/Grace-Shopper#readme"
 }
