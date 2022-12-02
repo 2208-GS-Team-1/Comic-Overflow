@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Book } = require("../db");
 
-// GET - api/comics --> Gets all comics from the db
+// GET - api/books --> Gets all books from the db
 router.get("/", async (req, res, next) => {
   try {
     const allBooks = await Book.findAll();
