@@ -21,12 +21,8 @@ const validationSchema = yup.object({
 		.string('Confirm password')
 		// This is how you look at 'password' and make sure it is the same:
 		.oneOf([yup.ref('password'), null], 'Passwords should match'),
-	firstName: yup
-		.string('Enter your first name')
-		.required('First name is required'),
-	lastName: yup
-		.string('Enter your last name')
-		.required('Last name is required'),
+	firstName: yup.string('Enter your first name'),
+	lastName: yup.string('Enter your last name'),
 });
 
 function CreateAccountForm() {
@@ -56,16 +52,6 @@ function CreateAccountForm() {
 		},
 	});
 
-	// If the user is already logged in, they should not be able to make an account.
-	// if (user)
-	// 	return (
-	// 		<p>
-	// 			You cannot create a new account if you are already logged in. Do you
-	// 			want to log out first?
-	// 		</p>
-	// 	);
-
-	// If no user in slice, give them the form
 	return (
 		<div>
 			<Box
@@ -85,7 +71,7 @@ function CreateAccountForm() {
 						label="Username*"
 						variant="outlined"
 						fullWidth
-						value={formik.values.username}
+						value={formik.values.username || ''}
 						onBlur={formik.handleBlur}
 						onChange={formik.handleChange}
 						error={formik.touched.username && Boolean(formik.errors.username)}
@@ -100,7 +86,7 @@ function CreateAccountForm() {
 						label="Email*"
 						fullWidth
 						variant="outlined"
-						value={formik.values.email}
+						value={formik.values.email || ''}
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
 						error={formik.touched.email && Boolean(formik.errors.email)}
@@ -115,10 +101,10 @@ function CreateAccountForm() {
 						label="Password*"
 						variant="outlined"
 						fullWidth
-						value={formik.values.password}
+						value={formik.values.password || ''}
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
-						error={formik.touched.password && formik.errors.password}
+						error={formik.touched.password && Boolean(formik.errors.password)}
 						helperText={formik.touched.password && formik.errors.password}
 					/>
 				</Box>
@@ -130,11 +116,12 @@ function CreateAccountForm() {
 						label="Confirm Password*"
 						variant="outlined"
 						fullWidth
-						value={formik.values.confirmPassword}
+						value={formik.values.confirmPassword || ''}
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
 						error={
-							formik.touched.confirmPassword && formik.errors.confirmPassword
+							formik.touched.confirmPassword &&
+							Boolean(formik.errors.confirmPassword)
 						}
 						helperText={
 							formik.touched.confirmPassword && formik.errors.confirmPassword
@@ -149,9 +136,10 @@ function CreateAccountForm() {
 						label="First Name"
 						variant="outlined"
 						fullWidth
-						value={formik.values.firstName}
+						value={formik.values.firstName || ''}
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
+						error={formik.touched.firstName && Boolean(formik.errors.firstName)}
 						helperText={formik.touched.firstName && formik.errors.firstName}
 					/>
 				</Box>
@@ -163,9 +151,10 @@ function CreateAccountForm() {
 						label="Last Name"
 						variant="outlined"
 						fullWidth
-						value={formik.values.lastName}
+						value={formik.values.lastName || ''}
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
+						error={formik.touched.lastName && Boolean(formik.errors.lastName)}
 						helperText={formik.touched.lastName && formik.errors.lastName}
 					/>
 				</Box>
