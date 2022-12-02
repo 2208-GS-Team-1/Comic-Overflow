@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { Box, Button, TextField } from '@mui/material';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../store/userSlice';
+import { setUser } from '../../store/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 // Validation schema using yup, to check is text field entries are valid.
@@ -47,16 +47,12 @@ function CreateAccountForm() {
 		validationSchema: validationSchema,
 		onSubmit: async values => {
 			console.log(values);
-
 			// Update Backend: axios post req to User
-			const createdUser = await axios.post('api/user', values);
-
+			//const createdUser = await axios.post('api/user', values);
 			// Update Slice?
-			dispatch(setUser());
-
+			//dispatch(setUser());
 			alert('Account created!');
-			// Redirect user to homepage
-			navigate('/');
+			navigate('/'); // Redirect user to homepage
 		},
 	});
 
@@ -72,13 +68,16 @@ function CreateAccountForm() {
 	// If no user in slice, give them the form
 	return (
 		<div>
-			<h2>Create an Account</h2>
-			<h4>
-				Create an account and take advantage of a faster checkout and other
-				benefits.
-			</h4>
-
-			<Box component="form" onSubmit={formik.handleSubmit}>
+			<Box
+				component="form"
+				onSubmit={formik.handleSubmit}
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					justifyContent: 'space-between',
+				}}
+			>
 				<Box margin={1}>
 					<TextField
 						name="username"
@@ -171,7 +170,7 @@ function CreateAccountForm() {
 					/>
 				</Box>
 
-				<Button type="submit" variant="contained">
+				<Button type="submit" sx={{ width: 200 }} variant="contained">
 					Submit
 				</Button>
 			</Box>
