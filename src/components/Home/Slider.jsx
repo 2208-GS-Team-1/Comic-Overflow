@@ -1,13 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './homeStyle.css'
 
-//THIS IS TBD//
 const Slider = () => {
+
+  //array of image sources from static folder
+  const imageArray = [
+    "/static/sliderImages/sliderimage-01.jpg",
+    "/static/sliderImages/sliderimage-02.jpg",
+    "/static/sliderImages/sliderimage-03.jpg"
+  ]
+  const [currentSlide, setSlide] = useState(0)
+
+  //below function allows the arrow icon to shift through slides
+  const prevSlide = () =>{
+    setSlide(currentSlide === 0 ? 2: currentSlide -1 )
+  }
+  const nextSlide = () => {
+    setSlide(currentSlide === 2 ? 0: currentSlide +1 )
+  }
+
+  //icons ( i tag) are from css website. They offer free icons!
+  //https://css.gg/
+  //style={{transform: `translateX(-${currentSlide *100}vw)`}}
 
     return (
       <div className="slider">
-        <div className="container">
-          <img src="/static/sliderImages/sliderimage-01.jpg" width="500px" />
-          <img src="/static/sliderImages/sliderimage-02.jpg" width="500px" />
+        <div className="container" >
+          <img src={imageArray[currentSlide]}  />
+        </div>
+        <div className='icons'>
+          <div className='icon'>
+            <i className="gg-play-track-prev-r" onClick={prevSlide}></i>
+          </div>
+          <div className='icon'>
+            <i className="gg-push-chevron-right-r" onClick={nextSlide}></i>
+          </div>
         </div>
       </div>
     );
