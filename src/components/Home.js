@@ -6,17 +6,17 @@ const Home = () => {
     const { user } = useSelector(state => state.user);
     const dispatch = useDispatch();
 
-    const logout = () => {
-        window.localStorage.removeItem('token');
-        dispatch(resetUser());
-    };
+    // const logout = () => {
+    //     window.localStorage.removeItem('token');
+    //     dispatch(resetUser());
+    // };
 
     return (
         <div>
             <h1>Home</h1>
             <div>
                 <p>Welcome {user.username}!!</p>
-                <button onClick={logout}>Logout</button>
+                {/* <button onClick={logout}>Logout</button> */}
             </div>
         </div>
     );
