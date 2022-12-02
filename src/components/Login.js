@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { setUser } from '../store/userSlice';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const Login = () => {
     const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.user);
     const [credentials, setCredentials] = useState({
         username: '',
         password: ''
@@ -26,6 +28,10 @@ const Login = () => {
             dispatch(setUser(response.data))
         }
     };
+
+       useEffect(() => {
+         loginWithToken();
+       }, []);
 
     const attemptLogin = async (event) => {
         event.preventDefault();
