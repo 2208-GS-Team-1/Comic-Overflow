@@ -1,6 +1,24 @@
 import React from 'react';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import { Box, Button, TextField } from '@mui/material';
+
+const validationSchema = yup.object({
+	email: yup
+		.string('Enter your email')
+		.email('Enter a valid email')
+		.required('Email is required'),
+	password: yup
+		.string('Enter your password')
+		.min(3, 'Password should be a minimum 3 characters')
+		.required('Password is required'),
+	firstName: yup
+		.string('Enter your first name')
+		.required('First name is required'),
+	lastName: yup
+		.string('Enter your last name')
+		.required('Last name is required'),
+});
 
 function CreateAccountForm(props) {
 	const formik = useFormik({
@@ -10,6 +28,7 @@ function CreateAccountForm(props) {
 			firstName: '',
 			lastName: '',
 		},
+		validationSchema: validationSchema,
 		onSubmit: async values => {
 			console.log(values);
 			// Update Backend: axios post req to User
@@ -49,8 +68,8 @@ function CreateAccountForm(props) {
 					type="email"
 					label="Email"
 					variant="outlined"
-					onChange={formik.handleChange}
 					value={formik.values.email}
+					onChange={formik.handleChange}
 				/>
 
 				<TextField
@@ -58,10 +77,27 @@ function CreateAccountForm(props) {
 					type="password"
 					label="Password"
 					variant="outlined"
-					onChange={formik.handleChange}
 					value={formik.values.password}
+					onChange={formik.handleChange}
 				/>
 
+				<TextField
+					name="firstName"
+					type="firstName"
+					label="First Name"
+					variant="outlined"
+					value={formik.values.firstName}
+					onChange={formik.handleChange}
+				/>
+
+				<TextField
+					name="lastName"
+					type="lastName"
+					label="Last Name"
+					variant="outlined"
+					value={formik.values.lastName}
+					onChange={formik.handleChange}
+				/>
 				<Button type="submit" variant="contained">
 					Submit
 				</Button>

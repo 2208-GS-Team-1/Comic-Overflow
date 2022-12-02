@@ -25,7 +25,8 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",
     "sequelize": "^6.25.3",
-    "volleyball": "^1.5.1"
+    "volleyball": "^1.5.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
