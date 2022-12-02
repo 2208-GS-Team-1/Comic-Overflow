@@ -5,8 +5,8 @@ const { Book } = require("../db");
 // GET - api/comics --> Gets all comics from the db
 router.get("/", async (req, res, next) => {
   try {
-    const allComics = await Book.findAll();
-    res.send(allComics);
+    const allBooks = await Book.findAll();
+    res.send(allBooks);
   } catch (err) {
     console.log(err);
   }
@@ -14,8 +14,8 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;
   try {
-    const allComics = await Book.findByPk(id);
-    res.send(allComics);
+    const singleBook = await Book.findByPk(id);
+    res.send(singleBook);
   } catch (err) {
     console.log(err);
   }
