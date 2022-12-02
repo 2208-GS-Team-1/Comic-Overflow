@@ -1,3 +1,4 @@
+const { Sequelize } = require("sequelize");
 const db = require("./db");
 
 const Book = db.define("book", {
