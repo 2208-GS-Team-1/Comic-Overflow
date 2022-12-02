@@ -7,11 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../store/userSlice';
 import { useNavigate } from 'react-router-dom';
 
-// Redux and React stuff
-const dispatch = useDispatch();
-const user = useSelector(state => state.user);
-const navigate = useNavigate();
-
 // Validation schema using yup, to check is text field entries are valid.
 const validationSchema = yup.object({
 	email: yup
@@ -34,7 +29,12 @@ const validationSchema = yup.object({
 		.required('Last name is required'),
 });
 
-function CreateAccountForm(props) {
+function CreateAccountForm() {
+	// Redux and React stuff
+	const dispatch = useDispatch();
+	const user = useSelector(state => state.user);
+	const navigate = useNavigate();
+
 	const formik = useFormik({
 		// Initializes our formik.values object to have these key-value pairs.
 		initialValues: {

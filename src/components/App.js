@@ -5,6 +5,7 @@ import { Link, Routes, Route } from 'react-router-dom';
 import Books from './Books.jsx';
 import Account from './Account.jsx';
 import Login from './Login.jsx';
+import CreateAccountForm from './CreateAccountForm.jsx';
 
 const App = () => {
 	return (
@@ -24,7 +25,8 @@ const App = () => {
 					<Route path="/" element={<Home />} />
 					<Route path="/books" element={<Books />} />
 					<Route path="/login" element={<Login />} />
-					<Route path="/createaccount" element={<Account />} />
+					<Route path="/createaccount" element={<CreateAccountForm />} />
+					<Route path="/account" element={<Account />} />
 				</Routes>
 			</div>
 		</div>
