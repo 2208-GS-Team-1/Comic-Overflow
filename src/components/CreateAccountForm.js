@@ -1,14 +1,23 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { Button, TextField } from '@mui/material';
+import { useFormik } from 'formik';
+import { Box, Button, TextField } from '@mui/material';
 
 function CreateAccountForm(props) {
-	const initialValues = {
-		email: '',
-		password: '',
-		firstName: '',
-		lastName: '',
-	};
+	const formik = useFormik({
+		initialValues: {
+			email: '',
+			password: '',
+			firstName: '',
+			lastName: '',
+		},
+		onSubmit: async values => {
+			console.log(values);
+			// Update Backend: axios post req to User
+			// Update Slice?
+			// Log in the user with this newly made account?
+			// Redirect user to homepage? Or redirect to login page?
+		},
+	});
 
 	/**
 	 *
@@ -19,25 +28,12 @@ function CreateAccountForm(props) {
 	 */
 	const handleValidation = values => {
 		const errors = {};
-
 		// Check values here.
 		if (!values.email) errors.email = 'Required';
 		if (!values.password) errors.password = 'Required';
 		return errors;
 	};
-	const handleSubmit = async values => {
-		console.log('Values === ');
-		console.log(values);
 
-		// Update Backend: axios post req to User
-
-		// Update Slice?
-
-		// Log in the user with this newly made account?
-		// Redirect user to homepage? Or redirect to login page?
-	};
-
-	const errorStyle = { color: 'tomato' };
 	return (
 		<div>
 			<h2>Create an Account</h2>
@@ -45,37 +41,31 @@ function CreateAccountForm(props) {
 				Create an account and take advantage of a faster checkout and other
 				benefits.
 			</h4>
-			<Formik
-				initialValues={initialValues}
-				validate={handleValidation}
-				onSubmit={handleSubmit}
-			>
-				<Form>
-					{/* <Field type="email" name="email" placeholder="Email" /> */}
-					<TextField
-						name="email"
-						type="email"
-						label="email"
-						variant="outlined"
-					/>
 
-					<ErrorMessage
-						name="email"
-						// 'render' is used to apply style to render error message div
-						render={msg => <div style={errorStyle}>{msg}</div>}
-					/>
+			<Box component="form" onSubmit={formik.handleSubmit}>
+				{/* <Field type="email" name="email" placeholder="Email" /> */}
+				<TextField
+					name="email"
+					type="email"
+					label="Email"
+					variant="outlined"
+					onChange={formik.handleChange}
+					value={formik.values.email}
+				/>
 
-					<Field type="password" name="password" />
-					<ErrorMessage
-						name="password"
-						render={msg => <div style={errorStyle}>{msg}</div>}
-					/>
+				<TextField
+					name="password"
+					type="password"
+					label="Password"
+					variant="outlined"
+					onChange={formik.handleChange}
+					value={formik.values.password}
+				/>
 
-					<Button type="submit" variant="contained">
-						Submit
-					</Button>
-				</Form>
-			</Formik>
+				<Button type="submit" variant="contained">
+					Submit
+				</Button>
+			</Box>
 		</div>
 	);
 }
