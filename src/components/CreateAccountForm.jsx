@@ -13,6 +13,10 @@ const validationSchema = yup.object({
 		.string('Enter your password')
 		.min(3, 'Password should be a minimum 3 characters')
 		.required('Password is required'),
+	confirmPassword: yup
+		.string('Confirm password')
+		// This is how you look at 'password' and make sure it is the same:
+		.oneOf([yup.ref('password'), null], 'Passwords should match'),
 	firstName: yup
 		.string('Enter your first name')
 		.required('First name is required'),
@@ -90,6 +94,25 @@ function CreateAccountForm(props) {
 						onBlur={formik.handleBlur}
 						error={formik.touched.password && formik.errors.password}
 						helperText={formik.touched.password && formik.errors.password}
+					/>
+				</Box>
+
+				<Box margin={1}>
+					<TextField
+						name="confirmPassword"
+						type="password"
+						label="Confirm Password*"
+						variant="outlined"
+						fullWidth
+						value={formik.values.confirmPassword}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						error={
+							formik.touched.confirmPassword && formik.errors.confirmPassword
+						}
+						helperText={
+							formik.touched.confirmPassword && formik.errors.confirmPassword
+						}
 					/>
 				</Box>
 
