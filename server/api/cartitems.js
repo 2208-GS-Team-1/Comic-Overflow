@@ -19,7 +19,7 @@ router.get("/:userId", async (req, res, next) => {
   }
 });
 
-// GET api/:userId/cart
+// GET api/user/:userId/cart
 // Returns the given user's active cart.
 
 // GET api/:userId/orders
