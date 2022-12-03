@@ -5,6 +5,7 @@ const cartSeed = async (books, users) => {
 
   // Destruct users out of users object
   const { moe, lucy, larry, ethyl } = users;
+
   // Destruct books out of book object
   const { devilman1, adamStrange1, wonderWoman, silverSurfer, xmen } = books;
 
@@ -86,8 +87,10 @@ const cartSeed = async (books, users) => {
 
   console.log(
     `${boughtWW.user.firstName} previously purchased ${boughtWW.book.title} vol.${boughtWW.book.volume}
-    for ${boughtWW.priceAtPurchase}, but she wants to buy it again, and the price we are selling it for now
-    is: ${inCartWW.priceAtPurchase}`
+    for ${boughtWW.priceAtPurchase}.
+    \n 
+    But she wants to buy it again, and the price we are selling it for now
+    is: ${wonderWoman.price} and the item in her cart is: ${inCartWW.priceAtPurchase}`
   );
 
   return;
