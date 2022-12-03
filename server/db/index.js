@@ -1,17 +1,20 @@
 const db = require("./db");
 const User = require("./User");
-const seed = require("./seed");
 const Book = require("./Book");
-const Cart = require("./Cart");
+const CartItem = require("./CartItem");
 const Review = require("./Review");
 
 // ASSOCIATIONS HERE!
-Cart.hasMany(User);
-User.belongsTo(Cart);
 
-Cart.belongsToMany(Book, { through: "CartBooks" });
-Book.belongsToMany(Cart, { through: "CartBooks" });
+// CartItem + User
+CartItem.belongsTo(User);
+User.hasMany(CartItem);
 
+// Cart + Book
+CartItem.belongsTo(Book);
+Book.hasMany(CartItem);
+
+// Reviews
 Book.hasMany(Review);
 Review.belongsTo(Book);
 
@@ -19,9 +22,9 @@ User.hasMany(Review);
 Review.belongsTo(User);
 
 module.exports = {
-  seed,
-  User,
   db,
+  User,
   Book,
-  Review
+  Review,
+  CartItem,
 };

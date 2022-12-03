@@ -1,11 +1,19 @@
-const db = require("./db");
-const User = require("./User");
+const { User, db, Book, Review, CartItem } = require("./");
 const bookSeed = require("./dbSeeds/bookSeed");
+const cartSeed = require("./dbSeeds/cartSeed");
 const dummyBookSeed = require("./dbSeeds/dummyBookSeed");
+
 const seed = async () => {
+  console.log("BEGINNING SEEDING...");
+
   await db.sync({ force: true });
-  //   await bookSeed(); <-- This function runes "/dbSeeds/bookSeeds.js" ... for now we're just using dummy data
-  await dummyBookSeed();
+
+  // small bookSeed
+  const { books } = await bookSeed();
+
+  // large book seed
+  // const {books} = await dummyBookSeed();
+
   const [moe, lucy, larry, ethyl] = await Promise.all([
     User.create({
       username: "moe",
@@ -52,6 +60,13 @@ const seed = async () => {
       creditCard: 5217487872137994,
     }),
   ]);
+
+  const users = { moe, lucy, larry, ethyl };
+
+  // Pass our book and user objects into our cart and review seed functions.
+  await cartSeed(books, users);
+
+  console.log("...FINISHED SEEDING.");
 
   return {
     users: {
