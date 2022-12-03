@@ -1,9 +1,10 @@
+import { Card } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBooks } from '../../store/bookSlice';
-
+import './books.css'
 const AllBooks = () => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false)
@@ -24,10 +25,14 @@ const AllBooks = () => {
     }, []);
     if (loading) return <h1>Loading...</h1>
     return (
-        <div>   
+        <div
+        className='allBooks'
+        >   
             {
                 books.map((book)=> {
-                    
+            return(<Card>
+                        <img src={book.imageURL} key={book.id} className='book'/>
+                    </Card>)
                 })
             }
         </div>
