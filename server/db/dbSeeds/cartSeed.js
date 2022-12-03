@@ -15,7 +15,6 @@ const cartSeed = async (books, users) => {
 
   // Creating the instance with explicitly giving it the ids:
   const moesFirstCartItem = await CartItem.create({
-    priceAtPurchase: devilman1.price,
     userId: moe.id,
     bookId: devilman1.id,
   });
@@ -23,9 +22,7 @@ const cartSeed = async (books, users) => {
   //*********************** Moe has wonder woman volume 2 in his cart ************************//
 
   // This creates the cartitem instance with no associations yet:
-  const moesSecondCartItem = await CartItem.create({
-    priceAtPurchase: wonderWoman.price,
-  });
+  const moesSecondCartItem = await CartItem.create({});
 
   // Using some magic methods to make associations
   await moe.addCartItem(moesSecondCartItem);
@@ -53,16 +50,15 @@ const cartSeed = async (books, users) => {
 
   // Let's say when lucy bought this, it was at a different price than what we currently charge, to test this feature.
   const lucyFirstCartItem = await CartItem.create({
-    priceAtPurchase: wonderWoman.price + 500, // plus 5 dollars
     userId: lucy.id,
     bookId: wonderWoman.id,
+    priceAtCheckOut: wonderWoman.price + 500, // plus 5 dollars
     isCheckedOut: true,
     orderStatus: "delivered",
   });
 
   //*********************** Lucy has Adam Strange in her cart. ************************//
   const lucySecondCartItem = await CartItem.create({
-    priceAtPurchase: adamStrange1.price,
     userId: lucy.id,
     bookId: adamStrange1.id,
   });
@@ -71,7 +67,6 @@ const cartSeed = async (books, users) => {
 
   // She wants another copy.
   const lucyThirdCartItem = await CartItem.create({
-    priceAtPurchase: wonderWoman.price,
     userId: lucy.id,
     bookId: wonderWoman.id,
     isCheckedOut: true,
@@ -87,10 +82,10 @@ const cartSeed = async (books, users) => {
 
   console.log(
     `${boughtWW.user.firstName} previously purchased ${boughtWW.book.title} vol.${boughtWW.book.volume}
-    for ${boughtWW.priceAtPurchase}. 
+    for ${boughtWW.priceAtCheckOut}. 
     Its checkout status is ${boughtWW.isCheckedOut} and orderStatus is ${boughtWW.orderStatus}.
     But she wants to buy it again, and the price we are selling it for now
-    is: ${wonderWoman.price} and the item in her cart is: ${inCartWW.priceAtPurchase}.`
+    is: ${wonderWoman.price} and the item in her cart is: ${inCartWW.book.price}.`
   );
 
   return;
