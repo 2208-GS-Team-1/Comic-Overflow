@@ -1,9 +1,12 @@
-import { Card } from '@mui/material';
+import { Button, Card, CardActions } from '@mui/material';
+import { sizing } from '@mui/system';
+import { Box } from '@mui/system';
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBooks } from '../../store/bookSlice';
+import { AddShoppingCart } from '@mui/icons-material';
 import './books.css'
 const AllBooks = () => {
     const dispatch = useDispatch();
@@ -28,11 +31,42 @@ const AllBooks = () => {
         <div
         className='allBooks'
         >   
-            {
-                books.map((book)=> {
-                    return <img src={book.imageURL} key={book.id} className='book'/>
-                })
-            }
+            
+                <CardActions>
+                {
+                    books.map((book)=> {
+                        return (
+                            <Box
+                            >
+                                <Card
+                                sx={{ boxShadow: 2 }}
+                                className='productCard'
+                                variant="outlined"
+                                >
+                                    <div>
+                                    <img src={book.imageURL} key={book.id} className='book'/>
+                                    </div>
+                                    <div
+                                    className='productCardButtons'
+                                    >
+                                        <Button
+                                        size='small'
+                                        >
+                                            <AddShoppingCart/>
+                                        </Button>
+                                        
+                                        <Button
+                                        size='small'
+                                        >
+                                            Info
+                                        </Button>
+                                    </div>
+                                </Card>
+                            </Box>
+                        )
+                    })
+                }
+                </CardActions>
         </div>
     )   
 };
