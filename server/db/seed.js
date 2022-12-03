@@ -4,8 +4,8 @@ const bookSeed = require("./dbSeeds/bookSeed");
 const dummyBookSeed = require("./dbSeeds/dummyBookSeed");
 const seed = async () => {
   await db.sync({ force: true });
-  //   await bookSeed(); <-- This function runes "/dbSeeds/bookSeeds.js" ... for now we're just using dummy data
-  await dummyBookSeed();
+  await bookSeed();
+  // await dummyBookSeed();
   const [moe, lucy, larry, ethyl] = await Promise.all([
     User.create({
       username: "moe",
