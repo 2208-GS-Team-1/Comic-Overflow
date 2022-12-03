@@ -15,7 +15,6 @@ const cartSeed = async (books, users) => {
 
   // Creating the instance with explicitly giving it the ids:
   const moesFirstCartItem = await CartItem.create({
-    priceAtPurchase: devilman1.price,
     userId: moe.id,
     bookId: devilman1.id,
   });
@@ -23,9 +22,7 @@ const cartSeed = async (books, users) => {
   //*********************** Moe has wonder woman volume 2 in his cart ************************//
 
   // This creates the cartitem instance with no associations yet:
-  const moesSecondCartItem = await CartItem.create({
-    priceAtPurchase: wonderWoman.price,
-  });
+  const moesSecondCartItem = await CartItem.create({});
 
   // Using some magic methods to make associations
   await moe.addCartItem(moesSecondCartItem);
@@ -49,33 +46,30 @@ const cartSeed = async (books, users) => {
   its checked out status is: ${testCartItem.isCheckedOut}
   and the book is ${testCartItem.book.title} volume ${testCartItem.book.volume}\n`);
 
-  //*********************** Lucy has already purchased Wonder Woman vol.2 ************************//
+  //*********************** Lucy has already purchased Wonder Woman  ************************//
 
   // Let's say when lucy bought this, it was at a different price than what we currently charge, to test this feature.
   const lucyFirstCartItem = await CartItem.create({
-    priceAtPurchase: wonderWoman.price + 500, // plus 5 dollars
     userId: lucy.id,
     bookId: wonderWoman.id,
     isCheckedOut: true,
+    priceAtCheckOut: wonderWoman.price + 500, // plus 5 dollars
     orderStatus: "delivered",
+    timeOfCheckout: new Date(),
   });
 
   //*********************** Lucy has Adam Strange in her cart. ************************//
   const lucySecondCartItem = await CartItem.create({
-    priceAtPurchase: adamStrange1.price,
     userId: lucy.id,
     bookId: adamStrange1.id,
   });
 
-  //*********************** Lucy has Wonder Woman vol.2 in her cart (she wants another copy). ************************//
+  //*********************** Lucy has Wonder Woman in her cart (she wants another copy). ************************//
 
-  // She wants another copy.
+  // She wants another copy, but has not bought it yet.
   const lucyThirdCartItem = await CartItem.create({
-    priceAtPurchase: wonderWoman.price,
     userId: lucy.id,
     bookId: wonderWoman.id,
-    isCheckedOut: true,
-    orderStatus: "delivered",
   });
 
   const boughtWW = await CartItem.findByPk(lucyFirstCartItem.id, {
@@ -86,11 +80,11 @@ const cartSeed = async (books, users) => {
   });
 
   console.log(
-    `${boughtWW.user.firstName} previously purchased ${boughtWW.book.title} vol.${boughtWW.book.volume}
-    for ${boughtWW.priceAtPurchase}. 
+    `${boughtWW.user.firstName} previously purchased ${boughtWW.book.title} vol.${boughtWW.book.volume} for ${boughtWW.priceAtCheckOut}. 
     Its checkout status is ${boughtWW.isCheckedOut} and orderStatus is ${boughtWW.orderStatus}.
+    She bought it at: ${boughtWW.timeOfCheckout}
     But she wants to buy it again, and the price we are selling it for now
-    is: ${wonderWoman.price} and the item in her cart is: ${inCartWW.priceAtPurchase}.`
+    is: ${wonderWoman.price}, therefore the item in her cart is: ${inCartWW.book.price}.`
   );
 
   return;
