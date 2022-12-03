@@ -2,10 +2,10 @@ import React from 'react';
 // import Home from './Home';
 import Home from './Home/Home.jsx';
 import { Link, Routes, Route } from 'react-router-dom';
-import Books from './Books.jsx';
 import Account from './Account.jsx';
 import Login from './Login.jsx';
 import CreateAccountContainer from './createAccount/CreateAccountContainer.jsx';
+import AllBooks from "./Books/AllBooks.jsx";
 import SingleProduct from './SingleProduct/SingleProduct.jsx';
 
 const App = () => {
@@ -24,7 +24,7 @@ const App = () => {
         </nav>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/books" element={<Books />} />
+          <Route path="/books" element={<AllBooks />} />
           <Route path="/login" element={<Login />} />
           <Route path="/createaccount" element={<CreateAccountContainer />} />
           <Route path="/account" element={<Account />} />
