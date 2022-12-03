@@ -61,14 +61,15 @@ const seed = async () => {
 
   const moesFirstCartItem = await Cart.create({
     priceAtPurchase: books.devilman1.price,
+    userId: moe.id,
   });
 
-  console.log(`Magic methods are in here: ${Object.keys(Cart.prototype)}`);
+  console.log(`Magic methods are in here: ${Object.keys(User.prototype)}`);
 
   await moesFirstCartItem.setBook(books.devilman1);
-  //await moesFirstCartItem.setUser(moe);
+  await moe.addCart(moesFirstCartItem);
 
-  console.log(moesFirstCartItem);
+  console.log(moesFirstCartItem.dataValues);
 
   return {
     users: {
