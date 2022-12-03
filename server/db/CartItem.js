@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 const db = require("./db");
 
-const Cart = db.define("cart", {
+const CartItem = db.define("cartItem", {
   isCheckedOut: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
@@ -33,4 +33,4 @@ const Cart = db.define("cart", {
   },
 });
 
-module.exports = Cart;
+module.exports = CartItem;

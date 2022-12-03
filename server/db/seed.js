@@ -1,6 +1,6 @@
-const { User, db, Book, Review, Cart } = require("./");
-
+const { User, db, Book, Review, CartItem } = require("./");
 const bookSeed = require("./dbSeeds/bookSeed");
+const cartSeed = require("./dbSeeds/cartSeed");
 const dummyBookSeed = require("./dbSeeds/dummyBookSeed");
 
 const seed = async () => {
@@ -10,7 +10,7 @@ const seed = async () => {
   const { books } = await bookSeed();
 
   // large book seed
-  // await dummyBookSeed();
+  // const {books} = await dummyBookSeed();
 
   const [moe, lucy, larry, ethyl] = await Promise.all([
     User.create({
@@ -59,17 +59,10 @@ const seed = async () => {
     }),
   ]);
 
-  const moesFirstCartItem = await Cart.create({
-    priceAtPurchase: books.devilman1.price,
-    userId: moe.id,
-  });
+  const users = { moe, lucy, larry, ethyl };
 
-  console.log(`Magic methods are in here: ${Object.keys(User.prototype)}`);
-
-  await moesFirstCartItem.setBook(books.devilman1);
-  await moe.addCart(moesFirstCartItem);
-
-  console.log(moesFirstCartItem.dataValues);
+  // Pass our book and user objects into our cart and review seed functions.
+  cartSeed(books, users);
 
   return {
     users: {
