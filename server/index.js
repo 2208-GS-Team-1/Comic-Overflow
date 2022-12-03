@@ -1,5 +1,6 @@
 const app = require("./app");
-const { seed, User, Cart, Book, Review } = require("./db");
+const { User, Cart, Book, Review } = require("./db");
+const seed = require("./db/seed");
 
 const init = async () => {
   try {

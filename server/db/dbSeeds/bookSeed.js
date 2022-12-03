@@ -65,7 +65,7 @@ const bookSeed = async () => {
       }),
     ]);
   return {
-    books: { devilman1 },
+    books: { devilman1, adamStrange1, wonderWoman, silverSurfer, xmen },
   };
 };
 
