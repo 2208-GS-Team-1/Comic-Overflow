@@ -1,7 +1,7 @@
 const { db, User, Book, Review, CartItem } = require("../");
 
 const cartSeed = async (books, users) => {
-  console.log(`Magic methods are in here: ${Object.keys(CartItem.prototype)}`);
+  //console.log(`Magic methods are in here: ${Object.keys(CartItem.prototype)}`);
 
   // Destruct users out of users object
   const { moe, lucy, larry, ethyl } = users;
@@ -87,10 +87,10 @@ const cartSeed = async (books, users) => {
 
   console.log(
     `${boughtWW.user.firstName} previously purchased ${boughtWW.book.title} vol.${boughtWW.book.volume}
-    for ${boughtWW.priceAtPurchase}.
-    \n 
+    for ${boughtWW.priceAtPurchase}. 
+    Its checkout status is ${boughtWW.isCheckedOut} and orderStatus is ${boughtWW.orderStatus}.
     But she wants to buy it again, and the price we are selling it for now
-    is: ${wonderWoman.price} and the item in her cart is: ${inCartWW.priceAtPurchase}`
+    is: ${wonderWoman.price} and the item in her cart is: ${inCartWW.priceAtPurchase}.`
   );
 
   return;
