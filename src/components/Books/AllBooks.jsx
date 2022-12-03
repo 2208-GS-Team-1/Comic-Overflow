@@ -30,9 +30,7 @@ const AllBooks = () => {
         >   
             {
                 books.map((book)=> {
-            return(<Card>
-                        <img src={book.imageURL} key={book.id} className='book'/>
-                    </Card>)
+                    return <img src={book.imageURL} key={book.id} className='book'/>
                 })
             }
         </div>

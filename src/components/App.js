@@ -24,7 +24,6 @@ const App = () => {
         </nav>
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/books" element={<Books />} /> */}
           <Route path="/books" element={<AllBooks />} />
           <Route path="/login" element={<Login />} />
           <Route path="/createaccount" element={<CreateAccountContainer />} />
