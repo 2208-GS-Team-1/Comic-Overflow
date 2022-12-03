@@ -37,6 +37,7 @@ const AllBooks = () => {
                     books.map((book)=> {
                         return (
                             <Box
+                            key={book.id}
                             >
                                 <Card
                                 sx={{ boxShadow: 2 }}
@@ -44,7 +45,7 @@ const AllBooks = () => {
                                 variant="outlined"
                                 >
                                     <div>
-                                    <img src={book.imageURL} key={book.id} className='book'/>
+                                    <img src={book.imageURL} className='book'/>
                                     </div>
                                     <div
                                     className='productCardButtons'
