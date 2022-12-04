@@ -11,7 +11,7 @@ router.get("/:bookId", async (req, res, next) => {
     });
     res.send(userReviews);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 });
 

@@ -8,7 +8,7 @@ router.get("/", async (req, res, next) => {
     const allBooks = await Book.findAll();
     res.send(allBooks);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 });
 router.get("/:id", async (req, res, next) => {
@@ -17,7 +17,7 @@ router.get("/:id", async (req, res, next) => {
     const singleBook = await Book.findByPk(id);
     res.send(singleBook);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 });
 
