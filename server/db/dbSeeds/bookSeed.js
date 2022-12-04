@@ -1,8 +1,6 @@
 const db = require("../db");
 const Book = require("../Book");
 const bookSeed = async () => {
-  await db.sync({ force: true });
-
   const [devilman1, adamStrange1, wonderWoman, silverSurfer, xmen] =
     await Promise.all([
       Book.create({
