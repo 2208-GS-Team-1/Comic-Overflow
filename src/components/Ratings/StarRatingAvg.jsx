@@ -1,3 +1,4 @@
+import { Rating } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
@@ -14,6 +15,7 @@ const StarRatingAvg = ({ book }) => {
     //reviews.data = array of reivews for specific book
     if (reviews.data.length > 0)
       setAvgReview(
+        //use reduce method to take the average of the rating columns if the array.lenth is > 0
         reviews.data.reduce((total, next) => total + next.rating, 0) /
           reviews.data.length
       );
@@ -28,6 +30,14 @@ const StarRatingAvg = ({ book }) => {
   console.log("AVG REVIEWS" + avgReview);
   //if length of array > 1 then take average of rating
   if (loading) return <h1>Loading...</h1>;
-  return <div>{avgReview > 0 ? avgReview : "no ratings"}</div>;
+  return (
+    <div>
+      {avgReview > 0 ? (
+        <Rating name="read-only" value={avgReview} readOnly />
+      ) : (
+        "no ratings"
+      )}
+    </div>
+  );
 };
 export default StarRatingAvg;
