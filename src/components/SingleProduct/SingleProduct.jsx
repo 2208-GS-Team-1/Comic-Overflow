@@ -31,6 +31,7 @@ const SingleProduct = () => {
 
     if(loading){
         if(selectedBook.stock !== 0){
+            const bookPrice = (selectedBook.price / 100).toFixed(2)
             return (
                 <div className='singleProductPage'>
                     <div className='singleProduct_container'>
@@ -40,7 +41,7 @@ const SingleProduct = () => {
                         <div className='productDescrib_right'>
                             <h1>{selectedBook.title}</h1>
                             <div className='isbn'>ISBN: {selectedBook.isbn}</div>
-                            <div className='price'>${selectedBook.price}</div>
+                            <div className='price'>${bookPrice}</div>
                             <p className='inStock'>In Stock</p>
                             <div className='quantity'>
 
