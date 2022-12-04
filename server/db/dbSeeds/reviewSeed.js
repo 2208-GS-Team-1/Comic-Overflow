@@ -26,7 +26,7 @@ const reviewSeed = async (books, users) => {
   // Creating second review for Moe
   const moesSecondReview = await Review.create({
     subject: "Sweet!",
-    content: "Wonder Woman is the best! Lorem ipsum dolor sit amet.",
+    content: "Wonder Woman is the best! She could kick Superman's a**.",
     rating: 5,
   });
 
@@ -49,7 +49,7 @@ const reviewSeed = async (books, users) => {
   await wonderWoman.addReview(lucysFirstReview);
 
   // Now to test if our MOE entries are right, by requerying for them with joining.
-  let testReview = await Review.findByPk(1, {
+  let testReview = await Review.findByPk(moesFirstReview.id, {
     include: [User, Book],
   });
   console.log(`Review ${testReview.id} was submitted by ${testReview.user.username},
@@ -57,7 +57,7 @@ const reviewSeed = async (books, users) => {
   subject is ${testReview.subject}
   the review is ${testReview.content} with ${testReview.rating} stars\n`);
 
-  testReview = await Review.findByPk(2, {
+  testReview = await Review.findByPk(moesSecondReview.id, {
     include: [User, Book],
   });
   console.log(`Review ${testReview.id} was submitted by ${testReview.user.username},
