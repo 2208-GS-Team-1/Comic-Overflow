@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBooks } from '../../store/bookSlice';
 import { AddShoppingCart } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 import './books.css'
 const AllBooks = () => {
     const dispatch = useDispatch();
@@ -16,7 +17,6 @@ const AllBooks = () => {
         setLoading(true)
         try{
             const { data } = await axios.get('/api/books')
-            console.log(data)
             dispatch(setBooks(data))
         }catch(err){
             console.log(err) //<- not sure if we want the err console logged but fine for dev purposes.
@@ -38,11 +38,16 @@ const AllBooks = () => {
                                 sx={{ boxShadow: 2 }}
                                 className='productCard'
                                 variant="outlined"
+                                key={book.id}
                                 >
                                     <div
                                     className='productCardImg'
                                     >
+                                    <Link
+                                    to={`/books/${book.id}`}
+                                    >
                                     <img src={book.imageURL}/>
+                                    </Link>
                                     </div>
                                     <div
                                     className='productCardButtons'

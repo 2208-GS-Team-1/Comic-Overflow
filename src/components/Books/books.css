@@ -2,9 +2,8 @@
     display: flex;
     max-width: 100vw;
     flex-wrap: wrap;
-    margin-top: 20px;
+    margin: 20px 0 20px 0;
     justify-content: space-around;
-    border: 5px solid red;
 }
 .productCard {
     display: flex;
@@ -13,11 +12,17 @@
     align-items: center;
     width: 160px;
 }
-.productCard Img {
+.productCard img {
     height: 250px;
     width: auto;
     padding: 0;
-
+}
+.productCard img:hover {
+    cursor: pointer;
+    transition: .25s ease;
+    opacity: .4;
+    text-align: center;
+    
 }
 .productCardButtons{
     display: flex;
