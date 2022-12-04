@@ -7,6 +7,8 @@ import Account from "./Account.jsx";
 import Login from "./Login.jsx";
 import CreateAccountContainer from "./createAccount/CreateAccountContainer.jsx";
 import AllBooks from "./Books/AllBooks.jsx";
+import SingleProduct from "./SingleProduct/SingleProduct.jsx";
+
 
 const App = () => {
   return (
@@ -28,6 +30,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/createaccount" element={<CreateAccountContainer />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/books/:id" element={<SingleProduct />} />
         </Routes>
       </div>
     </div>

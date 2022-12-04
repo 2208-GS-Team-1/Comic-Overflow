@@ -1,8 +1,6 @@
 const db = require("../db");
 const Book = require("../Book");
 const bookSeed = async () => {
-  await db.sync({ force: true });
-
   const [devilman1, adamStrange1, wonderWoman, silverSurfer, xmen] =
     await Promise.all([
       Book.create({
@@ -25,7 +23,7 @@ const bookSeed = async () => {
         volume: 1,
         yearOfPublish: 2004,
         imageURL: "/static/bookImages/adamStrange.webp",
-        price: 5,
+        price: 500,
         stock: 20,
       }),
       Book.create({
@@ -36,7 +34,7 @@ const bookSeed = async () => {
         volume: 89,
         yearOfPublish: 1994,
         imageURL: "/static/bookImages/wonderWoman.jpeg",
-        price: 5,
+        price: 500,
         stock: 20,
       }),
       Book.create({
@@ -48,7 +46,7 @@ const bookSeed = async () => {
         volume: 16,
         yearOfPublish: 1970,
         imageURL: "/static/bookImages/silverSurfer.png",
-        price: 20,
+        price: 2000,
         stock: 5,
       }),
       Book.create({
@@ -60,7 +58,7 @@ const bookSeed = async () => {
         volume: 141,
         yearOfPublish: 1981,
         imageURL: "/static/bookImages/xmen.jpeg",
-        price: 20,
+        price: 2000,
         stock: 5,
       }),
     ]);

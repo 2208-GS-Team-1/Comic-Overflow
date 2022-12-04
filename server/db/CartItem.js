@@ -10,12 +10,13 @@ const CartItem = db.define("cartItem", {
       notEmpty: true,
     },
   },
-  priceAtPurchase: {
+  priceAtCheckOut: {
     type: Sequelize.INTEGER,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
+    allowNull: true, // This field is only filled out upon checkout, so null before then is ok.
+  },
+  timeOfCheckout: {
+    type: Sequelize.DATE,
+    allowNull: true, // If an order is not checked out, it has a NULL checkOutTime.
   },
   orderStatus: {
     type: Sequelize.ENUM(

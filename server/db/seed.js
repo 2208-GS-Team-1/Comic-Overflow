@@ -2,6 +2,7 @@ const { User, db, Book, Review, CartItem } = require("./");
 const bookSeed = require("./dbSeeds/bookSeed");
 const cartSeed = require("./dbSeeds/cartSeed");
 const dummyBookSeed = require("./dbSeeds/dummyBookSeed");
+const reviewSeed = require("./dbSeeds/reviewSeed");
 
 const seed = async () => {
   console.log("BEGINNING SEEDING...");
@@ -67,7 +68,7 @@ const seed = async () => {
 
   // Pass our book and user objects into our cart and review seed functions.
   await cartSeed(books, users);
-
+  await reviewSeed(books, users);
   console.log("...FINISHED SEEDING.");
 
   return {
