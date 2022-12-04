@@ -53,7 +53,7 @@ const AllBooks = () => {
                                     className='productCardButtons'
                                     >
                                             <Typography>
-                                            ${book.price / 100}
+                                            ${(book.price / 100).toFixed(2)}
                                             </Typography>
                                         <Button
                                         size='small'
