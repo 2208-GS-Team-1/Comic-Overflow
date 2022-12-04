@@ -23,15 +23,14 @@ const StarRatingAvg = ({ book }) => {
     setLoading(false);
   };
 
-  //call function to pass reviews to allReviews
+  //useEffect to render the stars using the above function
   useEffect(() => {
     handleAvgReview();
   }, []);
-  console.log("AVG REVIEWS" + avgReview);
-  //if length of array > 1 then take average of rating
   if (loading) return <h1>Loading...</h1>;
   return (
     <div>
+      {/* if length of array > 0 then show the average rating, otherwise show no ratings */}
       {avgReview > 0 ? (
         <Rating name="read-only" value={avgReview} precision={0.5} readOnly />
       ) : (

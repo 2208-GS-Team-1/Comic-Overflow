@@ -43,14 +43,14 @@ const AllBooks = () => {
                 <img src={book.imageURL} />
               </Link>
             </div>
+            <div>
+              <StarRatingAvg key={book.id} book={book} />
+            </div>
             <div className="productCardButtons">
               <Typography>${(book.price / 100).toFixed(2)}</Typography>
               <Button size="small">
                 <AddShoppingCart />
               </Button>
-            </div>
-            <div>
-              <StarRatingAvg key={book.id} book={book} />
             </div>
           </Card>
         );
