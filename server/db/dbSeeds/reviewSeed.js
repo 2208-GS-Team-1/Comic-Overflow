@@ -37,7 +37,7 @@ const reviewSeed = async (books, users) => {
     subject: "Meh",
     content:
       "This was ok, but not as good as Devilman! Go buy Devilman if you really want to be entertained",
-    rating: 3,
+    rating: 4,
   });
 
   // Using some magic methods to make associations

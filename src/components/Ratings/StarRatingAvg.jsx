@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 const StarRatingAvg = ({ book }) => {
   //book gets passed down as prop from AllBooks.jsx
   //use local state
-  const [avgReview, setAvgReview] = useState(0);
+  const [avgReview, setAvgReview] = useState(0.0);
   const [loading, setLoading] = useState(false);
 
   const handleAvgReview = async () => {
@@ -33,7 +33,7 @@ const StarRatingAvg = ({ book }) => {
   return (
     <div>
       {avgReview > 0 ? (
-        <Rating name="read-only" value={avgReview} readOnly />
+        <Rating name="read-only" value={avgReview} precision={0.5} readOnly />
       ) : (
         "no ratings"
       )}
