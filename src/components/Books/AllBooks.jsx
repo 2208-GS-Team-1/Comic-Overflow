@@ -1,4 +1,4 @@
-import { Button, Card, CardActions } from '@mui/material';
+import { Button, Card, CardActions, Typography } from '@mui/material';
 import { sizing } from '@mui/system';
 import { Box } from '@mui/system';
 import axios from 'axios';
@@ -30,44 +30,36 @@ const AllBooks = () => {
     return (
         <div
         className='allBooks'
-        >   
-            
-                <CardActions>
+        >
                 {
                     books.map((book)=> {
                         return (
-                            <Box
-                            key={book.id}
-                            >
                                 <Card
                                 sx={{ boxShadow: 2 }}
                                 className='productCard'
                                 variant="outlined"
                                 >
-                                    <div>
-                                    <img src={book.imageURL} className='book'/>
+                                    <div
+                                    className='productCardImg'
+                                    >
+                                    <img src={book.imageURL}/>
                                     </div>
                                     <div
                                     className='productCardButtons'
                                     >
+                                            <Typography>
+                                            ${book.price / 100}
+                                            </Typography>
                                         <Button
                                         size='small'
                                         >
                                             <AddShoppingCart/>
                                         </Button>
-                                        
-                                        <Button
-                                        size='small'
-                                        >
-                                            Info
-                                        </Button>
                                     </div>
                                 </Card>
-                            </Box>
                         )
                     })
                 }
-                </CardActions>
         </div>
     )   
 };
