@@ -25,6 +25,8 @@ router.get("/:id", async (req, res, next) => {
 // GET api/users/:userId/orders
 // Returns all of a given user's orders
 
+//
+
 // GET api/users/:userId/cart
 // Returns a given user's active cart (array of cart items)
 

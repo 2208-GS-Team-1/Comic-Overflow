@@ -19,13 +19,7 @@ router.get("/:userId", async (req, res, next) => {
   }
 });
 
-// GET api/user/:userId/cart
+// GET api/cart/:userId/
 // Returns the given user's active cart.
+router.
 
-// GET api/:userId/orders
-// Returns an an array of a given user's 'orders',
-// Which are themselves arrays of isCheckedOut===true cartItems,
-// That are bundled by....
-//    can't use createdAt, because that's just when they put it in the cart.
-// using 'updatedAt' might cause issues.
-// We may need another field for 'timeOfPurchase'
