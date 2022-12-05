@@ -55,7 +55,7 @@ const cartSeed = async (books, users) => {
     isCheckedOut: true,
     priceAtCheckOut: wonderWoman.price + 500, // plus 5 dollars
     orderStatus: "delivered",
-    timeOfCheckout: new Date(),
+    timeOfCheckOut: new Date(),
   });
 
   //*********************** Lucy has Adam Strange in her cart. ************************//
