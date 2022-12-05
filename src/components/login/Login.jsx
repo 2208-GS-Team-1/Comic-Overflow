@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
-import { setUser } from '../store/userSlice';
+import { setUser } from '../../store/userSlice';
 import axios from 'axios';
 import { useEffect } from 'react';
-
+import './login.css'
 const Login = () => {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.user);
@@ -43,9 +43,11 @@ const Login = () => {
     };
 
     return (
-        <div>
+        <div
+        className='loginForm'
+        >
             <h2>Login</h2>
-            <form onSubmit={attemptLogin}>
+            <form onSubmit={() => attemptLogin}>
                 <input
                     placeholder='username'
                     value={credentials.username}
