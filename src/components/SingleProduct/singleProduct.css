@@ -2,7 +2,11 @@
     margin-top: 100px;
 }
 
-p, h1, h2 {
+p, h2 {
+    font-family: 'Dogfish', sans-serif;
+}
+
+.selectedTitle {
     font-family: 'Dogfish', sans-serif;
 }
 
@@ -21,7 +25,7 @@ p, h1, h2 {
     padding-right: 100px;
 }
 
-img {
+.singleProductImg {
     width: 300px;
     height: auto;
     padding: 40px;
@@ -50,13 +54,13 @@ img {
     margin-bottom: 10px;
 }
 
-form {
+.singleProductForm {
     display: flex;
     flex-direction: row;
     margin-left: 0;
 }
 
-input {
+.singleProductInput {
     width: 50px;
     font-size: 12pt;
 }
