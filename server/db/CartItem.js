@@ -14,7 +14,7 @@ const CartItem = db.define("cartItem", {
     type: Sequelize.INTEGER,
     allowNull: true, // This field is only filled out upon checkout, so null before then is ok.
   },
-  timeOfCheckout: {
+  timeOfCheckOut: {
     type: Sequelize.DATE,
     allowNull: true, // If an order is not checked out, it has a NULL checkOutTime.
   },
