@@ -59,18 +59,25 @@ router.post("/", async (req, res, next) => {
 });
 router.delete("/:id", async (req, res, next) => {
   const id = req.params.id;
-  try {
-    const userToDelete = await await User.findOne({
-      where: {
-        id: id,
-      },
-    });
-    !userToDelete
-      ? res.send("User does not exist").status(400)
-      : await userToDelete.destroy(),
-      res.send("User deleted").status(200);
-  } catch (err) {
-    next(err);
+  const regexExp =
+    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+  const isUUID = regexExp.test(id);
+  if (isUUID) {
+    try {
+      const userToDelete = await await User.findOne({
+        where: {
+          id: id,
+        },
+      });
+      !userToDelete
+        ? res.send("User does not exist").status(400)
+        : await userToDelete.destroy(),
+        res.send("User deleted").status(200);
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    res.send("Not a UUID").status(404);
   }
 });
 
