@@ -1,6 +1,21 @@
 const express = require("express");
-const router = require("./users");
+const router = express.Router();
 const { User, CartItem, Book } = require("../db");
+
+// GET api/cart/
+// Returns all cart items
+// Probably just for internal use.
+router.get("/", async (req, res, next) => {
+  try {
+    const allCartItems = await CartItem.findAll({
+      include: [Book, User],
+    });
+    res.send(allCartItems);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+});
 
 // GET api/cart/user/:userId
 // Returns a users 'cart' - aka,
