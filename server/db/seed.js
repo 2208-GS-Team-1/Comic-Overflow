@@ -16,7 +16,7 @@ const seed = async () => {
   // const {books} = await dummyBookSeed();
 
   // await dummyBookSeed();
-  const [moe, lucy, larry, ethyl] = await Promise.all([
+  const [moe, lucy, larry, ethyl, admin, rose] = await Promise.all([
     User.create({
       username: "moe",
       password: "123",
@@ -61,9 +61,28 @@ const seed = async () => {
       address: "22 West Way",
       creditCard: 5217487872137994,
     }),
+
+    // ADMIN USERS
+    User.create({
+      username: "admin",
+      password: "admin",
+      isAdmin: true,
+      firstName: "admin",
+      lastName: "admin",
+      email: "admin@admin.com",
+    }),
+
+    User.create({
+      username: "rosalie0",
+      password: "123",
+      isAdmin: true,
+      firstName: "Rosalie",
+      lastName: "Newman",
+      email: "rosalienewman0@gmail.com",
+    }),
   ]);
 
-  const users = { moe, lucy, larry, ethyl };
+  const users = { moe, lucy, larry, ethyl, admin, rose };
 
   // Pass our book and user objects into our cart and review seed functions.
   await cartSeed(books, users);
@@ -76,6 +95,8 @@ const seed = async () => {
       lucy,
       larry,
       ethyl,
+      admin,
+      rose,
     },
   };
 };
