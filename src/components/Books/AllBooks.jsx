@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, Typography } from "@mui/material";
+import { Button, Card, CardActions, CircularProgress, LinearProgress, Typography } from "@mui/material";
 import { sizing } from "@mui/system";
 import { Box } from "@mui/system";
 import axios from "axios";
@@ -28,7 +28,14 @@ const AllBooks = () => {
   useEffect(() => {
     fetchBooks();
   }, []);
-  if (loading) return <h1>Loading...</h1>;
+  if (loading) return(
+    <div
+    className="loadingContainer">
+      <Box sx={{ width: '100%' }}>
+      <LinearProgress color="inherit"/>
+      </Box>
+    </div>
+  )
   return (
     <div
     className="productsContainer"
