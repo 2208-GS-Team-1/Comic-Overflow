@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User } = require("../db");
+const { User, CartItem } = require("../db");
 
 // GET - api/users --> Gets all users from the db
 router.get("/", async (req, res, next) => {
@@ -57,6 +57,7 @@ router.post("/", async (req, res, next) => {
     next(err);
   }
 });
+
 router.delete("/:id", async (req, res, next) => {
   const id = req.params.id;
   const regexExp =
