@@ -23,7 +23,7 @@ const AllBooks = () => {
     } catch (err) {
       console.log(err); //<- not sure if we want the err console logged but fine for dev purposes.
     }
-    setLoading(false);
+    // setLoading(false);
   };
   useEffect(() => {
     fetchBooks();
@@ -31,8 +31,8 @@ const AllBooks = () => {
   if (loading) return(
     <div
     className="loadingContainer">
-      <Box sx={{ width: '100%' }}>
-      <LinearProgress color="inherit"/>
+      <Box sx={{ width: '100%'}}>
+      <LinearProgress color="inherit" style={{height:'6px'}}/>
       </Box>
     </div>
   )
