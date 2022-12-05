@@ -14,15 +14,22 @@ router.get("/", async (req, res, next) => {
 // GET - api/users/:id --> Gets all users from the db
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;
-  try {
-    const singleUser = await User.findOne({
-      where: {
-        id: id,
-      },
-    });
-    res.send(singleUser);
-  } catch (err) {
-    next(err);
+  const regexExp =
+    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+  const isUUID = regexExp.test(id);
+  if (isUUID) {
+    try {
+      const singleUser = await User.findByPk(id);
+      if (singleUser) {
+        res.send(singleUser);
+      } else {
+        res.sendStatus(404);
+      }
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    res.send("ID is not a UUID").status(404);
   }
 });
 // POST - api/users --> Adds user to db
