@@ -39,9 +39,15 @@ const SingleProduct = () => {
             </div>
             <div className="productDescrib_right">
               <h1>{selectedBook.title}</h1>
-              <h3>
-                Volume {selectedBook.volume} - {selectedBook.edition} Edition
-              </h3>
+
+              {selectedBook.edition ? (
+                <h3>
+                  Volume {selectedBook.volume} - {selectedBook.edition} Edition
+                </h3>
+              ) : (
+                <h3>Volume {selectedBook.volume} </h3>
+              )}
+
               <div className="isbn">ISBN: {selectedBook.isbn}</div>
               <div className="price">${bookPrice}</div>
               <p className="inStock">In Stock</p>
