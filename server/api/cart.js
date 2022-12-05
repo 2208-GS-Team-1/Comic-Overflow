@@ -24,6 +24,13 @@ router.get("/user/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
 
+    // Error check userId
+    const regexExpforUUID =
+      /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+    const userIDIsUUID = regexExpforUUID.test(userId);
+    if (!userIDIsUUID)
+      return res.status(400).send("User ID does not match UUID format");
+
     const activeCart = await CartItem.findAll({
       include: [Book, User],
       where: {
@@ -37,7 +44,7 @@ router.get("/user/:userId", async (req, res, next) => {
 
     // If user does not have an active cart (AKA The findAll has a length of 0)
     if (!activeCart.length) {
-      res.sendStatus(404);
+      res.status(404).send("User does not have active cart items");
     }
     // Otherwise, send it back
     else {
@@ -51,22 +58,28 @@ router.get("/user/:userId", async (req, res, next) => {
 
 // POST api/cart/user/:userId
 // adds an item to given user's cart.
-router.post("/", async (req, res, next) => {
+router.post("/user/:userId", async (req, res, next) => {
   try {
-    console.log("\n Inside general cart post..");
+    console.log("\n Inside general cart post...");
 
-    // Needs userId and bookId from POST body
-    const { bookId, userId } = req.body;
+    // Needs userId and bookId from POST body and params
+    const { userId } = req.params;
+    const { bookId } = req.body;
     console.log(`bookId: ${bookId} and userId: ${userId}`);
 
     //********************** CHECKING USER *******************************/
     // Make sure user exists
-    const user = await User.findOne({ where: { id: String(userId) } });
+    const regexExpforUUID =
+      /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+    const userIDIsUUID = regexExpforUUID.test(userId);
+    if (!userIDIsUUID)
+      return res.status(400).send("User ID does not match UUID format");
+
+    const user = await User.findByPk(userId);
     console.log(`user: ${user}`);
     if (!user) return res.status(404).send("User not found");
 
     //********************** CHECKING BOOK *******************************/
-
     // Before creating a new cartitem, make sure the book is not sold out.
     const book = await Book.findByPk(bookId);
     console.log(book);
@@ -87,7 +100,6 @@ router.post("/", async (req, res, next) => {
         userId: userId,
       });
       console.log("Add to cart successful!");
-      console.log(`userId: ${userId}`);
       res.status(201).send(createdCartItem);
     }
   } catch (err) {
@@ -114,6 +126,7 @@ router.delete("/:cartItemId", async (req, res, next) => {
   }
 });
 
+//********************** NOT TESTED!!!!!! *******************************/
 // GET api/cart/:cartItemId/checkOut
 // Used when the user has purchased this item.
 // Updates the fields on the cartItem (but uses GET because no body is needed from the user)
@@ -140,4 +153,5 @@ router.get("/:cartItemId/checkOut", async (req, res, next) => {
     next(err);
   }
 });
+
 module.exports = router;
