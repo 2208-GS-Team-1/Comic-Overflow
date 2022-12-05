@@ -261,7 +261,7 @@ Over 1.5 million copies sold of Dark Horse's Berserk manga! Inspired the hit ani
       edition: "deluxe",
       imageURL: "/static/bookImages/kaiji-vol-1.jpg",
       price: 2000,
-      stock: 5,
+      stock: 1,
     }),
 
     Book.create({
@@ -274,7 +274,7 @@ Over 1.5 million copies sold of Dark Horse's Berserk manga! Inspired the hit ani
       edition: "deluxe",
       imageURL: "/static/bookImages/kaiji-vol-2.jpg",
       price: 2000,
-      stock: 5,
+      stock: 1,
     }),
 
     Book.create({
@@ -286,7 +286,7 @@ Over 1.5 million copies sold of Dark Horse's Berserk manga! Inspired the hit ani
       edition: "standard",
       imageURL: "/static/bookImages/akagi-vol-36.jpg",
       price: 999,
-      stock: 5,
+      stock: 0,
     }),
   ]);
   const dummySeeds = await Promise.all(

@@ -19,7 +19,7 @@ const cartSeed = async (books, users) => {
     bookId: devilman1.id,
   });
 
-  //*********************** Moe has wonder woman volume 2 in his cart ************************//
+  //*********************** Moe has wonder woman volume 89 in his cart ************************//
 
   // This creates the cartitem instance with no associations yet:
   const moesSecondCartItem = await CartItem.create({});
@@ -46,7 +46,7 @@ const cartSeed = async (books, users) => {
   its checked out status is: ${testCartItem.isCheckedOut}
   and the book is ${testCartItem.book.title} volume ${testCartItem.book.volume}\n`);
 
-  //*********************** Lucy has already purchased Wonder Woman  ************************//
+  //*********************** Lucy has already purchased Wonder Woman vol.89 ************************//
 
   // Let's say when lucy bought this, it was at a different price than what we currently charge, to test this feature.
   const lucyFirstCartItem = await CartItem.create({
