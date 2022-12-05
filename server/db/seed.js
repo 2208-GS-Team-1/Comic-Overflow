@@ -16,7 +16,7 @@ const seed = async () => {
   // const {books} = await dummyBookSeed();
 
   // await dummyBookSeed();
-  const [moe, lucy, larry, ethyl] = await Promise.all([
+  const [moe, lucy, larry, ethyl, admin, rose] = await Promise.all([
     User.create({
       username: "moe",
       password: "123",
@@ -27,6 +27,7 @@ const seed = async () => {
       phoneNumber: "9785477082",
       address: "1000 Pine Street",
       creditCard: 4846540980335660,
+      imageUrl: "/static/userImages/moe.jpg",
     }),
     User.create({
       username: "lucy",
@@ -38,6 +39,7 @@ const seed = async () => {
       phoneNumber: "9785478000",
       address: "95 Grace Way",
       creditCard: 346251528305693,
+      imageUrl: "/static/userImages/lucy.jpg",
     }),
     User.create({
       username: "larry",
@@ -49,6 +51,7 @@ const seed = async () => {
       phoneNumber: "9785446445",
       address: "200 Hopper Ave",
       creditCard: 6011246417965285,
+      imageUrl: "/static/userImages/larry.jpg",
     }),
     User.create({
       username: "ethyl",
@@ -60,10 +63,31 @@ const seed = async () => {
       phoneNumber: "9785474422",
       address: "22 West Way",
       creditCard: 5217487872137994,
+      imageUrl: "/static/userImages/ethyl.jpg",
+    }),
+
+    // ADMIN USERS
+    User.create({
+      username: "admin",
+      password: "admin",
+      isAdmin: true,
+      firstName: "admin",
+      lastName: "admin",
+      email: "admin@admin.com",
+      imageUrl: "http://placehold.jp/200x200.png",
+    }),
+    User.create({
+      username: "rosalie0",
+      password: "123",
+      isAdmin: true,
+      firstName: "Rosalie",
+      lastName: "Newman",
+      email: "rosalienewman0@gmail.com",
+      imageUrl: "/static/userImages/rose.jpg",
     }),
   ]);
 
-  const users = { moe, lucy, larry, ethyl };
+  const users = { moe, lucy, larry, ethyl, admin, rose };
 
   // Pass our book and user objects into our cart and review seed functions.
   await cartSeed(books, users);
@@ -76,6 +100,8 @@ const seed = async () => {
       lucy,
       larry,
       ethyl,
+      admin,
+      rose,
     },
   };
 };
