@@ -23,6 +23,7 @@ router.get("/", async (req, res, next) => {
 router.get("/user/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
+
     const activeCart = await CartItem.findAll({
       include: [Book, User],
       where: {
@@ -31,8 +32,11 @@ router.get("/user/:userId", async (req, res, next) => {
       },
     });
 
-    // If user does not have an active cart
-    if (!activeCart) {
+    console.log("activeCart: ");
+    console.log(activeCart);
+
+    // If user does not have an active cart (AKA The findAll has a length of 0)
+    if (!activeCart.length) {
       res.sendStatus(404);
     }
     // Otherwise, send it back
@@ -47,17 +51,29 @@ router.get("/user/:userId", async (req, res, next) => {
 
 // POST api/cart/user/:userId
 // adds an item to given user's cart.
-router.post("/user/:userId", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    const { bookId } = req.body; // The book id is needed from the post's body
+    console.log("\n Inside general cart post..");
+
+    // Needs userId and bookId from POST body
+    const { bookId, userId } = req.body;
+    console.log(`bookId: ${bookId} and userId: ${userId}`);
+
+    //********************** CHECKING USER *******************************/
+    // Make sure user exists
+    const user = await User.findOne({ where: { id: String(userId) } });
+    console.log(`user: ${user}`);
+    if (!user) return res.status(404).send("User not found");
+
+    //********************** CHECKING BOOK *******************************/
 
     // Before creating a new cartitem, make sure the book is not sold out.
-    const book = await Book.findOne({
-      where: { id: bookId },
-    });
+    const book = await Book.findByPk(bookId);
+    console.log(book);
+    // Make sure book exists
+    if (!book) return res.status(404).send("Book not found");
 
-    // If it is sold out,
+    // If book is sold out, cannot be added to cart
     if (book.stock < 1) {
       res
         .status(400)
@@ -70,6 +86,8 @@ router.post("/user/:userId", async (req, res, next) => {
         bookId: bookId,
         userId: userId,
       });
+      console.log("Add to cart successful!");
+      console.log(`userId: ${userId}`);
       res.status(201).send(createdCartItem);
     }
   } catch (err) {
