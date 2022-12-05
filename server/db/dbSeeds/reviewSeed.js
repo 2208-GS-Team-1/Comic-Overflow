@@ -30,7 +30,7 @@ const reviewSeed = async (books, users) => {
     rating: 5,
   });
 
-  //*********************** Lucy has reviewed woman volume 2 ************************//
+  //*********************** Lucy has reviewed wonder woman ************************//
 
   //Creating first reivew for Lucy
   const lucysFirstReview = await Review.create({
@@ -52,6 +52,7 @@ const reviewSeed = async (books, users) => {
   let testReview = await Review.findByPk(moesFirstReview.id, {
     include: [User, Book],
   });
+
   console.log(`Review ${testReview.id} was submitted by ${testReview.user.username},
   and the book is ${testReview.book.title}
   subject is ${testReview.subject}
