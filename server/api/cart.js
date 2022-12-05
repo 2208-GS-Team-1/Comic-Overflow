@@ -91,7 +91,7 @@ router.get("/:cartItemId/checkOut", async (req, res, next) => {
 
     // If not found, send back a 404
     if (!cartItem) res.send(404);
-    // If found, destroy it.
+    // If found, update the fields so that it looks checked out
     else {
       // These are the fields and the values that a checked out item should have
       const updatedFields = {
