@@ -76,6 +76,10 @@ const User = db.define("user", {
     },
   },
 
+  imageURL: {
+    type: Sequelize.STRING,
+  },
+
   birthday: {
     type: Sequelize.DATEONLY,
   },

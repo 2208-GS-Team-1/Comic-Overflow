@@ -34,8 +34,10 @@
     width: 160px;
     align-items: center;
 }
-.loadingContainer{
+.cardRatings{
     display: flex;
+    flex-direction: row;
     justify-content: center;
-    height: 100px;
+    align-items: center;
+    height: 20px;
 }

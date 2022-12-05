@@ -46,6 +46,11 @@ const Book = db.define("book", {
   // EG) Standard, Limited, Deluxe
   edition: {
     type: Sequelize.STRING,
+    get() {
+      const current = this.getDataValue("edition");
+      if (current) return current[0].toUpperCase() + current.slice(1);
+      else return "";
+    },
   },
   imageURL: {
     type: Sequelize.STRING,

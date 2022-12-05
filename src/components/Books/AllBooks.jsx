@@ -54,7 +54,9 @@ const AllBooks = () => {
                 <img src={book.imageURL} />
               </Link>
             </div>
-            <div>
+            <div
+            className="cardRatings"
+            >
               <StarRatingAvg key={book.id} book={book} />
             </div>
             <div className="productCardButtons">
