@@ -1,6 +1,8 @@
 const { db, User, Book, Review, CartItem } = require("../");
 
 const cartSeed = async (books, users) => {
+  console.log("SEEDING CARTITEMS...");
+
   //console.log(`Magic methods are in here: ${Object.keys(CartItem.prototype)}`);
 
   // Destruct users out of users object
@@ -121,6 +123,14 @@ const cartSeed = async (books, users) => {
 
   //*********************** ROSE'S CART SEEDING ************************//
   // Active Cart is empty
+
+  //*********************** ROSE'S PREVIOUS PURCHASES SEEDING ************************//
+  // all of these are unused for now!!
+  // From w3schools ---> new Date(year,month,day,hours,minutes,seconds)
+  const rosesFirstOrderDate = new Date(2008, 6, 15, 15, 0); // June 15, 2008 3pm
+  const rosesSecondOrderDate = new Date(2020, 8, 1, 7, 33); // Aug 1, 2020 7:33am
+
+  console.log("...DONE SEEDING CARTITEMS");
 
   return;
 };

@@ -3,6 +3,7 @@ const { db, User, Book, Review, CartItem } = require("../");
 
 const reviewSeed = async (books, users) => {
   //console.log(`Magic methods are in here: ${Object.keys(Review.prototype)}`);
+  console.log("SEEDING REVIEWS...");
 
   // Destruct users out of users object
   const { moe, lucy, larry, ethyl } = users;
@@ -112,6 +113,8 @@ const reviewSeed = async (books, users) => {
   and the book is ${testReview.book.title}
   subject is ${testReview.subject}
   the review is ${testReview.content} with ${testReview.rating} stars\n`);
+
+  console.log("... DONE SEEDING REVIEWS");
 
   return;
 };
