@@ -8,16 +8,16 @@ router.get("/", async (req, res, next) => {
     const allBooks = await Book.findAll();
     res.send(allBooks);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 });
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;
   try {
     const singleBook = await Book.findByPk(id);
-    res.send(singleBook);
+    singleBook ? res.send(singleBook) : res.send("Book not found").status(404);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 });
 

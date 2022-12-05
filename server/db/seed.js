@@ -15,7 +15,6 @@ const seed = async () => {
   // large book seed
   // const {books} = await dummyBookSeed();
 
-  await bookSeed();
   // await dummyBookSeed();
   const [moe, lucy, larry, ethyl] = await Promise.all([
     User.create({
