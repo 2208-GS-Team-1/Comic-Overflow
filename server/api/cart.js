@@ -57,14 +57,13 @@ router.get("/user/:userId", async (req, res, next) => {
 });
 
 // POST api/cart/user/:userId
-// adds an item to given user's cart.
-router.post("/user/:userId", async (req, res, next) => {
+// adds an item to given user's cart. (Needs bookId and userId via POST body)
+router.post("/", async (req, res, next) => {
   try {
     console.log("\n Inside general cart post...");
 
     // Needs userId and bookId from POST body and params
-    const { userId } = req.params;
-    const { bookId } = req.body;
+    const { bookId, userId } = req.body;
     console.log(`bookId: ${bookId} and userId: ${userId}`);
 
     //********************** CHECKING USER *******************************/
@@ -126,10 +125,13 @@ router.delete("/:cartItemId", async (req, res, next) => {
   }
 });
 
-//********************** NOT TESTED!!!!!! *******************************/
+//******************************* NOT TESTED!!!!!! *******************************/
 // GET api/cart/:cartItemId/checkOut
 // Used when the user has purchased this item.
 // Updates the fields on the cartItem (but uses GET because no body is needed from the user)
+
+// Deciding it I want the checkout process api req to be per item, or based on a user.
+// Probably latter.
 router.get("/:cartItemId/checkOut", async (req, res, next) => {
   try {
     const { cartItemId } = req.params;
