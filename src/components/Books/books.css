@@ -1,16 +1,12 @@
-/* .allBooks{
+.productsContainer{
     display: flex;
-    max-width: 100vw;
-    flex-wrap: wrap;
-    margin: 20px 0 20px 0;
-    justify-content: space-around;
-} */
-
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid red;
+}
 .allBooks{
     display: grid;
     grid-template-columns: repeat(4, auto);
-    margin: 12px;
-    border: 1px solid red;
     justify-content: space-around;
 }
 .productCard {
