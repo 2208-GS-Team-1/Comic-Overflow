@@ -17,7 +17,7 @@ const CartView = () => {
             const cart = await axios.get(`/api/cart/user/${user.id}`)
             console.log(cart.data)
             dispatch(setCart(cart.data))
-            setLoading(true)
+            setLoading(false)
         }
     }
     useEffect(()=>{
