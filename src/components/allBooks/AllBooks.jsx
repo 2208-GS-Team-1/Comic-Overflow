@@ -10,6 +10,7 @@ import { AddShoppingCart } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import "./books.css";
 import StarRatingAvg from "../Ratings/StarRatingAvg";
+import AllProductsAdd from "../addToCart/AllProductsAdd"
 
 const AllBooks = () => {
   const dispatch = useDispatch();
@@ -54,9 +55,7 @@ const AllBooks = () => {
             </div>
             <div className="productCardButtons">
               <Typography>${(book.price / 100).toFixed(2)}</Typography>
-              <Button size="small">
-                <AddShoppingCart />
-              </Button>
+              <AllProductsAdd bookId={book.id}/>
             </div>
           </Card>
         );
