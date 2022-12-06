@@ -9,20 +9,25 @@ const CartView = () => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false)
     const getUsersCart = async () => {
-        if(!user){
-            console.log('please sign in')
+        console.log(user)
+        if(!user.id){
+            console.log(`please make an account`)
         } else {
             setLoading(true)
             const cart = await axios.get(`/api/cart/user/${user.id}`)
             console.log(cart.data)
             dispatch(setCart(cart.data))
-            setLoading(false)
+            setLoading(true)
         }
     }
     useEffect(()=>{
         getUsersCart();
     },[user])
-    if(loading) return "Loading..."
+    if(loading) {
+        return "Loading..."
+    } else if (!user.id){
+        return "please make an account"
+    } else
     return (
         <div
         className='cart'
@@ -35,7 +40,9 @@ const CartView = () => {
             {
                 cart.map((cartItem)=>{
                     return (
-                        <li>
+                        <li
+                        key={cartItem.id}
+                        >
                             {cartItem.book.title}
                         </li>
                     )
