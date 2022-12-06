@@ -35,10 +35,10 @@ const SingleProduct = () => {
         <div className="singleProductPage">
           <div className="singleProduct_container">
             <div className="productimage_left">
-              <img src={selectedBook.imageURL} width="200px" height="auto" />
+              <img className="singleProductImg" src={selectedBook.imageURL} width="200px" height="auto" />
             </div>
             <div className="productDescrib_right">
-              <h1>{selectedBook.title}</h1>
+              <h1 className="selectedTitle">{selectedBook.title}</h1>
 
               {selectedBook.edition ? (
                 <h3>
@@ -54,8 +54,8 @@ const SingleProduct = () => {
               <div className="quantity">
                 {/* below form will need an on-click function to put product into the cart */}
 
-                <form>
-                  <input
+                <form className="singleProductForm">
+                  <input className="singleProductInput"
                     name="quantity"
                     min="1"
                     max={selectedBook.stock}
