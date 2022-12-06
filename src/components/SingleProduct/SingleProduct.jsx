@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { setSelectedBook } from "../../store/bookSlice";
+import ReviewsSingleBook from "../Reviews/ReviewsSingleBook";
+import StarRatingAvg from "../Reviews/StarRatingAvg";
 import "./singleProduct.css";
 
 const SingleProduct = () => {
@@ -11,7 +13,7 @@ const SingleProduct = () => {
   // *** WILL NEED REVIEW COMPONENT TO DISPLAY ALL RELATED REVIEWS ***
 
   const dispatch = useDispatch();
-  const selectedBook = useSelector(state => state.book.selectedBook);
+  const selectedBook = useSelector((state) => state.book.selectedBook);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
@@ -21,7 +23,6 @@ const SingleProduct = () => {
     const bookData = await axios.get(`/api/books/${id}`);
     dispatch(setSelectedBook(bookData.data));
     setLoading(true);
-    console.log(bookData.data);
   };
 
   useEffect(() => {
@@ -35,7 +36,12 @@ const SingleProduct = () => {
         <div className="singleProductPage">
           <div className="singleProduct_container">
             <div className="productimage_left">
-              <img className="singleProductImg" src={selectedBook.imageURL} width="200px" height="auto" />
+              <img
+                className="singleProductImg"
+                src={selectedBook.imageURL}
+                width="200px"
+                height="auto"
+              />
             </div>
             <div className="productDescrib_right">
               <h1 className="selectedTitle">{selectedBook.title}</h1>
@@ -55,7 +61,8 @@ const SingleProduct = () => {
                 {/* below form will need an on-click function to put product into the cart */}
 
                 <form className="singleProductForm">
-                  <input className="singleProductInput"
+                  <input
+                    className="singleProductInput"
                     name="quantity"
                     min="1"
                     max={selectedBook.stock}
@@ -65,6 +72,9 @@ const SingleProduct = () => {
                   <button name="cartButton">Add to Cart</button>
                 </form>
               </div>
+              <div>
+                <StarRatingAvg key={selectedBook.id} book={selectedBook} />
+              </div>
               <div className="descrb_box">
                 <h2>Description</h2>
                 <div className="author">Written by {selectedBook.author}</div>
@@ -72,8 +82,9 @@ const SingleProduct = () => {
               </div>
             </div>
           </div>
-
-          {/* NEED REVIEW COMPONENT HERE! */}
+          <div>
+            <ReviewsSingleBook key={selectedBook.id} book={selectedBook} />
+          </div>
         </div>
       );
     } else {
