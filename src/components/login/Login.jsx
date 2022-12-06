@@ -47,7 +47,7 @@ const Login = () => {
         className='loginForm'
         >
             <h2>Login</h2>
-            <form onSubmit={() => attemptLogin}>
+            <form onSubmit={attemptLogin}>
                 <input
                     placeholder='username'
                     value={credentials.username}
