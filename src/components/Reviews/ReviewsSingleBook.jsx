@@ -19,7 +19,6 @@ const ReviewsSingleBook = ({ book }) => {
   const handleAllReviews = async () => {
     setLoading(true);
     // GET all reviews for specific book
-    console.log(book.id);
     const reviews = await axios.get(`/api/reviews/${book.id}`);
     //reviews.data = array of reviews for specific book
 
@@ -27,7 +26,6 @@ const ReviewsSingleBook = ({ book }) => {
     setLoading(false);
   };
 
-  console.log(allReviews);
   useEffect(() => {
     handleAllReviews();
   }, []);
