@@ -23,7 +23,6 @@ const SingleProduct = () => {
     const bookData = await axios.get(`/api/books/${id}`);
     dispatch(setSelectedBook(bookData.data));
     setLoading(true);
-    console.log(bookData.data);
   };
 
   useEffect(() => {

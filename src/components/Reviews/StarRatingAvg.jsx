@@ -39,7 +39,7 @@ const StarRatingAvg = ({ book }) => {
         {avgReview > 0 ? (
           <Rating name="read-only" value={avgReview} precision={0.5} readOnly />
         ) : (
-          "no ratings"
+          "No ratings yet!"
         )}
       </span>
       {reviewCount > 0 ? (
