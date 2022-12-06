@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // import Home from './Home';
 import Home from "./Home/Home.jsx";
 import { Link, Routes, Route } from "react-router-dom";
@@ -8,8 +8,32 @@ import Login from "./login/Login";
 import CreateAccountContainer from "./createAccount/CreateAccountContainer.jsx";
 import AllBooks from "./Books/AllBooks.jsx";
 import SingleProduct from "./SingleProduct/SingleProduct.jsx";
+import AdminHomepage from "./admin/AdminHomepage.jsx";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { setUser } from "../store/userSlice.js";
 
 const App = () => {
+  const { user } = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
+  const loginWithToken = async () => {
+    const token = window.localStorage.getItem("token");
+    if (token) {
+      const response = await axios.get("/api/auth", {
+        headers: {
+          authorization: token,
+        },
+      });
+
+      dispatch(setUser(response.data));
+    }
+  };
+
+  useEffect(() => {
+    loginWithToken();
+  }, []);
+
   return (
     <div>
       <div className="main_header">
@@ -30,6 +54,7 @@ const App = () => {
           <Route path="/createaccount" element={<CreateAccountContainer />} />
           <Route path="/account" element={<Account />} />
           <Route path="/books/:id" element={<SingleProduct />} />
+          <Route path="/admin" element={<AdminHomepage />} />
         </Routes>
       </div>
     </div>
