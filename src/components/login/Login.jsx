@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../../store/userSlice";
 import axios from "axios";
-import { useEffect } from "react";
 import "./login.css";
-import { ModeEdit } from "@mui/icons-material";
+
 const Login = () => {
   const { user } = useSelector(state => state.user);
-  console.log(user);
+
   const dispatch = useDispatch();
   const [credentials, setCredentials] = useState({
     username: "",
@@ -31,10 +30,6 @@ const Login = () => {
     }
   };
 
-  // useEffect(() => {
-  //   loginWithToken();
-  // }, []);
-
   const attemptLogin = async event => {
     event.preventDefault();
     const response = await axios.post("/api/auth", credentials);
@@ -44,7 +39,6 @@ const Login = () => {
     loginWithToken(token);
   };
 
-  // if (user.id) return <h2>You are already logged in, {user.username}!</h2>
   return (
     <div className="loginForm">
       <h2>Login</h2>

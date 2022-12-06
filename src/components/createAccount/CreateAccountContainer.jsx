@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 function CreateAccountContainer() {
   const { user } = useSelector(state => state.user);
 
-  console.log(user);
   return (
     <Box
       sx={{
