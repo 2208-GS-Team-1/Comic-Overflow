@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, Typography } from "@mui/material";
+import { Button, Card, CardActions, FormControl, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { sizing } from "@mui/system";
 import { Box } from "@mui/system";
 import axios from "axios";
@@ -63,21 +63,22 @@ const AllBooks = () => {
       <div
       className="sortAndFilter"
       >
-        <select 
+        <Select
         value={selectedSort}
         onChange={handleSortChange}
         placeholder="sort"
         >
-        <option value="unsorted">
+        <MenuItem value="unsorted">
           Unsorted
-        </option>
-        <option value="ascending">
+        </MenuItem>
+        <MenuItem value="ascending">
           Price: low to high
-        </option>
-        <option value="descending">
+        </MenuItem>
+        <MenuItem value="descending">
           Price: high to low
-        </option>
-        </select>
+        </MenuItem>
+        </Select>
+        <TextField id="standard-basic" label="Search" variant="standard" />
       </div>
     <div className="allBooks">
       {sortedBooks.map((book) => {

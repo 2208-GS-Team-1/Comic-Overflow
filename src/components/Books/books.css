@@ -41,3 +41,13 @@
     align-items: center;
     height: 20px;
 }
+.sortAndFilter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px;
+    border: 1px solid black;
+    width: 700px
+}
+
+
