@@ -10,7 +10,7 @@ import { AddShoppingCart } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import "./books.css";
 
-import StarRatingAvg from "../Ratings/StarRatingAvg";
+import StarRatingAvg from "../Reviews/StarRatingAvg";
 import AllProductsAdd from "../addToCart/AllProductsAdd"
 
 
