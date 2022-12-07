@@ -7,13 +7,16 @@ import { Link } from "react-router-dom";
 
 const Login = () => {
   const { user } = useSelector(state => state.user);
-
+    
   const dispatch = useDispatch();
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
-
+  const [showPassword, setShowPassword] = useState(false)
+  const handleCheckboxChange = (event) => {
+    setShowPassword(event.target.checked)
+  } 
   const onChange = ev => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
   };
@@ -73,10 +76,17 @@ const Login = () => {
         <input
           placeholder="password"
           name="password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           value={credentials.password}
           onChange={onChange}
         />
+            <label
+            className="passwordInput"
+            >
+            Show password
+            <input
+            type="checkbox" onChange={handleCheckboxChange}/>
+            </label>
         <button>Login</button>
       </form>
     </div>
