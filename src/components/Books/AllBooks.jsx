@@ -9,8 +9,10 @@ import { setBooks } from "../../store/bookSlice";
 import { AddShoppingCart } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import "./books.css";
+
 import StarRatingAvg from "../Ratings/StarRatingAvg";
 import AllProductsAdd from "../addToCart/AllProductsAdd"
+
 
 const AllBooks = () => {
   const dispatch = useDispatch();
@@ -31,10 +33,9 @@ const AllBooks = () => {
   }, []);
   if (loading) return <h1>Loading...</h1>;
   return (
-    <div
-    className="productsContainer"
-    >
+    <div className="productsContainer">
       <h1>All Comics</h1>
+
     <div className="allBooks">
       {books.map((book) => {
         return (
@@ -61,6 +62,7 @@ const AllBooks = () => {
         );
       })}
     </div>
+
     </div>
   );
 };

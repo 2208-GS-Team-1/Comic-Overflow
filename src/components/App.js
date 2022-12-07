@@ -12,9 +12,10 @@ import AdminHomepage from "./admin/AdminHomepage.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { setUser } from "../store/userSlice.js";
+import CartView from "./cartView/CartView.jsx";
 
 const App = () => {
-  const { user } = useSelector(state => state.user);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const loginWithToken = async () => {
@@ -55,6 +56,7 @@ const App = () => {
           <Route path="/account" element={<Account />} />
           <Route path="/books/:id" element={<SingleProduct />} />
           <Route path="/admin" element={<AdminHomepage />} />
+          <Route path="/usercart" element={<CartView />} />
         </Routes>
       </div>
     </div>
