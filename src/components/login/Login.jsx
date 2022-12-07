@@ -4,6 +4,7 @@ import { resetUser, setUser } from "../../store/userSlice";
 import axios from "axios";
 import "./login.css";
 import { Link } from "react-router-dom";
+import { Checkbox, FormControlLabel, FormGroup, Button, TextField } from "@mui/material";
 
 const Login = () => {
   const { user } = useSelector(state => state.user);
@@ -67,8 +68,8 @@ const Login = () => {
     <div className="loginForm">
       <h2>Login</h2>
       <form onSubmit={attemptLogin}>
-        <input
-          placeholder="username"
+        <TextField
+          label="username"
           value={credentials.username}
           name="username"
           onChange={onChange}
@@ -80,14 +81,23 @@ const Login = () => {
           value={credentials.password}
           onChange={onChange}
         />
-            <label
-            className="passwordInput"
-            >
-            Show password
-            <input
-            type="checkbox" onChange={handleCheckboxChange}/>
-            </label>
-        <button>Login</button>
+
+            <FormGroup>
+                <FormControlLabel   label="Show password"
+                control={
+                <Checkbox 
+                onChange={handleCheckboxChange}
+                color="default"
+                />
+            }
+                />
+            </FormGroup>
+
+        <Button
+        variant="contained"
+        sx={{backgroundColor:"gray"}}
+        >
+            Login</Button>
       </form>
     </div>
   );
