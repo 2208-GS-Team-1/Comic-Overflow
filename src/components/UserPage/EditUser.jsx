@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './userPage.css'
+import { setUser } from '../../store/userSlice';
 
 const EditUser = () => {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ const EditUser = () => {
     const [address, setAddress] = useState(user.address);
     const [email, setEmail] = useState(user.email);
     const [phoneNumber, setNumber] = useState(user.phoneNumber)
-    const [loading, setLoading] = useState(false)
+
 
     const addressHandler = (event) =>{
         setAddress(event.target.value);
@@ -27,15 +28,12 @@ const EditUser = () => {
         event.preventDefault();
         const updateData = { address, email, phoneNumber}
         await axios.put(`api/users/${id}`, updateData)
+        const userData = await axios.get(`/api/users/${id} `)
+        setUser(userData.data);
         console.log("update is complete")
         navigate("/myAccount")
     }
 
-    useEffect(()=>{
-        setLoading(true)
-    })
-
-    if(loading){
         return (
             <div className='formBase'>
                 <div className='formDetail'>
@@ -51,7 +49,7 @@ const EditUser = () => {
                 </div>
             </div>
         );
-    }
+
 };
 
 export default EditUser;
