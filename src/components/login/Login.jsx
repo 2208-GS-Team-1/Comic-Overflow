@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "../../store/userSlice";
+import { resetUser, setUser } from "../../store/userSlice";
 import axios from "axios";
 import "./login.css";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const { user } = useSelector(state => state.user);
@@ -16,6 +17,10 @@ const Login = () => {
   const onChange = ev => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
   };
+  const logout = () => {
+    window.localStorage.removeItem('token');
+    dispatch(resetUser());
+};
 
   const loginWithToken = async () => {
     const token = window.localStorage.getItem("token");
@@ -38,7 +43,23 @@ const Login = () => {
 
     loginWithToken(token);
   };
-
+  if(user.id) return (
+    <div>
+        Welcome {user.firstName} {user.lastName}
+    <button
+    onClick={logout}
+    >
+        log out
+    </button>
+    <Link
+    to='/usercart'
+    >
+    <button>
+        View Cart
+    </button>
+    </Link>
+    </div>
+    )
   return (
     <div className="loginForm">
       <h2>Login</h2>

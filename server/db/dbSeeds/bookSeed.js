@@ -93,6 +93,10 @@ const bookSeed = async () => {
     kaiji1,
     kaiji2,
     akagi36,
+    chainsawMan1,
+    chainsawMan2,
+    chainsawMan3,
+    chainsawMan4,
   ] = await Promise.all([
     Book.create({
       title: "Devilman",
@@ -288,6 +292,54 @@ Over 1.5 million copies sold of Dark Horse's Berserk manga! Inspired the hit ani
       price: 999,
       stock: 0,
     }),
+    Book.create({
+      title: "Chainsaw Man",
+      volume: 1,
+      author: "Fujimoto Tatsuki",
+      description:
+        "Broke young man + chainsaw dog demon = Chainsaw Man! Denji was a small-time devil hunter just trying to survive in a harsh world. After being killed on a job, he is revived by his pet devil Pochita and becomes something new and dangerous-Chainsaw Man! Denji's a poor young man who'll do anything for money, even hunting down devils with his pet devil-dog Pochita. He's a simple man with simple dreams, drowning under a mountain of debt. But his sad life gets turned upside down one day when he's betrayed by someone he trusts. Now with the power of a devil inside him, Denji's become a whole new man-Chainsaw Man!",
+      genre: "action",
+      edition: "standard",
+      imageURL: "/static/bookImages/chainsawman1.jpg",
+      price: 999,
+      stock: 15,
+    }),
+    Book.create({
+      title: "Chainsaw Man",
+      volume: 2,
+      author: "Fujimoto Tatsuki",
+      description:
+        "Broke young man + chainsaw dog demon = Chainsaw Man! Denji was a small-time devil hunter just trying to survive in a harsh world. After being killed on a job, he is revived by his pet devil Pochita and becomes something new and dangerous-Chainsaw Man! In order to achieve the greatest goal in human history-to touch a boob-Denji will risk everything in a fight against the dangerous Bat Devil. But will getting what he wants actually make him happy...?",
+      genre: "action",
+      edition: "standard",
+      imageURL: "/static/bookImages/chainsawman2.jpg",
+      price: 999,
+      stock: 22,
+    }),
+    Book.create({
+      title: "Chainsaw Man",
+      volume: 3,
+      author: "Fujimoto Tatsuki",
+      description:
+        "After being killed on a job, Denji is revived by his pet devil-dog Pochita and becomes something new and dangerous-Chainsaw Man! A mysterious devil is demanding Denji's heart! But will the devil hunters from Division 4 agree to this deal to save themselves? Or will Denji have to do what Denji does best-turn into a chainsaw and carve up everything that gets in his way?!",
+      genre: "action",
+      edition: "standard",
+      imageURL: "/static/bookImages/chainsawman3.jpg",
+      price: 999,
+      stock: 15,
+    }),
+    Book.create({
+      title: "Chainsaw Man",
+      volume: 4,
+      author: "Fujimoto Tatsuki",
+      description:
+        "Devil Extermination Special Division 4 is in serious trouble as a devil has sent a whole team of assassins to take Denji's heart. In order to survive the onslaught, Denji, Power and Aki will have to get stronger. But is Denji smart enough to learn how to control his devil powers? Can you can teach an old chainsaw-dog-devil new tricks?",
+      genre: "action",
+      edition: "standard",
+      imageURL: "/static/bookImages/chainsawman4.jpg",
+      price: 999,
+      stock: 15,
+    }),
   ]);
   const dummySeeds = await Promise.all(
     dummyBooks.map(index => Book.create(index))
@@ -309,6 +361,10 @@ Over 1.5 million copies sold of Dark Horse's Berserk manga! Inspired the hit ani
       kaiji1,
       kaiji2,
       akagi36,
+      chainsawMan1,
+      chainsawMan2,
+      chainsawMan3,
+      chainsawMan4
     },
     dummySeeds,
   };

@@ -1,0 +1,15 @@
+.singleReviewCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: none;
+  width: 600px;
+  margin: 12px;
+}
+
+.allReviews {
+  display: grid;
+  grid-template-columns: repeat(1, auto);
+  justify-content: space-around;
+}
