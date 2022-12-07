@@ -19,13 +19,13 @@ function AdminNavbar() {
         Admin Pane:
       </Link>
       <Link to="/admin/users" style={adminLinkStyle}>
-        Customers
+        Users
       </Link>
       <Link to="/admin/books" style={adminLinkStyle}>
         Products
       </Link>
       <Link to="/admin/reviews" style={adminLinkStyle}>
-        Orders
+        Reviews
       </Link>
       <Link to="/admin/orders" style={adminLinkStyle}>
         Orders
