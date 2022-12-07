@@ -1,7 +1,7 @@
 import React from "react";
 import AdminNavbar from "./adminNavbar";
 
-function adminAllBooks(props) {
+function AdminBooksPage(props) {
   return (
     <div>
       <AdminNavbar />
@@ -16,4 +16,4 @@ function adminAllBooks(props) {
   );
 }
 
-export default adminAllBooks;
+export default AdminBooksPage;

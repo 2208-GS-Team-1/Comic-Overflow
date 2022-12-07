@@ -2,6 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function AdminNavbar() {
+  const adminNavBarLargeStyle = {
+    color: "white",
+    backgroundColor: "rgb(54, 54, 54)",
+    fontSize: "1.5em",
+  };
   const adminNavBarStyle = {
     color: "white",
     backgroundColor: "rgb(54, 54, 54)",
@@ -10,14 +15,19 @@ function AdminNavbar() {
 
   return (
     <nav className="navbar" style={adminNavBarStyle}>
-      <h2>Admin Pane:</h2>
-      <Link to="/admin/allUsers" style={adminLinkStyle}>
+      <Link to="/admin" style={adminNavBarLargeStyle}>
+        Admin Pane:
+      </Link>
+      <Link to="/admin/users" style={adminLinkStyle}>
         Customers
       </Link>
-      <Link to="/admin/allBooks" style={adminLinkStyle}>
+      <Link to="/admin/books" style={adminLinkStyle}>
         Products
       </Link>
-      <Link to="/admin/allOrders" style={adminLinkStyle}>
+      <Link to="/admin/reviews" style={adminLinkStyle}>
+        Orders
+      </Link>
+      <Link to="/admin/orders" style={adminLinkStyle}>
         Orders
       </Link>
     </nav>

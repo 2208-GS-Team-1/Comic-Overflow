@@ -15,7 +15,7 @@ function AdminHomepage(props) {
       <Box
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       >
-        <h1>Welcome admin!</h1>
+        <h1>Welcome admin {user.username}!</h1>
         <p>What would you like to interact with?</p>
       </Box>
     </div>

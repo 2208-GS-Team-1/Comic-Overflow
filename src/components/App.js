@@ -8,16 +8,18 @@ import AllBooks from "./Books/AllBooks.jsx";
 import SingleProduct from "./SingleProduct/SingleProduct.jsx";
 import UserPage from "./UserPage/UserPage.jsx";
 import EditUser from "./UserPage/EditUser.jsx";
+
 import AdminHomepage from "./admin/AdminHomepage.jsx";
-import AdminAllUsers from "./admin/AdminAllUsers";
-import AdminAllBooks from "./admin/AdminAllBooks";
-import AdminAllOrders from "./admin/AdminAllOrders";
+import AdminNavbar from "./admin/adminNavbar.jsx";
+import AdminOrdersPage from "./admin/AdminOrdersPage";
+import AdminBooksPage from "./admin/AdminBooksPage";
+import AdminUsersPage from "./admin/AdminUsersPage";
+import AdminReviewsPage from "./admin/AdminReviewsPage";
 
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { setUser } from "../store/userSlice.js";
 import CartView from "./cartView/CartView.jsx";
-import AdminNavbar from "./admin/adminNavbar.jsx";
 
 const App = () => {
   const { user } = useSelector(state => state.user);
@@ -69,9 +71,10 @@ const App = () => {
           <Route path="/usercart" element={<CartView />} />
 
           <Route path="/admin" element={<AdminHomepage />} />
-          <Route path="/admin/allUsers" element={<AdminAllUsers />} />
-          <Route path="/admin/allBooks" element={<AdminAllBooks />} />
-          <Route path="/admin/allOrders" element={<AdminAllOrders />} />
+          <Route path="/admin/users" element={<AdminUsersPage />} />
+          <Route path="/admin/books" element={<AdminBooksPage />} />
+          <Route path="/admin/reviews" element={<AdminReviewsPage />} />
+          <Route path="/admin/orders" element={<AdminOrdersPage />} />
         </Routes>
       </div>
     </div>

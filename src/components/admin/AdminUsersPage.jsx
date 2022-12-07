@@ -1,7 +1,7 @@
 import React from "react";
 import AdminNavbar from "./adminNavbar";
 
-function adminAllUsers(props) {
+function AdminUsersPage(props) {
   return (
     <div>
       <AdminNavbar />
@@ -16,4 +16,4 @@ function adminAllUsers(props) {
   );
 }
 
-export default adminAllUsers;
+export default AdminUsersPage;

@@ -1,11 +1,12 @@
 import React from "react";
 import AdminNavbar from "./adminNavbar";
 
-function adminAllOrders(props) {
+function AdminOrdersPage() {
   return (
     <div>
-      <AdminNavbar />a list of all orders will go here...
+      <AdminNavbar />
       <ul>
+        a list of all orders will go here...
         <li>order 1 (user: moe)</li>
         <li>order 2 (user: lucy)</li>
       </ul>
@@ -13,4 +14,4 @@ function adminAllOrders(props) {
   );
 }
 
-export default adminAllOrders;
+export default AdminOrdersPage;
