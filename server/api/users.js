@@ -58,6 +58,28 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+router.put("/:id", async (req,res,next)=>{
+  try {
+    const {
+      address,
+      email,
+      phoneNumber
+    } = req.body;
+
+    const id = req.params.id
+    const updatedUser = await User.findByPk(id);
+    updatedUser.update({
+      address,
+      email,
+      phoneNumber,
+    });
+    res.send("User was updated").status(201)
+
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.delete("/:id", async (req, res, next) => {
   const id = req.params.id;
   const regexExp =

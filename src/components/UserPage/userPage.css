@@ -1,0 +1,47 @@
+/*Account main Page CSS*/
+
+.userAccount {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.accountDetail {
+    outline: 4px solid;
+    outline-color: rgb(148, 148, 148);
+    padding: 50px;
+}
+
+.accountButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+
+/*Account edit Page CSS*/
+
+.formBase {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.formDetail {
+    outline: 4px solid;
+    outline-color: rgb(148, 148, 148);
+    padding: 50px;
+}
+
+.formInput {
+    display: flex;
+    flex-direction: column;
+}
+
+.editInput {
+    margin: 10;
+    padding: 5px;
+    font-family: 'Dogfish', sans-serif;
+}
+
+
