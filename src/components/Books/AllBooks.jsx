@@ -18,6 +18,8 @@ const AllBooks = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const books = useSelector((state) => state.book.books);
+  // state to determine what the user wants to sort by
+  const [selectedSort, setSelectedSort] = useState('unsorted')
   const fetchBooks = async () => {
     setLoading(true);
     try {
@@ -31,13 +33,54 @@ const AllBooks = () => {
   useEffect(() => {
     fetchBooks();
   }, []);
+
+
+  //Function to handle selected sort change
+  const handleSortChange = (event) => {
+    setSelectedSort(event.target.value)
+  }
+  // 'sortedBooks' is the sorted array that we loop over to allow the user to sort by what they want
+  let sortedBooks = [...books]
+  // switch case that sorts the array based on the selected sort
+  const sortBooks = () => {
+    switch(selectedSort){
+      case 'ascending':
+        sortedBooks.sort((a,b)=>(a.price > b.price) ? 1 : -1)
+      break
+      case "descending":
+        sortedBooks.sort((a,b)=>(a.price < b.price) ? 1 : -1)
+      break
+      case "unsorted":
+        sortedBooks = [...books]
+      break
+    }
+  }
+  sortBooks()
   if (loading) return <h1>Loading...</h1>;
   return (
     <div className="productsContainer">
       <h1>All Comics</h1>
-
+      <div
+      className="sortAndFilter"
+      >
+        <select 
+        value={selectedSort}
+        onChange={handleSortChange}
+        placeholder="sort"
+        >
+        <option value="unsorted">
+          Unsorted
+        </option>
+        <option value="ascending">
+          Price: low to high
+        </option>
+        <option value="descending">
+          Price: high to low
+        </option>
+        </select>
+      </div>
     <div className="allBooks">
-      {books.map((book) => {
+      {sortedBooks.map((book) => {
         return (
           <Card
             sx={{ boxShadow: 2 }}
