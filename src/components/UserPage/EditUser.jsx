@@ -1,12 +1,13 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './userPage.css'
 import { setUser } from '../../store/userSlice';
 
 const EditUser = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const user = useSelector((state)=> state.user.user);
     const id = user.id
     const [address, setAddress] = useState(user.address);
@@ -28,8 +29,8 @@ const EditUser = () => {
         event.preventDefault();
         const updateData = { address, email, phoneNumber}
         await axios.put(`api/users/${id}`, updateData)
-        const userData = await axios.get(`/api/users/${id} `)
-        setUser(userData.data);
+        const userData = await axios.get(`/api/users/${id}`)
+       dispatch(setUser(userData.data));
         console.log("update is complete")
         navigate("/myAccount")
     }
