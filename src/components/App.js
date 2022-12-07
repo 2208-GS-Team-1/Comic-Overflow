@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-// import Home from './Home';
 import Home from "./Home/Home.jsx";
 import { Link, Routes, Route } from "react-router-dom";
 // import Books from './Books.jsx';
@@ -10,14 +9,18 @@ import SingleProduct from "./SingleProduct/SingleProduct.jsx";
 import UserPage from "./UserPage/UserPage.jsx";
 import EditUser from "./UserPage/EditUser.jsx";
 import AdminHomepage from "./admin/AdminHomepage.jsx";
+import AdminAllUsers from "./admin/AdminAllUsers";
+import AdminAllBooks from "./admin/AdminAllBooks";
+import AdminAllOrders from "./admin/AdminAllOrders";
+
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { setUser } from "../store/userSlice.js";
 import CartView from "./cartView/CartView.jsx";
-
+import AdminNavbar from "./admin/adminNavbar.jsx";
 
 const App = () => {
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   const loginWithToken = async () => {
@@ -51,6 +54,10 @@ const App = () => {
           <Link to="/createaccount">Create Account</Link>
           <Link to="/myAccount">My Account</Link>
         </nav>
+
+        {/* Render admin navbar is user is an admin */}
+        {/* {user.isAdmin && <AdminNavbar />} */}
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/books" element={<AllBooks />} />
@@ -58,10 +65,13 @@ const App = () => {
           <Route path="/createaccount" element={<CreateAccountContainer />} />
           <Route path="/myAccount" element={<UserPage />} />
           <Route path="/books/:id" element={<SingleProduct />} />
-          <Route path="/edit" element = {<EditUser />} />
-          <Route path="/admin" element={<AdminHomepage />} />
+          <Route path="/edit" element={<EditUser />} />
           <Route path="/usercart" element={<CartView />} />
 
+          <Route path="/admin" element={<AdminHomepage />} />
+          <Route path="/admin/allUsers" element={<AdminAllUsers />} />
+          <Route path="/admin/allBooks" element={<AdminAllBooks />} />
+          <Route path="/admin/allOrders" element={<AdminAllOrders />} />
         </Routes>
       </div>
     </div>
