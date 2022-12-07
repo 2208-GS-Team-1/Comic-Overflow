@@ -3,12 +3,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import AdminNavbar from "./adminNavbar";
 
-function AdminHomepage(props) {
+function AdminHomepage() {
+  // If they're not an admin don't let them see this component.
   const { user } = useSelector(state => state.user);
-  // console.log(user);
-  // console.log(`user.isAdmin: ${user.isAdmin}`);
-
   if (!user.isAdmin) return <h2>You are not an admin, permission denied</h2>;
+
   return (
     <div>
       <AdminNavbar />
