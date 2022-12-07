@@ -37,12 +37,14 @@ const ReviewsSingleBook = ({ book }) => {
         let shortName = `${review.user.firstName} ${review.user.lastName[0]}.`;
         return (
           <Card
+            style={{ textAlign: "center" }}
             sx={{ boxShadow: 2 }}
             key={review.id}
             className="singleReviewCard">
-            <CardHeader title={shortName} subheader={review.subject}>
-              <Typography>{review.createdAt.split("T")[0]}</Typography>
-            </CardHeader>
+            <CardHeader
+              style={{ marginTop: "15px" }}
+              title={shortName}
+              subheader={review.createdAt.split("T")[0]}></CardHeader>
             <Rating
               name="read-only"
               value={review.rating}
@@ -50,6 +52,9 @@ const ReviewsSingleBook = ({ book }) => {
               readOnly
             />
             <CardContent>
+              <Typography variant="body1" style={{ marginBottom: "15px" }}>
+                {review.subject}
+              </Typography>
               <Typography variant="body2" color="text.secondary">
                 {review.content}
               </Typography>
