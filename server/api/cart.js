@@ -169,7 +169,7 @@ router.delete("/user/:userId/book/:bookId", async (req, res, next) => {
 // Given a user's ID, checks out EVERYTHING that is in their active cart
 router.get("/checkout/user/:userId", async (req, res, next) => {
   try {
-    console.log("checking out all items!");
+    console.log("Checking out process beginning...!");
     // Find all of the user's 'active' cart items
     const { userId } = req.params;
 
@@ -188,19 +188,62 @@ router.get("/checkout/user/:userId", async (req, res, next) => {
       },
     });
 
-    console.log("active cart passed");
+    if (!activeCart.length)
+      return res.send("Cart was empty, nothing to checkout").status(404);
     const dateToInsert = new Date();
 
+    // Before we checkout ANY items we need to make sure they are all still in stock
+
+    const quantityPerBook = {};
+    // quantityPerBook will look like:
+    //{ book.id: quantity#, book.id: quantity# }
+
+    // Fill up the 'quantityPerBook'
+    activeCart.map(cartItem => {
+      const bookId = cartItem.book.id;
+      if (quantityPerBook[bookId]) {
+        quantityPerBook[bookId] += 1;
+      }
+      // If there's no entry for this book id yet, make one and start it at quantity 1
+      else {
+        quantityPerBook[bookId] = 1;
+      }
+    });
+
+    // Now that our quantityPerBook is fully loaded,
+    // we can check the book on Each CartItem and do math to see if it would be out of stock
     await activeCart.map(async cartItem => {
-      return await cartItem.update({
+      console.log("inside map");
+      const bookId = cartItem.book.id;
+      const book = await Book.findByPk(bookId);
+      console.log("past findbyPk");
+      if (book.stock - quantityPerBook[bookId] < 0) {
+        console.log("This book would be out of stock!!!!");
+        return res.send("Insufficient Stock").status(404);
+      }
+    });
+
+    //If we hit here, this cart is allowed for our stock
+    await activeCart.map(async cartItem => {
+      // Subtract one from the associated book's stock
+      const book = await Book.findByPk(cartItem.book.id);
+      await book.update({ stock: book.stock - 1 });
+
+      await cartItem.update({
         isCheckedOut: true,
         timeOfCheckOut: dateToInsert,
         priceAtCheckOut: cartItem.book.price,
         orderStatus: "pending",
       });
+      res.send(202);
     });
 
-    res.sendStatus(200);
+    // const runThisAsync = async () => {
+    //   console.log("inside run this async");
+    //   return res.send("checked out!").status(200);
+    // };
+    // await runThisAsync();
+
     // await CartItem.update(
     //   // New body:
     //   {
