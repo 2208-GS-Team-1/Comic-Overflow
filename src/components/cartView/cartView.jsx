@@ -24,43 +24,44 @@ const CartView = () => {
   }, [user]);
 
   const priceCounter = cart.reduce((accumulator, cartItem) => {
-    return {...accumulator, [cartItem.book.title]: (accumulator[cartItem.book.title] || 0) + cartItem.book.price};
+    return {...accumulator, [cartItem.book.id]: (accumulator[cartItem.book.id] || 0) + cartItem.book.price};
   }, {});
 
   const quantityCounter = cart.reduce((accumulator, cartItem) => {
-    return {...accumulator, [cartItem.book.title]: (accumulator[cartItem.book.title] || 0) + 1};
+    return {...accumulator, [cartItem.book.id]: (accumulator[cartItem.book.id] || 0) + 1};
   }, {});
 
 
   // make copy
   let filteredCart = [...cart];
+  
   // Remove duplicates from the cart for display
-  const removeDuplicates = () => {
-    //filteredCart = filteredCart.filter((cartItem, index) => filteredCart.indexOf(cartItem) === index)
-    const uniques = [];
-    const cache = {};
-    // FOr every book we see....
-
-    
-    
-    for (let i = 0; i < filteredCart.length; i++) {
-      // For every book after the one we're looking at...
-      for (let k = i; k < filteredCart.length; k++) {
-        // If they have the same name, show them
-        if (filteredCart[i].book === filteredCart[k].book) {
-          uniques.push(filteredCart[i])
+  function removeDuplicateObjects(arr) {
+    // Create an empty array to store unique objects
+    const uniqueObjects = [];
+  
+    // Loop through the array and add each unique object to the array
+    for (let i = 0; i < arr.length; i++) {
+      const object = arr[i];
+  
+      // Check if the object with the same book.id is already in the array
+      let isDuplicate = false;
+      for (let j = 0; j < uniqueObjects.length; j++) {
+        if (uniqueObjects[j].book.id === object.book.id) {
+          isDuplicate = true;
         }
-      
       }
-      // if(!unique.includes())
+  
+      if (!isDuplicate) {
+        uniqueObjects.push(object);
+      }
     }
-    filteredCart = uniques;
-    console.log(filteredCart)
-    
+  
+    return uniqueObjects;
   }
 
   // call removeDupes before render
-  removeDuplicates();
+  filteredCart = removeDuplicateObjects(filteredCart);
 
   if (loading) {
     return "Loading...";
@@ -77,18 +78,18 @@ const CartView = () => {
             {filteredCart.map(cartItem => {
               return (
                 <div
+                className="cartQuantity"
                 >
                   <li key={cartItem.id}>{cartItem.book.title}</li>
                   <div>
                   <button>
                   -
                   </button>
-                  {quantityCounter[cartItem.book.title]}
+                  {quantityCounter[cartItem.book.id]}
                   <button>
                   +
                   </button>
-
-                  Price: {priceCounter[cartItem.book.title]} 
+                  Price: {priceCounter[cartItem.book.id]} 
                   </div>
                 </div>
               

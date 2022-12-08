@@ -8,3 +8,8 @@
     border: 1px solid red;
     width: 500px;
 }
+.cartQuantity{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
