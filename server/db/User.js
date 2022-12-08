@@ -107,7 +107,7 @@ const User = db.define("user", {
   },
 });
 
-User.addHook("beforeSave", async user => {
+User.addHook("beforeSave", async (user) => {
   if (user.changed("password")) {
     user.password = await bcrypt.hash(user.password, 5);
   }
@@ -133,14 +133,18 @@ User.prototype.generateToken = function () {
 };
 
 User.authenticate = async function ({ username, password }) {
+  //Find the user who the client wants to log in as
   const user = await this.findOne({
     where: {
       username,
     },
   });
+
+  //check the password they gave against our password
   if (user && (await bcrypt.compare(password, user.password))) {
     return jwt.sign({ id: user.id }, JWT);
   }
+  //if they don't match, send an error
   const error = new Error("bad credentials");
   error.status = 401;
   throw error;
