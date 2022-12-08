@@ -39,8 +39,8 @@ router.get("/user/:userId", async (req, res, next) => {
       },
     });
 
-    console.log("activeCart: ");
-    console.log(activeCart);
+    // console.log("activeCart: ");
+    // console.log(activeCart);
 
     // If user does not have an active cart (AKA The findAll has a length of 0)
     if (!activeCart.length) {
@@ -106,6 +106,24 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// GET api/cart/:cartItemId
+// gets an cart item based on id
+router.get("/:cartItemId", async (req, res, next) => {
+  try {
+    const { cartItemId } = req.params;
+    const cartItem = await CartItem.findByPk(cartItemId);
+
+    // If not found, send back a 404
+    if (!cartItem) res.send(404);
+    // If found, destroy it.
+    else {
+      res.send(cartItem);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 // DELETE api/cart/:cartItemId
 // deletes an item from given user's cart.
 router.delete("/:cartItemId", async (req, res, next) => {
@@ -125,6 +143,84 @@ router.delete("/:cartItemId", async (req, res, next) => {
   }
 });
 
+// DELETE api/cart/:cartItemId
+// Given a user's ID and the book ID
+// it will delete whatever cartitem that matches those it finds first.
+router.delete("/user/:userId/book/:bookId", async (req, res, next) => {
+  try {
+    const { userId, bookId } = req.params;
+    const cartItemToDelete = await CartItem.findOne({
+      where: { userId: userId, bookId: bookId },
+      include: [Book, User],
+    });
+
+    // If not found, send back a 404
+    if (!cartItemToDelete) res.send(404);
+    // If found, destroy it.
+    else {
+      await cartItemToDelete.destroy();
+      res.sendStatus(200);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Given a user's ID, checks out EVERYTHING that is in their active cart
+router.get("/checkout/user/:userId", async (req, res, next) => {
+  try {
+    console.log("checking out all items!");
+    // Find all of the user's 'active' cart items
+    const { userId } = req.params;
+
+    // Error check userId
+    const regexExpforUUID =
+      /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+    const userIDIsUUID = regexExpforUUID.test(userId);
+    if (!userIDIsUUID)
+      return res.status(400).send("User ID does not match UUID format");
+
+    const activeCart = await CartItem.findAll({
+      include: [Book, User],
+      where: {
+        userId: userId,
+        isCheckedOut: false,
+      },
+    });
+
+    console.log("active cart passed");
+    const dateToInsert = new Date();
+
+    await activeCart.map(async cartItem => {
+      return await cartItem.update({
+        isCheckedOut: true,
+        timeOfCheckOut: dateToInsert,
+        priceAtCheckOut: cartItem.book.price,
+        orderStatus: "pending",
+      });
+    });
+
+    res.sendStatus(200);
+    // await CartItem.update(
+    //   // New body:
+    //   {
+    //     isCheckedOut: true,
+    //     timeOfCheckOut: dateToInsert,
+    //     priceAtCheckOut: cartItem.book.price,
+    //     orderStatus: "pending",
+    //   },
+    //   // Conditions for the initial query:
+    //   {
+    //     where: {
+    //       userId: userId,
+    //       isCheckedOut: false,
+    //     },
+    //   }
+    // );
+  } catch (err) {
+    next(err);
+  }
+});
 //******************************* NOT TESTED!!!!!! *******************************/
 // GET api/cart/:cartItemId/checkOut
 // Used when the user has purchased this item.
