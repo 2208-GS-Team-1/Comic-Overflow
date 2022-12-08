@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../store/cartSlice";
 import "./cartViewStyles.css";
 const CartView = () => {
-  const { cart } = useSelector(state => state.cart);
-  const { user } = useSelector(state => state.user);
+  const { cart } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -14,7 +14,12 @@ const CartView = () => {
     // (If it is empty, that means not logged in, not handling this situation yet)
     if (user.id) {
       setLoading(true);
-      const cart = await axios.get(`/api/cart/user/${user.id}`);
+      const token = window.localStorage.getItem("token");
+      const cart = await axios.get(`/api/cart/user/${user.id}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
       dispatch(setCart(cart.data));
       setLoading(false);
     }
@@ -35,7 +40,7 @@ const CartView = () => {
         <div className="usersCart">
           {user.username}'s Cart
           <ul>
-            {cart.map(cartItem => {
+            {cart.map((cartItem) => {
               return <li key={cartItem.id}>{cartItem.book.title}</li>;
             })}
           </ul>
