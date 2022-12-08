@@ -100,10 +100,7 @@ const cartSeed = async (books, users) => {
     CartItem.create({
       userId: larry.id,
       bookId: books.berserk2.id,
-    }),
-    CartItem.create({
-      userId: larry.id,
-      bookId: books.berserk2.id,
+      quantity: 2,
     }),
     CartItem.create({
       userId: larry.id,

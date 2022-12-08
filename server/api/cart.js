@@ -125,6 +125,26 @@ router.delete("/:cartItemId", async (req, res, next) => {
   }
 });
 
+// DELETE api/cart/:cartItemId
+// update an item.
+router.put("/:cartItemId", async (req, res, next) => {
+  try {
+    const { cartItemId } = req.params;
+    const body = req.body;
+    const cartItem = await CartItem.findByPk(cartItemId);
+
+    // If not found, send back a 404
+    if (!cartItem) res.send(404);
+    // If found, destroy it.
+    else {
+      await cartItem.update(body);
+      res.sendStatus(200);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 //******************************* NOT TESTED!!!!!! *******************************/
 // GET api/cart/:cartItemId/checkOut
 // Used when the user has purchased this item.

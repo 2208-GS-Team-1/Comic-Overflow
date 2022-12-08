@@ -10,6 +10,10 @@ const CartItem = db.define("cartItem", {
       notEmpty: true,
     },
   },
+  quantity: {
+    type: Sequelize.INTEGER,
+    defaultValue: 1,
+  },
   priceAtCheckOut: {
     type: Sequelize.INTEGER,
     allowNull: true, // This field is only filled out upon checkout, so null before then is ok.

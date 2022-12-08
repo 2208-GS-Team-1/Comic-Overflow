@@ -20,6 +20,42 @@ const CartView = () => {
     }
   };
 
+  const add = async cartItem => {
+    // To 'add', just +1 its quantity in the db
+    const updatedQuantity = cartItem.quantity + 1;
+
+    await axios.put(`/api/cart/${cartItem.id}`, {
+      quantity: updatedQuantity,
+    });
+
+    // Refetch the new cart
+    const newCart = await axios.get(`/api/cart/user/${user.id}`);
+    dispatch(setCart(newCart.data));
+  };
+
+  const subtract = async cartItem => {
+    console.log(cartItem);
+    console.log(
+      cartItem.book.title,
+      cartItem.book.volume,
+      cartItem.book.edition
+    );
+
+    if (cartItem.quantity === 1) {
+      // Delete in backend
+      await axios.delete(`/api/cart/${cartItem.id}`);
+    } else {
+      // Subtract one from quantity in backend
+      const updatedQuantity = cartItem.quantity - 1;
+      await axios.put(`/api/cart/${cartItem.id}`, {
+        quantity: updatedQuantity,
+      });
+    }
+
+    // Refetch the new cart
+    const newCart = await axios.get(`/api/cart/user/${user.id}`);
+    dispatch(setCart(newCart.data));
+  };
   useEffect(() => {
     getUsersCart();
   }, [user]);
@@ -34,11 +70,21 @@ const CartView = () => {
       <div className="cart">
         <div className="usersCart">
           {user.username}'s Cart
-          <ul>
-            {cart.map(cartItem => {
-              return <li key={cartItem.id}>{cartItem.book.title}</li>;
-            })}
-          </ul>
+          {cart.map(cartItem => {
+            return (
+              <div key={cartItem.id}>
+                {cartItem.book.title}
+                Vol.{cartItem.book.volume}
+                Edition {cartItem.book.volume}
+                <div>
+                  <button onClick={() => subtract(cartItem)}>-</button>
+                  quantity: {cartItem.quantity}
+                  <button onClick={() => add(cartItem)}>+</button>
+                  price: {cartItem.book.price * cartItem.quantity}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
