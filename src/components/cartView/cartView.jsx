@@ -44,10 +44,6 @@ const CartView = () => {
   let cartCopy = [...cart];
   console.log(cartCopy);
 
-  const alterCartCopy = () => {
-    return;
-  };
-
   // A cart where 'duplicates' of items (same title, author, volume,)
   const removeDuplicates = () => {
     //filteredCart = filteredCart.filter((cartItem, index) => filteredCart.indexOf(cartItem) === index)
@@ -72,30 +68,42 @@ const CartView = () => {
   // 'flattens' our cart
   const flatten = () => {
     const seenBookIds = {};
-    // 3: { {book}, quantity, quantityTimesPrice }
+    // 3: { book: {book}, quantity: 3, quantityTimesPrice: 15 }
     const flattenedCart = [];
 
     for (let i = 0; i < cartCopy.length; i++) {
       const currentCartItem = cartCopy[i];
 
       // If we've never seen the book this cartItem is of, it's new!
-      if (!seenBookIds[currentCartItem.id]) {
-        const objToStore = { ...currentCartItem };
+      if (!seenBookIds[currentCartItem.book.id]) {
         // Start it with a quantity of 1
-        objToStore.quantity = 1;
         // Start it's totalPrice with the book's price
-        objToStore.quantityTimesPrice = currentCartItem.book.price;
-        seenBookIds[currentCartItem.id] = objToStore;
+        const objToStore = {
+          book: { ...currentCartItem },
+          quantity: 1,
+          quantityTimesPrice: currentCartItem.book.price,
+        };
+
+        seenBookIds[currentCartItem.book.id] = objToStore;
       }
       // If we've seen this before...
       else {
         // +1 the quantity of the one in flattenedCart
+        seenBookIds[currentCartItem.book.id].quantity += 1;
+        seenBookIds[currentCartItem.book.id].quantityTimesPrice +=
+          currentCartItem.book.price;
       }
     }
+    console.log("seenBookIds: ");
+
+    console.log(seenBookIds);
   };
   // call removeDupes before render
   // removeDuplicates();
 
+  // console.log(cart);
+
+  flatten();
   if (loading) {
     return "Loading...";
   } else if (!user.id) {
