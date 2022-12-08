@@ -33,6 +33,11 @@ const CartView = () => {
     };
   }, {});
 
+  // We can use this priceCounter to first, make an array of its values...
+  const priceArray = Object.values(priceCounter);
+  // Then sum that array to get the cart's total price
+  const cartTotalPrice = priceArray.reduce((sum, current) => sum + current, 0);
+
   const quantityCounter = cart.reduce((accumulator, cartItem) => {
     return {
       ...accumulator,
@@ -42,28 +47,33 @@ const CartView = () => {
 
   // make copy
   let cartCopy = [...cart];
-  console.log(cartCopy);
 
-  // A cart where 'duplicates' of items (same title, author, volume,)
-  const removeDuplicates = () => {
-    //filteredCart = filteredCart.filter((cartItem, index) => filteredCart.indexOf(cartItem) === index)
-    const uniques = [];
-    const cache = {};
-    // FOr every book we see....
+  // Remove duplicates from the cart for display
+  function removeDuplicateObjects(arr) {
+    // Create an empty array to store unique objects
+    const uniqueObjects = [];
 
-    for (let i = 0; i < filteredCart.length; i++) {
-      // For every book after the one we're looking at...
-      for (let k = i; k < filteredCart.length; k++) {
-        // If they have the same name, show them
-        if (filteredCart[i].book === filteredCart[k].book) {
-          uniques.push(filteredCart[i]);
+    // Loop through the array and add each unique object to the array
+    for (let i = 0; i < arr.length; i++) {
+      const object = arr[i];
+
+      // Check if the object with the same book.id is already in the array
+      let isDuplicate = false;
+      for (let j = 0; j < uniqueObjects.length; j++) {
+        if (uniqueObjects[j].book.id === object.book.id) {
+          isDuplicate = true;
         }
       }
-      // if(!unique.includes())
+
+      if (!isDuplicate) {
+        uniqueObjects.push(object);
+      }
     }
-    filteredCart = uniques;
-    console.log(filteredCart);
-  };
+
+    return uniqueObjects;
+  }
+  // call removeDupes before render
+  cartCopy = removeDuplicateObjects(cartCopy);
 
   // 'flattens' our cart
   const flatten = () => {
@@ -98,12 +108,8 @@ const CartView = () => {
 
     console.log(seenBookIds);
   };
-  // call removeDupes before render
-  // removeDuplicates();
+  // flatten();
 
-  // console.log(cart);
-
-  flatten();
   if (loading) {
     return "Loading...";
   } else if (!user.id) {
@@ -130,7 +136,7 @@ const CartView = () => {
               </div>
             );
           })}
-          Total Price: $100
+          Total Price: {priceArray.reduce((sum, current) => sum + current, 0)}
         </div>
       </div>
     );
