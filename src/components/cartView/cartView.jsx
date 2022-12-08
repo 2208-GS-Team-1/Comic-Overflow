@@ -14,12 +14,14 @@ const CartView = () => {
     // (If it is empty, that means not logged in, not handling this situation yet)
     if (user.id) {
       setLoading(true);
+
       const cart = await axios.get(`/api/cart/user/${user.id}`);
       dispatch(setCart(cart.data));
       setLoading(false);
     }
   };
 
+  console.log(cart.length);
   useEffect(() => {
     getUsersCart();
   }, [user]);
@@ -29,19 +31,21 @@ const CartView = () => {
     // If user is not logged in, we are not going to give them a cart.
     // Todo later!
     return "please make an account";
-  } else
-    return (
-      <div className="cart">
-        <div className="usersCart">
-          {user.username}'s Cart
-          <ul>
-            {cart.map(cartItem => {
-              return <li key={cartItem.id}>{cartItem.book.title}</li>;
-            })}
-          </ul>
-        </div>
+  } else if (!cart.length) {
+    return <p> Your cart is currently empty...</p>;
+  }
+  return (
+    <div className="cart">
+      <div className="usersCart">
+        {user.username}'s Cart
+        <ul>
+          {cart.map(cartItem => {
+            return <li key={cartItem.id}>{cartItem.book.title}</li>;
+          })}
+        </ul>
       </div>
-    );
+    </div>
+  );
 };
 
 export default CartView;
