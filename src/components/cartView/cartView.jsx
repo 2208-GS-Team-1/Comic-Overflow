@@ -14,7 +14,12 @@ const CartView = () => {
     // (If it is empty, that means not logged in, not handling this situation yet)
     if (user.id) {
       setLoading(true);
-      const cart = await axios.get(`/api/cart/user/${user.id}`);
+      const token = window.localStorage.getItem("token");
+      const cart = await axios.get(`/api/cart/user/${user.id}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
       dispatch(setCart(cart.data));
       setLoading(false);
     }
