@@ -36,32 +36,32 @@ const CartView = () => {
   let filteredCart = [...cart];
   
   // Remove duplicates from the cart for display
-  function removeDuplicateObjects(arr) {
-    // Create an empty array to store unique objects
-    const uniqueObjects = [];
+  function removeDuplicateBooks(arr) {
+    // Create an empty array to store unique bookss
+    const uniqueBooks = [];
   
-    // Loop through the array and add each unique object to the array
+    // Loop through the array and add each unique book to the array
     for (let i = 0; i < arr.length; i++) {
-      const object = arr[i];
+      const book = arr[i];
   
-      // Check if the object with the same book.id is already in the array
+      // Check if the book with the same book.id is already in the array
       let isDuplicate = false;
-      for (let j = 0; j < uniqueObjects.length; j++) {
-        if (uniqueObjects[j].book.id === object.book.id) {
+      for (let j = 0; j < uniqueBooks.length; j++) {
+        if (uniqueBooks[j].book.id === book.book.id) {
           isDuplicate = true;
         }
       }
   
       if (!isDuplicate) {
-        uniqueObjects.push(object);
+        uniqueBooks.push(book);
       }
     }
   
-    return uniqueObjects;
+    return uniqueBooks;
   }
 
   // call removeDupes before render
-  filteredCart = removeDuplicateObjects(filteredCart);
+  filteredCart = removeDuplicateBooks(filteredCart);
 
   if (loading) {
     return "Loading...";
