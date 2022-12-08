@@ -20,6 +20,7 @@ const CartView = () => {
     }
   };
 
+  // Plus button handler
   const add = async cartItem => {
     // To 'add', just +1 its quantity in the db
     const updatedQuantity = cartItem.quantity + 1;
@@ -33,19 +34,14 @@ const CartView = () => {
     dispatch(setCart(newCart.data));
   };
 
+  // Minus button handler
   const subtract = async cartItem => {
-    console.log(cartItem);
-    console.log(
-      cartItem.book.title,
-      cartItem.book.volume,
-      cartItem.book.edition
-    );
-
+    // If they're deleting their own copy...
     if (cartItem.quantity === 1) {
       // Delete in backend
       await axios.delete(`/api/cart/${cartItem.id}`);
     } else {
-      // Subtract one from quantity in backend
+      // Else, just subtract one from quantity in backend
       const updatedQuantity = cartItem.quantity - 1;
       await axios.put(`/api/cart/${cartItem.id}`, {
         quantity: updatedQuantity,
@@ -56,6 +52,7 @@ const CartView = () => {
     const newCart = await axios.get(`/api/cart/user/${user.id}`);
     dispatch(setCart(newCart.data));
   };
+
   useEffect(() => {
     getUsersCart();
   }, [user]);
