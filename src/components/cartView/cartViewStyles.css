@@ -6,10 +6,12 @@
 }
 .usersCart{
     border: 1px solid red;
-    width: 500px;
+    width: max-content;
 }
-.cartQuantity{
+.cartTitleAndPrice{
     display: flex;
+    width: 800px;
     flex-direction: row;
     justify-content: space-around;
+    border: 1px solid black;
 }

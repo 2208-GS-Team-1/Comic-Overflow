@@ -39,8 +39,8 @@ router.get("/user/:userId", async (req, res, next) => {
       },
     });
 
-    console.log("activeCart: ");
-    console.log(activeCart);
+    // console.log("activeCart: ");
+    // console.log(activeCart);
 
     // If user does not have an active cart (AKA The findAll has a length of 0)
     if (!activeCart.length) {

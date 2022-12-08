@@ -80,9 +80,11 @@ const CartView = () => {
             {filteredCart.map(cartItem => {
               return (
                 <div
-                className="cartQuantity"
+                className="cartTitleAndPrice"
                 >
-                  <li key={cartItem.id}>{cartItem.book.title}</li>
+                  <li>Title: {cartItem.book.title}</li>
+                  <li>Volume: {cartItem.book.volume}</li>
+                  <li>Edition: {cartItem.book.edition}</li>
                   <div>
                   <button>
                   -
@@ -94,9 +96,7 @@ const CartView = () => {
                   Price: ${(priceCounter[cartItem.book.id] / 100).toFixed(2)} 
                   </div>
                 </div>
-              
               )
-
             })}
           </ul>
           Total Price: ${(totalPrice / 100).toFixed(2)}
