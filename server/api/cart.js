@@ -42,14 +42,8 @@ router.get("/user/:userId", async (req, res, next) => {
     console.log("activeCart: ");
     console.log(activeCart);
 
-    // If user does not have an active cart (AKA The findAll has a length of 0)
-    if (!activeCart.length) {
-      res.status(404).send("User does not have active cart items");
-    }
-    // Otherwise, send it back
-    else {
-      res.send(activeCart);
-    }
+    // Send back the active cart (it's ok if there's nothing in it!)
+    res.send(activeCart);
   } catch (err) {
     console.log(err);
     next(err);

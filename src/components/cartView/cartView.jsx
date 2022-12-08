@@ -23,44 +23,78 @@ const CartView = () => {
     getUsersCart();
   }, [user]);
 
+  // priceCounter is an object where each key is a book's ID
+  // and its value is the 'price' which is the quantity * book.price
   const priceCounter = cart.reduce((accumulator, cartItem) => {
-    return {...accumulator, [cartItem.book.title]: (accumulator[cartItem.book.title] || 0) + cartItem.book.price};
+    return {
+      ...accumulator,
+      [cartItem.book.id]:
+        (accumulator[cartItem.book.id] || 0) + cartItem.book.price,
+    };
   }, {});
 
   const quantityCounter = cart.reduce((accumulator, cartItem) => {
-    return {...accumulator, [cartItem.book.title]: (accumulator[cartItem.book.title] || 0) + 1};
+    return {
+      ...accumulator,
+      [cartItem.book.id]: (accumulator[cartItem.book.id] || 0) + 1,
+    };
   }, {});
 
-
   // make copy
-  let filteredCart = [...cart];
-  // Remove duplicates from the cart for display
+  let cartCopy = [...cart];
+  console.log(cartCopy);
+
+  const alterCartCopy = () => {
+    return;
+  };
+
+  // A cart where 'duplicates' of items (same title, author, volume,)
   const removeDuplicates = () => {
     //filteredCart = filteredCart.filter((cartItem, index) => filteredCart.indexOf(cartItem) === index)
     const uniques = [];
     const cache = {};
     // FOr every book we see....
 
-    
-    
     for (let i = 0; i < filteredCart.length; i++) {
       // For every book after the one we're looking at...
       for (let k = i; k < filteredCart.length; k++) {
         // If they have the same name, show them
         if (filteredCart[i].book === filteredCart[k].book) {
-          uniques.push(filteredCart[i])
+          uniques.push(filteredCart[i]);
         }
-      
       }
       // if(!unique.includes())
     }
     filteredCart = uniques;
-    console.log(filteredCart)
-    
-  }
+    console.log(filteredCart);
+  };
 
+  // 'flattens' our cart
+  const flatten = () => {
+    const seenBookIds = {};
+    // 3: { {book}, quantity, quantityTimesPrice }
+    const flattenedCart = [];
+
+    for (let i = 0; i < cartCopy.length; i++) {
+      const currentCartItem = cartCopy[i];
+
+      // If we've never seen the book this cartItem is of, it's new!
+      if (!seenBookIds[currentCartItem.id]) {
+        const objToStore = { ...currentCartItem };
+        // Start it with a quantity of 1
+        objToStore.quantity = 1;
+        // Start it's totalPrice with the book's price
+        objToStore.quantityTimesPrice = currentCartItem.book.price;
+        seenBookIds[currentCartItem.id] = objToStore;
+      }
+      // If we've seen this before...
+      else {
+        // +1 the quantity of the one in flattenedCart
+      }
+    }
+  };
   // call removeDupes before render
-  removeDuplicates();
+  // removeDuplicates();
 
   if (loading) {
     return "Loading...";
@@ -73,29 +107,21 @@ const CartView = () => {
       <div className="cart">
         <div className="usersCart">
           {user.username}'s Cart
-          <ul>
-            {filteredCart.map(cartItem => {
-              return (
-                <div
-                >
-                  <li key={cartItem.id}>{cartItem.book.title}</li>
-                  <div>
-                  <button>
-                  -
-                  </button>
-                  {quantityCounter[cartItem.book.title]}
-                  <button>
-                  +
-                  </button>
-
-                  Price: {priceCounter[cartItem.book.title]} 
-                  </div>
+          {cartCopy.map(cartItem => {
+            return (
+              <div key={cartItem.id}>
+                <h3>Title: {cartItem.book.title}</h3>
+                <h5>Volume: {cartItem.book.volume}</h5>
+                <h5>Edition: {cartItem.book.edition}</h5>
+                <div>
+                  <button>-</button>
+                  Quantity: {quantityCounter[cartItem.book.id]}
+                  <button>+</button>
+                  Price: {priceCounter[cartItem.book.id]}
                 </div>
-              
-              )
-
-            })}
-          </ul>
+              </div>
+            );
+          })}
           Total Price: $100
         </div>
       </div>
