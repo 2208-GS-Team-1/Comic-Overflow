@@ -19,10 +19,49 @@ const CartView = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     getUsersCart();
   }, [user]);
+
+  const priceCounter = cart.reduce((accumulator, cartItem) => {
+    return {...accumulator, [cartItem.book.title]: (accumulator[cartItem.book.title] || 0) + cartItem.book.price};
+  }, {});
+
+  const quantityCounter = cart.reduce((accumulator, cartItem) => {
+    return {...accumulator, [cartItem.book.title]: (accumulator[cartItem.book.title] || 0) + 1};
+  }, {});
+
+
+  // make copy
+  let filteredCart = [...cart];
+  // Remove duplicates from the cart for display
+  const removeDuplicates = () => {
+    //filteredCart = filteredCart.filter((cartItem, index) => filteredCart.indexOf(cartItem) === index)
+    const uniques = [];
+    const cache = {};
+    // FOr every book we see....
+
+    
+    
+    for (let i = 0; i < filteredCart.length; i++) {
+      // For every book after the one we're looking at...
+      for (let k = i; k < filteredCart.length; k++) {
+        // If they have the same name, show them
+        if (filteredCart[i].book === filteredCart[k].book) {
+          uniques.push(filteredCart[i])
+        }
+      
+      }
+      // if(!unique.includes())
+    }
+    filteredCart = uniques;
+    console.log(filteredCart)
+    
+  }
+
+  // call removeDupes before render
+  removeDuplicates();
+
   if (loading) {
     return "Loading...";
   } else if (!user.id) {
@@ -35,10 +74,29 @@ const CartView = () => {
         <div className="usersCart">
           {user.username}'s Cart
           <ul>
-            {cart.map(cartItem => {
-              return <li key={cartItem.id}>{cartItem.book.title}</li>;
+            {filteredCart.map(cartItem => {
+              return (
+                <div
+                >
+                  <li key={cartItem.id}>{cartItem.book.title}</li>
+                  <div>
+                  <button>
+                  -
+                  </button>
+                  {quantityCounter[cartItem.book.title]}
+                  <button>
+                  +
+                  </button>
+
+                  Price: {priceCounter[cartItem.book.title]} 
+                  </div>
+                </div>
+              
+              )
+
             })}
           </ul>
+          Total Price: $100
         </div>
       </div>
     );
