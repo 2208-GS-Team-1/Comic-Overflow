@@ -58,9 +58,16 @@ const CartView = () => {
     dispatch(setCart(newCart.data));
   };
 
+
   useEffect(() => {
     getUsersCart();
   }, [user]);
+  
+  const handleCheckOut = () => {
+    
+  }
+  
+  
   if (loading) {
     return "Loading...";
   } else if (!user.id) {
@@ -88,6 +95,7 @@ const CartView = () => {
             );
           })}
         </div>
+        <button onClick={handleCheckOut}>Check Out Now</button>
       </div>
     );
 };

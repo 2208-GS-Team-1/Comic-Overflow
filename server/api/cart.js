@@ -1,7 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
-const { User, CartItem, Book } = require("../db");
+const { User, CartItem, Book, Order } = require("../db");
 
 const authenticateUser = (req, res, next) => {
   const header = req.headers.authorization;
@@ -22,8 +22,7 @@ const authenticateUser = (req, res, next) => {
 // GET api/cart/
 // Returns all cart items
 // Probably just for internal use.
-
-router.get("/", authenticateUser, async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const allCartItems = await CartItem.findAll({
       include: [Book, User],
@@ -38,7 +37,7 @@ router.get("/", authenticateUser, async (req, res, next) => {
 // GET api/cart/user/:userId
 // Returns a users 'cart' - aka,
 // All of a given user's cartItems that have not been checked out
-router.get("/user/:userId", authenticateUser, async (req, res, next) => {
+router.get("/user/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
 
@@ -163,32 +162,66 @@ router.put("/:cartItemId", async (req, res, next) => {
   }
 });
 
+/*
+step 1:
+/api/cart/newOrder
+
+const newOrder = Order.create({
+  userId: cartItem.user.id
+});
+
+
+/api/cart/checkout/:cartItemId
+for Each...
+  isCheckedOut: true,
+  priceTimesQuantityAtCheckOut: cartItem.quantity * cartItem.book price;
+  orderId: newOrder.id;
+*/
+
 //******************************* NOT TESTED!!!!!! *******************************/
-// GET api/cart/:cartItemId/checkOut
-// Used when the user has purchased this item.
-// Updates the fields on the cartItem (but uses GET because no body is needed from the user)
-
-// Deciding it I want the checkout process api req to be per item, or based on a user.
-// Probably latter.
-router.get("/:cartItemId/checkOut", async (req, res, next) => {
+// GET api/cart/user/:userId/checkOut
+// Checks out the cartitem that lives at this id
+router.get("/user/:userId/checkOut", async (req, res, next) => {
   try {
-    const { cartItemId } = req.params;
-    const cartItem = await CartItem.findByPk(cartItemId);
+    // get the user id
+    const { userId } = req.params;
 
-    // If not found, send back a 404
-    if (!cartItem) res.send(404);
-    // If found, update the fields so that it looks checked out
-    else {
-      // These are the fields and the values that a checked out item should have
-      const updatedFields = {
-        isCheckedOut: true,
-        timeOfCheckOut: new Date(),
-        priceAtCheckOut: cartItem.book.price,
-        orderStatus: "pending",
-      };
-      await cartItem.update(updatedFields);
-      res.sendStatus(200);
-    }
+    // Query for cartItem based on id
+    // const cartItem = await CartItem.findByPk(cartItemId);
+
+    const usersActiveCart = await CartItem.findAll({
+      where: {
+        // isCheckedOut: false,
+        orderId: null,
+        userId: userId,
+      },
+    });
+
+    // Create a new order
+    const createdOrder = await Order.create({
+      orderStatus: "pending",
+      timeOfCheckOut: new Date(),
+      userId: userId,
+    });
+    console.log("createdOrder looks like: ");
+    console.log(createdOrder);
+
+    console.log("usersActiveCart looks like: ");
+    console.log(usersActiveCart);
+
+    // If we can't use a magic method...
+    // loop through usersActiveCart
+    // for each cart item, do cartitem.update({orderId: orderId})
+
+    // Associate the cartitems and the created order
+    await createdOrder.addCartItems(usersActiveCart);
+    //await usersActiveCart.setOrder(createdOrder.id);
+
+    console.log("made it here");
+    res.send(createdOrder).status(200);
+    // CartItem.hasOrder(orderId)
+    // Change values on cartItem
+    // Give it the orderId
   } catch (err) {
     next(err);
   }

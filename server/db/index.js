@@ -3,6 +3,7 @@ const User = require("./User");
 const Book = require("./Book");
 const CartItem = require("./CartItem");
 const Review = require("./Review");
+const Order = require("./Order");
 
 // ASSOCIATIONS HERE!
 
@@ -21,10 +22,18 @@ Review.belongsTo(Book);
 User.hasMany(Review);
 Review.belongsTo(User);
 
+// Orders
+Order.belongsTo(User);
+User.hasMany(Order);
+
+Order.hasMany(CartItem);
+CartItem.belongsTo(Order);
+
 module.exports = {
   db,
   User,
   Book,
   Review,
   CartItem,
+  Order,
 };
