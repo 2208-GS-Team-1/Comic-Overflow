@@ -31,7 +31,9 @@ const CartView = () => {
     return {...accumulator, [cartItem.book.id]: (accumulator[cartItem.book.id] || 0) + 1};
   }, {});
 
-
+  const totalPrice = cart.reduce((total, cartItem) => {
+    return total + cartItem.book.price;
+  }, 0);
   // make copy
   let filteredCart = [...cart];
   
@@ -89,7 +91,7 @@ const CartView = () => {
                   <button>
                   +
                   </button>
-                  Price: {priceCounter[cartItem.book.id]} 
+                  Price: ${(priceCounter[cartItem.book.id] / 100).toFixed(2)} 
                   </div>
                 </div>
               
@@ -97,7 +99,7 @@ const CartView = () => {
 
             })}
           </ul>
-          Total Price: $100
+          Total Price: ${(totalPrice / 100).toFixed(2)}
         </div>
       </div>
     );
