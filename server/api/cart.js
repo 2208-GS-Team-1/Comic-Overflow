@@ -1,9 +1,17 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
-const { User, CartItem, Book } = require("../db");
+const { User, CartItem, Book, Order } = require("../db");
 
+/* TODO: 
+  Put authenticateUserthis back in routes 
+  (Currently it only works for get("/user/:userId") can't figure out why)
+*/
+// authenticateUser is a middleware used to check the JWT
+// Used in all singular-cart routes
 const authenticateUser = (req, res, next) => {
+  console.log("hit auth");
+
   const header = req.headers.authorization;
   //separate the token from the word "Bearer"
   const token = header && header.split(" ")[1];
@@ -19,11 +27,12 @@ const authenticateUser = (req, res, next) => {
   });
 };
 
+/* Should we end up deleting this route?
+ We want only admins to have access to it - not just any logged in user.
+Not sure how to do that. */
 // GET api/cart/
-// Returns all cart items
-// Probably just for internal use.
-
-router.get("/", authenticateUser, async (req, res, next) => {
+// Returns all cart items - Probably just for internal use.
+router.get("/", async (req, res, next) => {
   try {
     const allCartItems = await CartItem.findAll({
       include: [Book, User],
@@ -36,9 +45,9 @@ router.get("/", authenticateUser, async (req, res, next) => {
 });
 
 // GET api/cart/user/:userId
-// Returns a users 'cart' - aka,
+// Returns a users 'active cart' - aka,
 // All of a given user's cartItems that have not been checked out
-router.get("/user/:userId", authenticateUser, async (req, res, next) => {
+router.get("/user/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
 
@@ -53,12 +62,9 @@ router.get("/user/:userId", authenticateUser, async (req, res, next) => {
       include: [Book, User],
       where: {
         userId: userId,
-        isCheckedOut: false,
+        orderId: null,
       },
     });
-
-    console.log("activeCart: ");
-    console.log(activeCart);
 
     // If user does not have an active cart (AKA The findAll has a length of 0)
     if (!activeCart.length) {
@@ -78,20 +84,19 @@ router.get("/user/:userId", authenticateUser, async (req, res, next) => {
 // adds an item to given user's cart. (Needs bookId and userId via POST body)
 router.post("/", async (req, res, next) => {
   try {
-    console.log("\n Inside general cart post...");
-
     // Needs userId and bookId from POST body and params
     const { bookId, userId } = req.body;
-    console.log(`bookId: ${bookId} and userId: ${userId}`);
 
     //********************** CHECKING USER *******************************/
-    // Make sure user exists
+
+    // Check that userId is a valid UUID format BEFORE we use it for query (can cause error)
     const regexExpforUUID =
       /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
     const userIDIsUUID = regexExpforUUID.test(userId);
     if (!userIDIsUUID)
       return res.status(400).send("User ID does not match UUID format");
 
+    // Make sure user exists
     const user = await User.findByPk(userId);
     console.log(`user: ${user}`);
     if (!user) return res.status(404).send("User not found");
@@ -143,35 +148,111 @@ router.delete("/:cartItemId", async (req, res, next) => {
   }
 });
 
-//******************************* NOT TESTED!!!!!! *******************************/
-// GET api/cart/:cartItemId/checkOut
-// Used when the user has purchased this item.
-// Updates the fields on the cartItem (but uses GET because no body is needed from the user)
-
-// Deciding it I want the checkout process api req to be per item, or based on a user.
-// Probably latter.
-router.get("/:cartItemId/checkOut", async (req, res, next) => {
+// PUT api/cart/:cartItemId
+// update an item.
+router.put("/:cartItemId", async (req, res, next) => {
   try {
     const { cartItemId } = req.params;
+    const body = req.body;
     const cartItem = await CartItem.findByPk(cartItemId);
 
     // If not found, send back a 404
     if (!cartItem) res.send(404);
-    // If found, update the fields so that it looks checked out
     else {
-      // These are the fields and the values that a checked out item should have
-      const updatedFields = {
-        isCheckedOut: true,
-        timeOfCheckOut: new Date(),
-        priceAtCheckOut: cartItem.book.price,
-        orderStatus: "pending",
-      };
-      await cartItem.update(updatedFields);
+      // If found, update it.
+      await cartItem.update(body);
       res.sendStatus(200);
     }
   } catch (err) {
     next(err);
   }
 });
+
+// GET api/cart/user/:userId/checkOut
+// Checks out a given user's active cart
+router.get(
+  "/user/:userId/checkOut",
+
+  async (req, res, next) => {
+    try {
+      // ************************** GETTING USER'S ACTIVE CART **************************** //
+
+      const { userId } = req.params; // Get the user id
+
+      // Check that userId is a valid UUID format BEFORE we use it for query (can cause error)
+      const regexExpforUUID =
+        /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+      const userIDIsUUID = regexExpforUUID.test(userId);
+      if (!userIDIsUUID)
+        return res.status(400).send("User ID does not match UUID format");
+
+      // Get user's 'active cart' - this is an array of all the cartitems we will 'checkout'
+      const usersActiveCart = await CartItem.findAll({
+        where: {
+          orderId: null,
+          userId: userId,
+        },
+        include: [Book],
+      });
+
+      // ************************** CREATING THE ORDER **************************** //
+
+      // We need to know the order's total price before we insert, because it is a required field.
+      // Calculate the total price of the cart
+      let orderTotalPrice = usersActiveCart.reduce((total, cartItem) => {
+        const priceToAdd = cartItem.book.price * cartItem.quantity;
+        return total + priceToAdd;
+      }, 0);
+
+      // Create a new order in the Orders table
+      const createdOrder = await Order.create({
+        orderStatus: "pending",
+        timeOfCheckOut: new Date(),
+        userId: userId,
+        price: orderTotalPrice,
+      });
+
+      // ************************** UPDATING THE CARTITEMS **************************** //
+
+      // Associate the cartitems and the created order
+      // This puts orderId on all of the cartitems in usersActiveCart
+      await createdOrder.addCartItems(usersActiveCart);
+
+      // Now that we are checking out,
+      // cartItem's priceTimesQuantityAtCheckOut needs to be set.
+      // This will be a historically-accurate 'what the user paid for this cartitem x quantity'
+      usersActiveCart.map(async cartItem => {
+        // Calculate what to update the cart item with
+        const priceTimesQuantityAtCheckOut =
+          cartItem.book.price * cartItem.quantity;
+
+        // Update the cart item to have this insertion of data
+        await cartItem.update({
+          priceTimesQuantityAtCheckOut: priceTimesQuantityAtCheckOut,
+        });
+      });
+
+      // ************************** UPDATING THE BOOK'S STOCK **************************** //
+
+      // THE BOOK'S STOCK MUST BE SUFFICIENT FOR  ACTIVE CART'S QUANTITY
+      // This is give 500 server error if not!!
+      // We need to update our book stock
+      usersActiveCart.map(async cartItem => {
+        // Calculate what the book's stock will now be, now that the order has gone through.
+        const updatedStockAmount = cartItem.book.stock - cartItem.quantity;
+
+        // Give the updated stock amount TO the book in the books model
+        const foundBook = await Book.findByPk(cartItem.book.id);
+        await foundBook.update({ stock: updatedStockAmount });
+      });
+
+      // ************************** DONE **************************** //
+
+      res.send(createdOrder).status(200);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 module.exports = router;

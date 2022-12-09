@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../store/cartSlice";
 import "./cartViewStyles.css";
 const CartView = () => {
-  const { cart } = useSelector((state) => state.cart);
-  const { user } = useSelector((state) => state.user);
+  const { cart } = useSelector(state => state.cart);
+  const { user } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -26,9 +26,49 @@ const CartView = () => {
     }
   };
 
+  // Plus button handler
+  const add = async cartItem => {
+    // To 'add', just +1 its quantity in the db
+    const updatedQuantity = cartItem.quantity + 1;
+
+    await axios.put(`/api/cart/${cartItem.id}`, {
+      quantity: updatedQuantity,
+    });
+
+    // Refetch the new cart
+    const newCart = await axios.get(`/api/cart/user/${user.id}`);
+    dispatch(setCart(newCart.data));
+  };
+
+  // Minus button handler
+  const subtract = async cartItem => {
+    // If they're deleting their own copy...
+    if (cartItem.quantity === 1) {
+      // Delete in backend
+      await axios.delete(`/api/cart/${cartItem.id}`);
+    } else {
+      // Else, just subtract one from quantity in backend
+      const updatedQuantity = cartItem.quantity - 1;
+      await axios.put(`/api/cart/${cartItem.id}`, {
+        quantity: updatedQuantity,
+      });
+    }
+
+    // Refetch the new cart
+    const newCart = await axios.get(`/api/cart/user/${user.id}`);
+    dispatch(setCart(newCart.data));
+  };
+
+
   useEffect(() => {
     getUsersCart();
   }, [user]);
+  
+  const handleCheckOut = () => {
+    
+  }
+  
+  
   if (loading) {
     return "Loading...";
   } else if (!user.id) {
@@ -40,12 +80,23 @@ const CartView = () => {
       <div className="cart">
         <div className="usersCart">
           {user.username}'s Cart
-          <ul>
-            {cart.map((cartItem) => {
-              return <li key={cartItem.id}>{cartItem.book.title}</li>;
-            })}
-          </ul>
+          {cart.map(cartItem => {
+            return (
+              <div key={cartItem.id}>
+                {cartItem.book.title}
+                Vol.{cartItem.book.volume}
+                Edition {cartItem.book.volume}
+                <div>
+                  <button onClick={() => subtract(cartItem)}>-</button>
+                  quantity: {cartItem.quantity}
+                  <button onClick={() => add(cartItem)}>+</button>
+                  price: {cartItem.book.price * cartItem.quantity}
+                </div>
+              </div>
+            );
+          })}
         </div>
+        <button onClick={handleCheckOut}>Check Out Now</button>
       </div>
     );
 };
