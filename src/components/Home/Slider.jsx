@@ -19,6 +19,9 @@ const Slider = () => {
     setSlide(currentSlide === 2 ? 0: currentSlide +1 )
   }
 
+  // automating slider carousel
+  setTimeout(()=>{ prevSlide()}, 2500);
+
   //icons ( i tag) are from css website. They offer free icons!
   //https://css.gg/
   //style={{transform: `translateX(-${currentSlide *100}vw)`}}
