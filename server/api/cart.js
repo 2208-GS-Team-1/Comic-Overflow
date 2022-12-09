@@ -180,48 +180,60 @@ for Each...
 
 //******************************* NOT TESTED!!!!!! *******************************/
 // GET api/cart/user/:userId/checkOut
-// Checks out the cartitem that lives at this id
+// Checks out a given user's active cart
 router.get("/user/:userId/checkOut", async (req, res, next) => {
   try {
     // get the user id
     const { userId } = req.params;
 
-    // Query for cartItem based on id
-    // const cartItem = await CartItem.findByPk(cartItemId);
-
+    // get user's 'active cart' -
+    // this is an array of all the things we will 'checkout'
     const usersActiveCart = await CartItem.findAll({
       where: {
         // isCheckedOut: false,
         orderId: null,
         userId: userId,
       },
+      include: [Book],
     });
 
-    // Create a new order
+    // Create a new order in the Orders table
     const createdOrder = await Order.create({
       orderStatus: "pending",
       timeOfCheckOut: new Date(),
       userId: userId,
     });
-    console.log("createdOrder looks like: ");
-    console.log(createdOrder);
-
-    console.log("usersActiveCart looks like: ");
-    console.log(usersActiveCart);
-
-    // If we can't use a magic method...
-    // loop through usersActiveCart
-    // for each cart item, do cartitem.update({orderId: orderId})
 
     // Associate the cartitems and the created order
+    // This puts orderId on all of the cartitems in usersActiveCart
     await createdOrder.addCartItems(usersActiveCart);
     //await usersActiveCart.setOrder(createdOrder.id);
 
-    console.log("made it here");
-    res.send(createdOrder).status(200);
-    // CartItem.hasOrder(orderId)
     // Change values on cartItem
-    // Give it the orderId
+    // need to handle priceAtCheckOut
+    usersActiveCart.map(async cartItem => {
+      // Calculate what to update the cart item with
+      const priceTimesQuantityAtCheckOut =
+        cartItem.book.price * cartItem.quantity;
+
+      // give it to the cart item
+      await cartItem.update({
+        priceTimesQuantityAtCheckOut: priceTimesQuantityAtCheckOut,
+      });
+    });
+
+    // THE BOOK'S STOCK MUST BE SUFFICIENT FOR  ACTIVE CART'S QUANTITY
+    // This is give 500 server error if not!!
+    // We need to update our book stock
+    usersActiveCart.map(async cartItem => {
+      const updatedStockAmount = cartItem.book.stock - cartItem.quantity;
+
+      // Give the updated stock amount TO the book in the books model
+      const foundBook = await Book.findByPk(cartItem.book.id);
+      await foundBook.update({ stock: updatedStockAmount });
+    });
+
+    res.send(createdOrder).status(200);
   } catch (err) {
     next(err);
   }
