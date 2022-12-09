@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { Order, User, Book, CartItem } = require("../db");
+const { Order, User, CartItem } = require("../db");
 
 // GET /api/orders/:orderId
-// Get all
+// Get a specific order's information, give an orderId
 router.get("/:orderId", async (req, res, next) => {
   const orderId = req.params.orderId;
   try {
