@@ -1,11 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { resetUser } from '../../store/userSlice';
 import Slider from './Slider.jsx';
 import './homeStyle.css'
 
 const Home = () => {
+    // eslint-disable-next-line no-unused-vars
     const { user } = useSelector(state => state.user);
+    // eslint-disable-next-line no-unused-vars
     const dispatch = useDispatch();
 
     // Below codes been blocked out FOR NOW //

@@ -10,7 +10,6 @@ import UserPage from "./UserPage/UserPage.jsx";
 import EditUser from "./UserPage/EditUser.jsx";
 
 import AdminHomepage from "./admin/AdminHomepage.jsx";
-import AdminNavbar from "./admin/adminNavbar.jsx";
 import AdminOrdersPage from "./admin/AdminOrdersPage";
 import AdminBooksPage from "./admin/AdminBooksPage";
 import AdminUsersPage from "./admin/AdminUsersPage";
@@ -22,7 +21,8 @@ import { setUser } from "../store/userSlice.js";
 import CartView from "./cartView/CartView.jsx";
 
 const App = () => {
-  const { user } = useSelector(state => state.user);
+  // eslint-disable-next-line no-unused-vars
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const loginWithToken = async () => {

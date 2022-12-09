@@ -1,4 +1,3 @@
-const db = require("../db");
 const Book = require("../Book");
 const bookSeed = async () => {
   const dummyBooks = [
@@ -342,7 +341,7 @@ Over 1.5 million copies sold of Dark Horse's Berserk manga! Inspired the hit ani
     }),
   ]);
   const dummySeeds = await Promise.all(
-    dummyBooks.map(index => Book.create(index))
+    dummyBooks.map((index) => Book.create(index))
   );
   return {
     books: {
@@ -364,7 +363,7 @@ Over 1.5 million copies sold of Dark Horse's Berserk manga! Inspired the hit ani
       chainsawMan1,
       chainsawMan2,
       chainsawMan3,
-      chainsawMan4
+      chainsawMan4,
     },
     dummySeeds,
   };
