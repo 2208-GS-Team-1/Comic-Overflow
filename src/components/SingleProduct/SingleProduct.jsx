@@ -14,8 +14,21 @@ const SingleProduct = () => {
 
   const dispatch = useDispatch();
   const selectedBook = useSelector((state) => state.book.selectedBook);
+  const { user } = useSelector(state => state.user);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
+  const userId = user.id;
+
+  const addToCart = async () => {
+    const bookId = id;
+    if (!user.id) {
+      alert("Please login to add to cart");
+    } else {
+      const body = { userId, bookId };
+      await axios.post("/api/cart", body);
+      alert(`${user.firstName}'s cart was updated!`);
+    }
+  };
 
   //fetching product's information using ID
 
@@ -28,73 +41,68 @@ const SingleProduct = () => {
   useEffect(() => {
     singleBookHandler();
   }, []);
+  
+  const bookPrice = (selectedBook.price / 100).toFixed(2);
 
-  if (loading) {
-    if (selectedBook.stock !== 0) {
-      const bookPrice = (selectedBook.price / 100).toFixed(2);
-      return (
-        <div className="singleProductPage">
-          <div className="singleProduct_container">
-            <div className="productimage_left">
-              <img
-                className="singleProductImg"
-                src={selectedBook.imageURL}
-                width="200px"
-                height="auto"
-              />
-            </div>
-            <div className="productDescrib_right">
-              <h1 className="selectedTitle">{selectedBook.title}</h1>
+  if(selectedBook.stock === 0 ){ return (<div><h1>SORRY! SOLD OUT!</h1></div>)}
+  if(!loading){return (<div><h1>Oops! Something went wrong!</h1></div>)}
 
-              {selectedBook.edition ? (
-                <h3>
-                  Volume {selectedBook.volume} - {selectedBook.edition} Edition
-                </h3>
-              ) : (
-                <h3>Volume {selectedBook.volume} </h3>
-              )}
-
-              <div className="isbn">ISBN: {selectedBook.isbn}</div>
-              <div className="price">${bookPrice}</div>
-              <p className="inStock">In Stock</p>
-              <div className="quantity">
-                {/* below form will need an on-click function to put product into the cart */}
-
-                <form className="singleProductForm">
-                  <input
-                    className="singleProductInput"
-                    name="quantity"
-                    min="1"
-                    max={selectedBook.stock}
-                    type="number"
-                    placeholder="1"
-                  />
-                  <button name="cartButton">Add to Cart</button>
-                </form>
-              </div>
-              <div>
-                <StarRatingAvg key={selectedBook.id} book={selectedBook} />
-              </div>
-              <div className="descrb_box">
-                <h2>Description</h2>
-                <div className="author">Written by {selectedBook.author}</div>
-                <div className="product_text">{selectedBook.description}</div>
-              </div>
-            </div>
+    return (
+      <div className="singleProductPage">
+        <div className="singleProduct_container">
+          <div className="productimage_left">
+            <img
+              className="singleProductImg"
+              src={selectedBook.imageURL}
+              width="200px"
+              height="auto"
+            />
           </div>
-          <div>
-            <ReviewsSingleBook key={selectedBook.id} book={selectedBook} />
+          <div className="productDescrib_right">
+            <h1 className="selectedTitle">{selectedBook.title}</h1>
+
+            {selectedBook.edition ? (
+              <h3>
+                Volume {selectedBook.volume} - {selectedBook.edition} Edition
+              </h3>
+            ) : (
+              <h3>Volume {selectedBook.volume} </h3>
+            )}
+
+            <div className="isbn">ISBN: {selectedBook.isbn}</div>
+            <div className="price">${bookPrice}</div>
+            <p className="inStock">In Stock</p>
+            <div className="quantity">
+              {/* below form will need an on-click function to put product into the cart */}
+
+              <form className="singleProductForm">
+                <input
+                  className="singleProductInput"
+                  name="quantity"
+                  min="1"
+                  max={selectedBook.stock}
+                  type="number"
+                  placeholder="1"
+                />
+                <button onClick={addToCart} name="cartButton">Add to Cart</button>
+              </form>
+            </div>
+            <div>
+              <StarRatingAvg key={selectedBook.id} book={selectedBook} />
+            </div>
+            <div className="descrb_box">
+              <h2>Description</h2>
+              <div className="author">Written by {selectedBook.author}</div>
+              <div className="product_text">{selectedBook.description}</div>
+            </div>
           </div>
         </div>
-      );
-    } else {
-      return (
         <div>
-          <h1>SORRY! SOLD OUT!</h1>
+          <ReviewsSingleBook key={selectedBook.id} book={selectedBook} />
         </div>
-      );
-    }
-  }
+      </div>
+    );
+
 };
 
 export default SingleProduct;
