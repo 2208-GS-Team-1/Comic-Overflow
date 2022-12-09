@@ -168,6 +168,8 @@ router.put("/:cartItemId", async (req, res, next) => {
 // Checks out a given user's active cart
 router.get("/user/:userId/checkOut", async (req, res, next) => {
   try {
+    // ************************** GETTING USER'S ACTIVE CART **************************** //
+
     const { userId } = req.params; // Get the user id
 
     // Check that userId is a valid UUID format BEFORE we use it for query (can cause error)
@@ -177,8 +179,7 @@ router.get("/user/:userId/checkOut", async (req, res, next) => {
     if (!userIDIsUUID)
       return res.status(400).send("User ID does not match UUID format");
 
-    // Get user's 'active cart' -
-    // this is an array of all the cartitems we will 'checkout'
+    // Get user's 'active cart' - this is an array of all the cartitems we will 'checkout'
     const usersActiveCart = await CartItem.findAll({
       where: {
         orderId: null,
@@ -187,7 +188,6 @@ router.get("/user/:userId/checkOut", async (req, res, next) => {
       include: [Book],
     });
 
-    console.log("past userActiveCart query");
     // ************************** CREATING THE ORDER **************************** //
 
     // We need to know the order's total price before we insert, because it is a required field.
@@ -196,7 +196,6 @@ router.get("/user/:userId/checkOut", async (req, res, next) => {
       const priceToAdd = cartItem.book.price * cartItem.quantity;
       return total + priceToAdd;
     }, 0);
-    console.log(`orderTotalPrice === ${orderTotalPrice}`);
 
     // Create a new order in the Orders table
     const createdOrder = await Order.create({
@@ -205,8 +204,6 @@ router.get("/user/:userId/checkOut", async (req, res, next) => {
       userId: userId,
       price: orderTotalPrice,
     });
-
-    console.log("done creating order");
 
     // ************************** UPDATING THE CARTITEMS **************************** //
 
@@ -227,7 +224,6 @@ router.get("/user/:userId/checkOut", async (req, res, next) => {
         priceTimesQuantityAtCheckOut: priceTimesQuantityAtCheckOut,
       });
     });
-    console.log("done updating cartitems");
 
     // ************************** UPDATING THE BOOK'S STOCK **************************** //
 
@@ -235,13 +231,13 @@ router.get("/user/:userId/checkOut", async (req, res, next) => {
     // This is give 500 server error if not!!
     // We need to update our book stock
     usersActiveCart.map(async cartItem => {
+      // Calculate what the book's stock will now be, now that the order has gone through.
       const updatedStockAmount = cartItem.book.stock - cartItem.quantity;
 
       // Give the updated stock amount TO the book in the books model
       const foundBook = await Book.findByPk(cartItem.book.id);
       await foundBook.update({ stock: updatedStockAmount });
     });
-    console.log("done updating book stock");
 
     // ************************** DONE **************************** //
 
