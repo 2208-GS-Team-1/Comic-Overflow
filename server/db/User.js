@@ -105,9 +105,15 @@ const User = db.define("user", {
       isCreditCard: true, // check for valid credit card numbers
     },
   },
+
+  isDeactivated: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
 });
 
-User.addHook("beforeSave", async (user) => {
+User.addHook("beforeSave", async user => {
   if (user.changed("password")) {
     user.password = await bcrypt.hash(user.password, 5);
   }

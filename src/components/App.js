@@ -10,6 +10,7 @@ import UserPage from "./UserPage/UserPage.jsx";
 import EditUser from "./UserPage/EditUser.jsx";
 
 import AdminHomepage from "./admin/AdminHomepage.jsx";
+
 import AdminOrdersPage from "./admin/AdminOrdersPage";
 import AdminBooksPage from "./admin/AdminBooksPage";
 import AdminUsersPage from "./admin/AdminUsersPage";
@@ -45,6 +46,16 @@ const App = () => {
 
   return (
     <div>
+      <div className="upperBar">
+        <div className="searchBar">{/* placeholder for search bar */}</div>
+        <p className="upperBarMessage">FREE SHIPPING on order over $50!</p>
+        <div className="userLinks">
+          <div className="loginLink">{/* placeholder for login*/}</div>
+          <div className="createAccountLink">
+            {/* placeholder for create Account */}
+          </div>
+        </div>
+      </div>
       <div className="main_header">
         <h1>Comic Overflow</h1>
       </div>
@@ -55,8 +66,7 @@ const App = () => {
           <Link to="/books">Books</Link>
           <Link to="/login">Log-In</Link>
           <Link to="/createaccount">Create Account</Link>
-          <Link to="/myAccount">My Account</Link>
-          <CartDrawer />
+          {user.id && <Link to="/myAccount">My Account</Link>}
         </nav>
 
         {/* Render admin navbar is user is an admin */}
@@ -67,15 +77,21 @@ const App = () => {
           <Route path="/books" element={<AllBooks />} />
           <Route path="/login" element={<Login />} />
           <Route path="/createaccount" element={<CreateAccountContainer />} />
-          <Route path="/myAccount" element={<UserPage />} />
+          {/*only logged in user will be able to access my account page */}
+          {user.id && <Route path="/myAccount" element={<UserPage />} />}
           <Route path="/books/:id" element={<SingleProduct />} />
           <Route path="/edit" element={<EditUser />} />
           <Route path="/usercart" element={<CartView />} />
-          <Route path="/admin" element={<AdminHomepage />} />
-          <Route path="/admin/users" element={<AdminUsersPage />} />
-          <Route path="/admin/books" element={<AdminBooksPage />} />
-          <Route path="/admin/reviews" element={<AdminReviewsPage />} />
-          <Route path="/admin/orders" element={<AdminOrdersPage />} />
+
+          {user.idAdmin && (
+            <>
+              <Route path="/admin" element={<AdminHomepage />} />
+              <Route path="/admin/users" element={<AdminUsersPage />} />
+              <Route path="/admin/books" element={<AdminBooksPage />} />
+              <Route path="/admin/reviews" element={<AdminReviewsPage />} />
+              <Route path="/admin/orders" element={<AdminOrdersPage />} />
+            </>
+          )}
         </Routes>
       </div>
     </div>

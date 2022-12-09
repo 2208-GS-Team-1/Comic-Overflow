@@ -15,4 +15,6 @@ const init = async () => {
 // console.log(Object.keys(Book.prototype));
 // console.log("Review methods in here:");
 // console.log(Object.keys(Review.prototype));
+// console.log(Object.keys(Order.prototype));
+// console.log(Object.keys(CartItem.prototype));
 init();
