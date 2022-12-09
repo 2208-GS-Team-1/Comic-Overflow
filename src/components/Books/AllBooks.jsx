@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBooks } from "../../store/bookSlice";
 import { AddShoppingCart } from "@mui/icons-material";
+import MuiLoader from "../MuiLoader";
 import { Link } from "react-router-dom";
 import "./books.css";
 
@@ -26,7 +27,7 @@ const AllBooks = () => {
     } catch (err) {
       console.log(err); //<- not sure if we want the err console logged but fine for dev purposes.
     }
-    // setLoading(false);
+    setLoading(false);
   };
   useEffect(() => {
     fetchBooks();
@@ -34,9 +35,7 @@ const AllBooks = () => {
   if (loading) return(
     <div
     className="loadingContainer">
-      <Box sx={{ width: '100%'}}>
-      <LinearProgress color="inherit" style={{height:'6px'}}/>
-      </Box>
+      <MuiLoader/>
     </div>
   )
   return (
