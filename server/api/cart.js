@@ -3,6 +3,10 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const { User, CartItem, Book, Order } = require("../db");
 
+//
+// PUT BACK AUTHENTICATORS WHEN DONE TESTING!!!!!!!!!!
+//
+
 const authenticateUser = (req, res, next) => {
   const header = req.headers.authorization;
   //separate the token from the word "Bearer"
@@ -20,8 +24,7 @@ const authenticateUser = (req, res, next) => {
 };
 
 // GET api/cart/
-// Returns all cart items
-// Probably just for internal use.
+// Returns all cart items - Probably just for internal use.
 router.get("/", async (req, res, next) => {
   try {
     const allCartItems = await CartItem.findAll({
@@ -35,7 +38,7 @@ router.get("/", async (req, res, next) => {
 });
 
 // GET api/cart/user/:userId
-// Returns a users 'cart' - aka,
+// Returns a users 'active cart' - aka,
 // All of a given user's cartItems that have not been checked out
 router.get("/user/:userId", async (req, res, next) => {
   try {
@@ -52,7 +55,7 @@ router.get("/user/:userId", async (req, res, next) => {
       include: [Book, User],
       where: {
         userId: userId,
-        isCheckedOut: false,
+        orderId: null,
       },
     });
 
@@ -77,20 +80,19 @@ router.get("/user/:userId", async (req, res, next) => {
 // adds an item to given user's cart. (Needs bookId and userId via POST body)
 router.post("/", async (req, res, next) => {
   try {
-    console.log("\n Inside general cart post...");
-
     // Needs userId and bookId from POST body and params
     const { bookId, userId } = req.body;
-    console.log(`bookId: ${bookId} and userId: ${userId}`);
 
     //********************** CHECKING USER *******************************/
-    // Make sure user exists
+
+    // Check that userId is a valid UUID format BEFORE we use it for query (can cause error)
     const regexExpforUUID =
       /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
     const userIDIsUUID = regexExpforUUID.test(userId);
     if (!userIDIsUUID)
       return res.status(400).send("User ID does not match UUID format");
 
+    // Make sure user exists
     const user = await User.findByPk(userId);
     console.log(`user: ${user}`);
     if (!user) return res.status(404).send("User not found");
@@ -142,7 +144,7 @@ router.delete("/:cartItemId", async (req, res, next) => {
   }
 });
 
-// DELETE api/cart/:cartItemId
+// PUT api/cart/:cartItemId
 // update an item.
 router.put("/:cartItemId", async (req, res, next) => {
   try {
@@ -152,8 +154,8 @@ router.put("/:cartItemId", async (req, res, next) => {
 
     // If not found, send back a 404
     if (!cartItem) res.send(404);
-    // If found, destroy it.
     else {
+      // If found, update it.
       await cartItem.update(body);
       res.sendStatus(200);
     }
@@ -162,65 +164,72 @@ router.put("/:cartItemId", async (req, res, next) => {
   }
 });
 
-/*
-step 1:
-/api/cart/newOrder
-
-const newOrder = Order.create({
-  userId: cartItem.user.id
-});
-
-
-/api/cart/checkout/:cartItemId
-for Each...
-  isCheckedOut: true,
-  priceTimesQuantityAtCheckOut: cartItem.quantity * cartItem.book price;
-  orderId: newOrder.id;
-*/
-
-//******************************* NOT TESTED!!!!!! *******************************/
 // GET api/cart/user/:userId/checkOut
 // Checks out a given user's active cart
 router.get("/user/:userId/checkOut", async (req, res, next) => {
   try {
-    // get the user id
-    const { userId } = req.params;
+    const { userId } = req.params; // Get the user id
 
-    // get user's 'active cart' -
-    // this is an array of all the things we will 'checkout'
+    // Check that userId is a valid UUID format BEFORE we use it for query (can cause error)
+    const regexExpforUUID =
+      /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+    const userIDIsUUID = regexExpforUUID.test(userId);
+    if (!userIDIsUUID)
+      return res.status(400).send("User ID does not match UUID format");
+
+    // Get user's 'active cart' -
+    // this is an array of all the cartitems we will 'checkout'
     const usersActiveCart = await CartItem.findAll({
       where: {
-        // isCheckedOut: false,
         orderId: null,
         userId: userId,
       },
       include: [Book],
     });
 
+    console.log("past userActiveCart query");
+    // ************************** CREATING THE ORDER **************************** //
+
+    // We need to know the order's total price before we insert, because it is a required field.
+    // Calculate the total price of the cart
+    let orderTotalPrice = usersActiveCart.reduce((total, cartItem) => {
+      const priceToAdd = cartItem.book.price * cartItem.quantity;
+      return total + priceToAdd;
+    }, 0);
+    console.log(`orderTotalPrice === ${orderTotalPrice}`);
+
     // Create a new order in the Orders table
     const createdOrder = await Order.create({
       orderStatus: "pending",
       timeOfCheckOut: new Date(),
       userId: userId,
+      price: orderTotalPrice,
     });
+
+    console.log("done creating order");
+
+    // ************************** UPDATING THE CARTITEMS **************************** //
 
     // Associate the cartitems and the created order
     // This puts orderId on all of the cartitems in usersActiveCart
     await createdOrder.addCartItems(usersActiveCart);
-    //await usersActiveCart.setOrder(createdOrder.id);
 
-    // Change values on cartItem
-    // need to handle priceAtCheckOut
+    // Now that we are checking out,
+    // cartItem's priceTimesQuantityAtCheckOut needs to be set.
+    // This will be a historically-accurate 'what the user paid for this cartitem x quantity'
     usersActiveCart.map(async cartItem => {
       // Calculate what to update the cart item with
       const priceTimesQuantityAtCheckOut =
         cartItem.book.price * cartItem.quantity;
 
-      // give it to the cart item
+      // Update the cart item to have this insertion of data
       await cartItem.update({
         priceTimesQuantityAtCheckOut: priceTimesQuantityAtCheckOut,
       });
     });
+    console.log("done updating cartitems");
+
+    // ************************** UPDATING THE BOOK'S STOCK **************************** //
 
     // THE BOOK'S STOCK MUST BE SUFFICIENT FOR  ACTIVE CART'S QUANTITY
     // This is give 500 server error if not!!
@@ -232,6 +241,9 @@ router.get("/user/:userId/checkOut", async (req, res, next) => {
       const foundBook = await Book.findByPk(cartItem.book.id);
       await foundBook.update({ stock: updatedStockAmount });
     });
+    console.log("done updating book stock");
+
+    // ************************** DONE **************************** //
 
     res.send(createdOrder).status(200);
   } catch (err) {

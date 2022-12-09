@@ -35,14 +35,12 @@ const cartSeed = async (books, users) => {
     include: [User, Book],
   });
   // console.log(`Cart item ${testCartItem.id} is in ${testCartItem.user.username}'s cart,
-  // its checked out status is: ${testCartItem.isCheckedOut}
   // and the book is ${testCartItem.book.title} volume ${testCartItem.book.volume}\n`);
 
   testCartItem = await CartItem.findByPk(2, {
     include: [User, Book],
   });
   // console.log(`Cart item ${testCartItem.id} is in ${testCartItem.user.username}'s cart,
-  // its checked out status is: ${testCartItem.isCheckedOut}
   // and the book is ${testCartItem.book.title} volume ${testCartItem.book.volume}\n`);
 
   //*********************** LUCY CART SEEDING ************************//
@@ -50,17 +48,16 @@ const cartSeed = async (books, users) => {
   // Lucy has already purchased Wonder Woman vol.89
   // Let's say when lucy bought this, it was at a different price than what we currently charge,
   // to test this feature.
-
   const lucyFirstOrder = await Order.create({
     userId: lucy.id,
     orderStatus: "delivered",
     timeOfCheckOut: new Date(),
+    price: wonderWoman.price + 500, // plus 5 dollars
   });
 
   const lucyFirstCartItem = await CartItem.create({
     userId: lucy.id,
     bookId: wonderWoman.id,
-    isCheckedOut: true,
     quantity: 1,
     priceTimesQuantityAtCheckOut: wonderWoman.price + 500, // plus 5 dollars
     orderId: lucyFirstOrder.id,
@@ -85,20 +82,11 @@ const cartSeed = async (books, users) => {
     include: [User, Book],
   });
 
-  // console.log(
-  //   `${boughtWW.user.firstName} previously purchased ${boughtWW.book.title} vol.${boughtWW.book.volume} for ${boughtWW.priceAtCheckOut}.
-  //   Its checkout status is ${boughtWW.isCheckedOut} and orderStatus is ${boughtWW.orderStatus}.
-  //   She bought it at: ${boughtWW.timeOfCheckOut}
-  //   But she wants to buy it again, and the price we are selling it for now
-  //   is: ${wonderWoman.price}, therefore the item in her cart is: ${inCartWW.book.price}.`
-  // );
-
   //*********************** LARRY'S CART SEEDING ************************//
   // Larry's Cart is:
-  // Berserk vol.1,         quatity: 1
-  // Berserk vol.2,         quatity: 2
-  //           (quantity handled by just making 2 cart items, quantity calculated on front end)
-  // Berserk vol.1 DELUXE edition, quatity: 1
+  // Berserk vol.1,         quantity: 1
+  // Berserk vol.2,         quantity: 2
+  // Berserk vol.1 DELUXE edition, quantity: 1
   await Promise.all([
     CartItem.create({
       userId: larry.id,
@@ -134,16 +122,23 @@ const cartSeed = async (books, users) => {
   const rosesFirstOrderDate = new Date(2008, 6, 15, 15, 0); // June 15, 2008 3pm
   const rosesSecondOrderDate = new Date(2020, 8, 1, 7, 33); // Aug 1, 2020 7:33am
 
+  // Rose's first order in 2008 was...
+  // Adam Strange vol.1 - quantity 2
+  // Xmen vol.141 - quantity 3
+  // Wonder Woman vol 89 - quantity 57
+  const rosesFirstOrderPrice =
+    adamStrange1.price * 2 + xmen.price * 3 + wonderWoman.price * 57;
+
   const rosesFirstOrder = await Order.create({
     userId: rose.id,
     orderStatus: "delivered",
     timeOfCheckOut: rosesFirstOrderDate,
+    price: rosesFirstOrderPrice,
   });
   await CartItem.create({
     userId: rose.id,
     bookId: adamStrange1.id,
     quantity: 2,
-    isCheckedOut: true,
     orderId: rosesFirstOrder.id,
     priceTimesQuantityAtCheckOut: adamStrange1.price * 2,
     //
@@ -152,7 +147,6 @@ const cartSeed = async (books, users) => {
     userId: rose.id,
     bookId: xmen.id,
     quantity: 3,
-    isCheckedOut: true,
     orderId: rosesFirstOrder.id,
     priceTimesQuantityAtCheckOut: xmen.price * 3,
     //
@@ -161,20 +155,11 @@ const cartSeed = async (books, users) => {
     userId: rose.id,
     bookId: wonderWoman.id,
     quantity: 57,
-    isCheckedOut: true,
     orderId: rosesFirstOrder.id,
     priceTimesQuantityAtCheckOut: wonderWoman.price * 57,
     //
   });
 
-  // const allRosesOrders = await Order.findAll({
-  //   where: {
-  //     userId: rose.id,
-  //   },
-  //   include: [CartItem, Book, User]
-  // });
-
-  // console.log (allMoeOrders.order[0].cartItem[0].book.title) Devilman
   console.log("...DONE SEEDING CARTITEMS");
 
   return;

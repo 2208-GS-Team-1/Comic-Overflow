@@ -96,11 +96,13 @@ const reviewSeed = async (books, users) => {
     }),
   ]);
 
+  // Below are console logs and queries used for Testing.
+  // Commented out but not deleted in case we need to test again!
+  /*
   // Now to test if our MOE entries are right, by requerying for them with joining.
   let testReview = await Review.findByPk(moesFirstReview.id, {
     include: [User, Book],
   });
-
   console.log(`Review ${testReview.id} was submitted by ${testReview.user.username},
   and the book is ${testReview.book.title}
   subject is ${testReview.subject}
@@ -113,8 +115,9 @@ const reviewSeed = async (books, users) => {
   and the book is ${testReview.book.title}
   subject is ${testReview.subject}
   the review is ${testReview.content} with ${testReview.rating} stars\n`);
+  */
 
-  console.log("... DONE SEEDING REVIEWS");
+  console.log("...DONE SEEDING REVIEWS");
 
   return;
 };

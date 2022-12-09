@@ -11,6 +11,7 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
+
 // GET - api/users/:id --> Gets single user from the db
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;
@@ -32,6 +33,7 @@ router.get("/:id", async (req, res, next) => {
     res.send("ID is not a UUID").status(404);
   }
 });
+
 // POST - api/users --> Adds user to db
 router.post("/", async (req, res, next) => {
   try {
@@ -58,6 +60,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// POST - api/users --> Updates user with given id
 router.put("/:id", async (req, res, next) => {
   try {
     const { address, email, phoneNumber } = req.body;
