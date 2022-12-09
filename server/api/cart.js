@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const { User, CartItem, Book } = require("../db");
 
+// eslint-disable-next-line no-unused-vars
 const authenticateUser = (req, res, next) => {
   const header = req.headers.authorization;
   //separate the token from the word "Bearer"
@@ -23,7 +24,7 @@ const authenticateUser = (req, res, next) => {
 // Returns all cart items
 // Probably just for internal use.
 
-router.get("/", authenticateUser, async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const allCartItems = await CartItem.findAll({
       include: [Book, User],
@@ -38,7 +39,7 @@ router.get("/", authenticateUser, async (req, res, next) => {
 // GET api/cart/user/:userId
 // Returns a users 'cart' - aka,
 // All of a given user's cartItems that have not been checked out
-router.get("/user/:userId", authenticateUser, async (req, res, next) => {
+router.get("/user/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
 
