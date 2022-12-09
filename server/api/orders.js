@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { Order, User, CartItem } = require("../db");
 
+/* TODO: 
+  Put authenticateUserthis back in routes 
+  (Currently it only works for get("/user/:userId") can't figure out why)
+*/
 // authenticateUser is a middleware used to check the JWT
 // Used in all singular-order routes
 const authenticateUser = (req, res, next) => {
@@ -22,7 +26,7 @@ const authenticateUser = (req, res, next) => {
 
 // GET /api/orders/:orderId
 // Get a specific order's information, give an orderId
-router.get("/:orderId", authenticateUser, async (req, res, next) => {
+router.get("/:orderId", async (req, res, next) => {
   const orderId = req.params.orderId;
   try {
     const order = await Order.findByPk(orderId, {

@@ -3,9 +3,15 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const { User, CartItem, Book, Order } = require("../db");
 
+/* TODO: 
+  Put authenticateUserthis back in routes 
+  (Currently it only works for get("/user/:userId") can't figure out why)
+*/
 // authenticateUser is a middleware used to check the JWT
 // Used in all singular-cart routes
 const authenticateUser = (req, res, next) => {
+  console.log("hit auth");
+
   const header = req.headers.authorization;
   //separate the token from the word "Bearer"
   const token = header && header.split(" ")[1];
@@ -41,7 +47,7 @@ router.get("/", async (req, res, next) => {
 // GET api/cart/user/:userId
 // Returns a users 'active cart' - aka,
 // All of a given user's cartItems that have not been checked out
-router.get("/user/:userId", authenticateUser, async (req, res, next) => {
+router.get("/user/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
 
@@ -76,7 +82,7 @@ router.get("/user/:userId", authenticateUser, async (req, res, next) => {
 
 // POST api/cart/user/:userId
 // adds an item to given user's cart. (Needs bookId and userId via POST body)
-router.post("/", authenticateUser, async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     // Needs userId and bookId from POST body and params
     const { bookId, userId } = req.body;
@@ -125,7 +131,7 @@ router.post("/", authenticateUser, async (req, res, next) => {
 
 // DELETE api/cart/:cartItemId
 // deletes an item from given user's cart.
-router.delete("/:cartItemId", authenticateUser, async (req, res, next) => {
+router.delete("/:cartItemId", async (req, res, next) => {
   try {
     const { cartItemId } = req.params;
     const cartItemToDelete = await CartItem.findByPk(cartItemId);
@@ -144,7 +150,7 @@ router.delete("/:cartItemId", authenticateUser, async (req, res, next) => {
 
 // PUT api/cart/:cartItemId
 // update an item.
-router.put("/:cartItemId", authenticateUser, async (req, res, next) => {
+router.put("/:cartItemId", async (req, res, next) => {
   try {
     const { cartItemId } = req.params;
     const body = req.body;
@@ -166,7 +172,7 @@ router.put("/:cartItemId", authenticateUser, async (req, res, next) => {
 // Checks out a given user's active cart
 router.get(
   "/user/:userId/checkOut",
-  authenticateUser,
+
   async (req, res, next) => {
     try {
       // ************************** GETTING USER'S ACTIVE CART **************************** //
