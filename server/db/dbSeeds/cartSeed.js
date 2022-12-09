@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-const { db, User, Book, Review, CartItem } = require("../");
+const { db, User, Book, Review, CartItem, Order } = require("../");
 
 const cartSeed = async (books, users) => {
   console.log("SEEDING CARTITEMS...");
@@ -121,9 +121,34 @@ const cartSeed = async (books, users) => {
   // all of these are unused for now!!
   // From w3schools ---> new Date(year,month,day,hours,minutes,seconds)
   const rosesFirstOrderDate = new Date(2008, 6, 15, 15, 0); // June 15, 2008 3pm
-  const rosesSecondOrderDate = new Date(2020, 8, 1, 7, 33); // Aug 1, 2020 7:33am
+  const rosesSecondOrderDate = new Date(2015, 8, 1, 7, 33); // Aug 1, 2015 7:33am
 
-  // Rose's first order in 2008 was...
+  // Rose's second order was in 2015, and it was...
+  // Kaiji Deluxe vol.1 - quantity 1
+  // Kaiji Deluxe vol.2 - quantity 1
+  const rosesSecondOrderPrice = books.kaiji1.price + books.kaiji2.price;
+  const rosesSecondOrder = await Order.create({
+    userId: rose.id,
+    orderStatus: "returned",
+    timeOfCheckOut: rosesSecondOrderDate,
+    price: rosesSecondOrderPrice,
+  });
+
+  await CartItem.create({
+    userId: rose.id,
+    bookId: books.kaiji1.id,
+    orderId: rosesSecondOrder.id,
+    priceTimesQuantityAtCheckOut: books.kaiji1.price * 1,
+  });
+
+  await CartItem.create({
+    userId: rose.id,
+    bookId: books.kaiji2.id,
+    orderId: rosesSecondOrder.id,
+    priceTimesQuantityAtCheckOut: books.kaiji2.price * 1,
+  });
+
+  // Rose's first order was in 2008, and it was...
   // Adam Strange vol.1 - quantity 2
   // Xmen vol.141 - quantity 3
   // Wonder Woman vol 89 - quantity 57
@@ -142,7 +167,6 @@ const cartSeed = async (books, users) => {
     quantity: 2,
     orderId: rosesFirstOrder.id,
     priceTimesQuantityAtCheckOut: adamStrange1.price * 2,
-    //
   });
   await CartItem.create({
     userId: rose.id,

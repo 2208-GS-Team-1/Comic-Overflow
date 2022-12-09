@@ -2,14 +2,6 @@ const { Sequelize } = require("sequelize");
 const db = require("./db");
 
 const CartItem = db.define("cartItem", {
-  isCheckedOut: {
-    type: Sequelize.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
   quantity: {
     type: Sequelize.INTEGER,
     defaultValue: 1,
