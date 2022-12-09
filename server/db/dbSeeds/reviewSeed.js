@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const { RoomService } = require("@mui/icons-material");
 const { db, User, Book, Review, CartItem } = require("../");
 

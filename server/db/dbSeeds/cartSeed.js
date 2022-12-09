@@ -1,4 +1,5 @@
-const { db, User, Book, Review, CartItem, Order } = require("../");
+/* eslint-disable no-unused-vars */
+const { db, User, Book, Review, CartItem } = require("../");
 
 const cartSeed = async (books, users) => {
   console.log("SEEDING CARTITEMS...");

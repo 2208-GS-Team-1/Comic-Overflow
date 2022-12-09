@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User, CartItem } = require("../db");
+const { User } = require("../db");
 
 // GET - api/users --> Gets all users from the db
 router.get("/", async (req, res, next) => {

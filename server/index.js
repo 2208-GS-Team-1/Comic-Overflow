@@ -1,5 +1,4 @@
 const app = require("./app");
-const { User, CartItem, Book, Review, Order } = require("./db");
 
 const init = async () => {
   try {
