@@ -1,5 +1,4 @@
 import { Rating } from "@mui/material";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const StarRatingAvg = ({ book }) => {
@@ -9,18 +8,22 @@ const StarRatingAvg = ({ book }) => {
   const [reviewCount, setReviewCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const handleAvgReview = async () => {
+  const handleAvgReview = () => {
     setLoading(true);
     // GET all reviews for specific book
-    const reviews = await axios.get(`/api/reviews/${book.id}`);
-    //reviews.data = array of reivews for specific book
-    if (reviews.data.length > 0) {
+    const reviews = book.reviews;
+    //reviews = array of reivews for specific book
+    if (reviews.length > 0) {
+      const totalReviews = reviews.reduce(
+        (total, next) => total + next.rating,
+        0
+      );
+      const averageReview = totalReviews / reviews.length;
       setAvgReview(
         //use reduce method to take the average of the rating columns if the array.lenth is > 0
-        reviews.data.reduce((total, next) => total + next.rating, 0) /
-          reviews.data.length
+        averageReview
       );
-      setReviewCount(reviews.data.length);
+      setReviewCount(reviews.length);
     }
 
     setLoading(false);
@@ -42,10 +45,8 @@ const StarRatingAvg = ({ book }) => {
           "No ratings yet!"
         )}
       </span>
-      {reviewCount > 0 ? (
+      {reviewCount > 0 && (
         <span style={{ display: "inline-block" }}>({reviewCount})</span>
-      ) : (
-        ""
       )}
     </div>
   );

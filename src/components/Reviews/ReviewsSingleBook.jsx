@@ -22,7 +22,7 @@ const ReviewsSingleBook = ({ book }) => {
     const reviews = await axios.get(`/api/reviews/${book.id}`);
     //reviews.data = array of reviews for specific book
 
-    setAllReviews([...reviews.data]);
+    setAllReviews(reviews.data);
     setLoading(false);
   };
 
