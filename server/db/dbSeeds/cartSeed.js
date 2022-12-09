@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const { db, User, Book, Review, CartItem } = require("../");
 
 const cartSeed = async (books, users) => {

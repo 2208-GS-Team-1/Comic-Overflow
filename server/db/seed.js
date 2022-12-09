@@ -1,7 +1,6 @@
-const { User, db, Book, Review, CartItem } = require("./");
+const { User, db } = require("./");
 const bookSeed = require("./dbSeeds/bookSeed");
 const cartSeed = require("./dbSeeds/cartSeed");
-const dummyBookSeed = require("./dbSeeds/dummyBookSeed");
 const reviewSeed = require("./dbSeeds/reviewSeed");
 
 const seed = async () => {
