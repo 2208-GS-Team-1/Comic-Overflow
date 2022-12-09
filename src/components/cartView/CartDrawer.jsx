@@ -19,7 +19,7 @@ const CartDrawer = () => {
   const [loading, setLoading] = useState(true)
   const { cart } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.user)
-  const [totalPrice, setTotalPrice] = useState(0)
+  const [totalPrice, setTotalPrice] = useState();
   const dispatch = useDispatch();
   const getUsersCart = async () => {
     // If user slice is not empty, go fetch the cart
@@ -44,17 +44,34 @@ const CartDrawer = () => {
     if (cartItem.quantity === 1) {
       // Delete in backend
       await axios.delete(`/api/cart/${cartItem.id}`);
-      dispatch(setCart([]))
+      // Create a new array of cart items by filtering out the item that was deleted
+      const newCart = cart.filter(item => item.id !== cartItem.id);
+      // Dispatch the new cart array to the Redux store
+      dispatch(setCart(newCart));
     } else {
       // Else, just subtract one from quantity in backend
       const updatedQuantity = cartItem.quantity - 1;
       await axios.put(`/api/cart/${cartItem.id}`, {
         quantity: updatedQuantity,
       });
-      const newCart = await axios.get(`/api/cart/user/${user.id}`);
-      dispatch(setCart(newCart.data))
+      
+      const newCart = cart.map(item => {
+        if (item.id === cartItem.id) {
+          return {
+            ...item,
+            quantity: updatedQuantity,
+          };
+        }
+        return item;
+      });
+  
+      // Dispatch the new cart array to the Redux store
+      dispatch(setCart(newCart));
+
+      const updatedTotalPrice = totalPrice - cartItem.price;
+      setTotalPrice(updatedTotalPrice)
     }
-  }
+  };
   const add = async cartItem => {
     // To 'add', just +1 its quantity in the db
     const updatedQuantity = cartItem.quantity + 1;
@@ -62,10 +79,25 @@ const CartDrawer = () => {
     await axios.put(`/api/cart/${cartItem.id}`, {
       quantity: updatedQuantity,
     });
-    
-    // Refetch the new cart
-    const newCart = await axios.get(`/api/cart/user/${user.id}`);
-    dispatch(setCart(newCart.data));
+  
+    // Create a new array of cart items by mapping over the existing array and
+    // replacing the quantity of the item that was updated
+    const newCart = cart.map(item => {
+      if (item.id === cartItem.id) {
+        return {
+          ...item,
+          quantity: updatedQuantity,
+        };
+      }
+      return item;
+    });
+  
+    // Dispatch the new cart array to the Redux store
+    dispatch(setCart(newCart));
+    const updatedTotalPrice = totalPrice + cartItem.price;
+
+    // Update the total price state variable
+    setTotalPrice(updatedTotalPrice);
   };
   const handleCheckOut = () => {
     console.log(cart)
