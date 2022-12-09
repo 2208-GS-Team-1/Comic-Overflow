@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Drawer, IconButton, Box, Divider, List, ListItem, Card } from '@mui/material';
+import { Drawer, IconButton, Box, Divider, Card } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCart } from "../../store/cartSlice";
 import axios from 'axios';
 import MuiLoader from '../MuiLoader';
 import "./CartDrawerStyles.css"
-import { Link } from 'react-router-dom';
+
 // const useStyles = makeStyles({
 //   drawer: {
 //     width: 240,
@@ -26,65 +26,62 @@ const CartDrawer = () => {
     // (If it is empty, that means not logged in, not handling this situation yet)
     if (user.id) {
       const cart = await axios.get(`/api/cart/user/${user.id}`);
-      console.log(cart.data)
-      dispatch(setCart(cart.data));
-      setLoading(false);
+      if(cart){
+        dispatch(setCart(cart.data));
+      } 
     }
+    setLoading(false);
   };
-  const handleOpen = () => {
+  const handleOpen = async () => {
     setIsOpen(true);
   };
 
-  const cartTotal = () => {
-    const totalPrice = cart.reduce((total, index) => {
-      return total + index.book.price
-    }, 0)
-    const displayPrice = (totalPrice / 100).toFixed(2)
-    return `$${displayPrice}`
-  }
   const handleClose = () => {
     setIsOpen(false);
   };
-  useEffect(() => {
-    getUsersCart();
-  }, [user, cartTotal()]);
   const subtract = async cartItem => {
     // If they're deleting their own copy...
     if (cartItem.quantity === 1) {
       // Delete in backend
       await axios.delete(`/api/cart/${cartItem.id}`);
+      dispatch(setCart([]))
     } else {
       // Else, just subtract one from quantity in backend
       const updatedQuantity = cartItem.quantity - 1;
       await axios.put(`/api/cart/${cartItem.id}`, {
         quantity: updatedQuantity,
       });
+      const newCart = await axios.get(`/api/cart/user/${user.id}`);
+      dispatch(setCart(newCart.data))
     }
   }
-    const add = async cartItem => {
-      // To 'add', just +1 its quantity in the db
-      const updatedQuantity = cartItem.quantity + 1;
+  const add = async cartItem => {
+    // To 'add', just +1 its quantity in the db
+    const updatedQuantity = cartItem.quantity + 1;
+    
+    await axios.put(`/api/cart/${cartItem.id}`, {
+      quantity: updatedQuantity,
+    });
+    
+    // Refetch the new cart
+    const newCart = await axios.get(`/api/cart/user/${user.id}`);
+    dispatch(setCart(newCart.data));
+  };
+  const handleCheckOut = () => {
+    console.log(cart)
+  }
+  useEffect(() => {
+    getUsersCart();
+  }, [user]);
   
-      await axios.put(`/api/cart/${cartItem.id}`, {
-        quantity: updatedQuantity,
-      });
-  
-      // Refetch the new cart
-      const newCart = await axios.get(`/api/cart/user/${user.id}`);
-      dispatch(setCart(newCart.data));
-    };
-    const handleCheckOut = () => {
-      console.log(cart)
-    }
-
-  if (user.id && cart.length > 0)
+  if (user.id)
   return (
     <Box
     sx={{ display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-    >
+    justifyContent: 'center',
+    alignItems: 'center',
+  }}
+  >
       <Drawer
         anchor="right"
         open={isOpen}
@@ -95,7 +92,7 @@ const CartDrawer = () => {
             width: '400px'
           },
         }}
-      >
+        >
         <h1>
           Your Cart
         </h1>
@@ -103,6 +100,7 @@ const CartDrawer = () => {
         {/* If loading is true, the cart isn't fetched yet and it will display this MUI loader */}
         {loading && <MuiLoader/>}
         {/* Display the users cart */}
+        {cart.length > 0 &&
         <div style={{ overflow: 'auto' }}>
         {cart.map(cartItem => {
           return (
@@ -136,6 +134,10 @@ const CartDrawer = () => {
             );
           })}
           </div>
+        }
+        {cart.length <= 0 && 
+        <div>Your cart is empty!</div>
+        }
           <div
           className='cartTotal'
           >
