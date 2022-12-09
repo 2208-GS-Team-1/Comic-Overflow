@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Review } = require("../db");
+const { Review, User } = require("../db");
 
 // GET - api/reviews/:bookId --> Gets all reviews for a specific book from the db
 router.get("/:bookId", async (req, res, next) => {
@@ -8,6 +8,7 @@ router.get("/:bookId", async (req, res, next) => {
   try {
     const userReviews = await Review.findAll({
       where: { bookId: id },
+      include: [User],
     });
     res.send(userReviews);
   } catch (err) {

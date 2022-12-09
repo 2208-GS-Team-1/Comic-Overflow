@@ -11,7 +11,7 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
-// GET - api/users/:id --> Gets all users from the db
+// GET - api/users/:id --> Gets single user from the db
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;
   const regexExp =
@@ -53,6 +53,23 @@ router.post("/", async (req, res, next) => {
       await User.create(req.body);
       res.send("User has been succussfully created").status(201);
     }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.put("/:id", async (req, res, next) => {
+  try {
+    const { address, email, phoneNumber } = req.body;
+
+    const id = req.params.id;
+    const updatedUser = await User.findByPk(id);
+    await updatedUser.update({
+      address,
+      email,
+      phoneNumber,
+    });
+    res.send("User was updated").status(201);
   } catch (err) {
     next(err);
   }
