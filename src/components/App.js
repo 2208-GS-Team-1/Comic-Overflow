@@ -67,6 +67,7 @@ const App = () => {
           <Link to="/login">Log-In</Link>
           <Link to="/createaccount">Create Account</Link>
           {user.id && <Link to="/myAccount">My Account</Link>}
+          <CartDrawer />
         </nav>
 
         {/* Render admin navbar is user is an admin */}
