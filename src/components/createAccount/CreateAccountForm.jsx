@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { Alert, Box, Button, TextField } from "@mui/material";
+import { Alert, Box, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
@@ -69,7 +69,7 @@ function CreateAccountForm() {
         /* Ideally would like to log the user in here, and THEN redirect to home
       	But not sure how to generate the JWT and the stuff with authorization.
 				Would also need to dispatch the redux state of user, I think.
-
+				
 				So for now, just redirect them to the login page so they can log in with new account.
 			  */
 
@@ -83,6 +83,7 @@ function CreateAccountForm() {
           navigate("/login");
         }, 2000);
       } catch (err) {
+        console.log("CAUGHT!");
         // If account creation failed (eg, an acct with that username already exists)
         setCreationFailure(true);
       }
@@ -197,11 +198,8 @@ function CreateAccountForm() {
         </Box>
 
         <button type="submit" style={submitButtonStyle}>
-          submit
-        </button>
-        {/* <Button type="submit" sx={{ width: "300px" }} variant="contained">
           Submit
-        </Button> */}
+        </button>
 
         {creationSuccess && (
           <Alert sx={{ marginTop: 2 }} severity="success">
