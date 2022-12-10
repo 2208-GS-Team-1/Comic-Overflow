@@ -7,11 +7,6 @@ import axios from 'axios';
 import MuiLoader from '../MuiLoader';
 import "./CartDrawerStyles.css"
 
-// const useStyles = makeStyles({
-//   drawer: {
-//     width: 240,
-//   },
-// });
 
 const CartDrawer = () => {
   // const classes = useStyles();
@@ -21,6 +16,7 @@ const CartDrawer = () => {
   const { user } = useSelector((state) => state.user)
   const [totalPrice, setTotalPrice] = useState(0);
   const dispatch = useDispatch();
+  // Fetch users cart
   const getUsersCart = async () => {
     // If user slice is not empty, go fetch the cart
     // (If it is empty, that means not logged in, not handling this situation yet)
@@ -32,7 +28,7 @@ const CartDrawer = () => {
     }
     setLoading(false);
   };
-
+  //handleOpen toggles the drawer to open BUT also calcuates the price... its the only way I could make the total work
   const handleOpen = async () => {
     setIsOpen(true);
     const totalPriceCalc = cart.reduce((total, index) =>
@@ -40,9 +36,11 @@ const CartDrawer = () => {
     ,0)
     setTotalPrice(totalPriceCalc)
   };
+  // closes drawer
   const handleClose = () => {
     setIsOpen(false);
   };
+  //subtracts from quantity 
   const subtract = async cartItem => {
     // If they're deleting their own copy...
     if (cartItem.quantity === 1) {
@@ -58,7 +56,8 @@ const CartDrawer = () => {
       await axios.put(`/api/cart/${cartItem.id}`, {
         quantity: updatedQuantity,
       });
-      
+      //This map might seem redundant, but without it each time the cart quantities are decremented the array would come back in a differet order,
+      // so all the products would move each decrement or increment. Now with this we're keeping the array in place
       const newCart = cart.map(item => {
         if (item.id === cartItem.id) {
           return {
@@ -84,8 +83,8 @@ const CartDrawer = () => {
       quantity: updatedQuantity,
     });
   
-    // Create a new array of cart items by mapping over the existing array and
-    // replacing the quantity of the item that was updated
+      //This map might seem redundant, but without it each time the cart quantities are decremented the array would come back in a differet order,
+      // so all the products would move each decrement or increment. Now with this we're keeping the array in place
     const newCart = cart.map(item => {
       if (item.id === cartItem.id) {
         return {
@@ -98,14 +97,13 @@ const CartDrawer = () => {
   
     // Dispatch the new cart array to the Redux store
     dispatch(setCart(newCart));
-    console.log(cartItem)
     const updatedTotalPrice = totalPrice + cartItem.book.price;
 
     // Update the total price state variable
     setTotalPrice(updatedTotalPrice);
   };
   const handleCheckOut = () => {
-    console.log(cart)
+    // checkout has not been done yet
   }
   useEffect(() => {
     getUsersCart();
