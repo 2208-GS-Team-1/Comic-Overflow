@@ -54,13 +54,6 @@ const Login = () => {
     >
         log out
     </button>
-    <Link
-    to='/usercart'
-    >
-    <button>
-        View Cart
-    </button>
-    </Link>
     </div>
     )
   return (

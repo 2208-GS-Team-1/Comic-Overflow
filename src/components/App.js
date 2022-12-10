@@ -19,7 +19,6 @@ import AdminReviewsPage from "./admin/AdminReviewsPage";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { setUser } from "../store/userSlice.js";
-import CartView from "./cartView/CartView.jsx";
 import CartDrawer from "./cartView/CartDrawer.jsx";
 
 const App = () => {
@@ -82,7 +81,6 @@ const App = () => {
           {user.id && <Route path="/myAccount" element={<UserPage />} />}
           <Route path="/books/:id" element={<SingleProduct />} />
           <Route path="/edit" element={<EditUser />} />
-          <Route path="/usercart" element={<CartView />} />
 
           {user.idAdmin && (
             <>
