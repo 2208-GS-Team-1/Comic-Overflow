@@ -11,23 +11,25 @@ import "./CartDrawerStyles.css"
 const CartDrawer = () => {
   // const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(true)
-  const { cart } = useSelector((state) => state.cart);
+  const [loading, setLoading] = useState(false)
+  // const { cart } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.user)
   const [totalPrice, setTotalPrice] = useState(0);
   const dispatch = useDispatch();
-  // Fetch users cart
-  const getUsersCart = async () => {
-    // If user slice is not empty, go fetch the cart
-    // (If it is empty, that means not logged in, not handling this situation yet)
-    if (user.id) {
-      const cart = await axios.get(`/api/cart/user/${user.id}`);
-      if(cart){
-        dispatch(setCart(cart.data));
-      } 
-    }
-    setLoading(false);
-  };
+// First, define a function that loads the cart from local storage
+const loadCartFromLocalStorage = () => {
+  // Get the stringified cart from local storage
+  const cartString = localStorage.getItem('cart');
+
+  // Parse the stringified cart to get the original cart object
+  const cart = JSON.parse(cartString);
+
+  // Return the cart object
+  return cart;
+};
+const cart = loadCartFromLocalStorage();
+
+
   //handleOpen toggles the drawer to open BUT also calcuates the price... its the only way I could make the total work
   const handleOpen = async () => {
     setIsOpen(true);
@@ -40,6 +42,15 @@ const CartDrawer = () => {
   const handleClose = () => {
     setIsOpen(false);
   };
+
+  const saveCartToLocalStorage = cart => {
+    // Local storage can only store strings, so we need to convert the cart object to a string
+    const cartString = JSON.stringify(cart);
+  
+    // Now we can save the stringified cart to local storage
+    localStorage.setItem('cart', cartString);
+  };
+
   //subtracts from quantity 
   const subtract = async cartItem => {
     // If they're deleting their own copy...
@@ -50,6 +61,7 @@ const CartDrawer = () => {
       const newCart = cart.filter(item => item.id !== cartItem.id);
       // Dispatch the new cart array to the Redux store
       dispatch(setCart(newCart));
+      saveCartToLocalStorage(newCart)
     } else {
       // Else, just subtract one from quantity in backend
       const updatedQuantity = cartItem.quantity - 1;
@@ -70,7 +82,7 @@ const CartDrawer = () => {
   
       // Dispatch the new cart array to the Redux store
       dispatch(setCart(newCart));
-
+      saveCartToLocalStorage(newCart)
     }
     const updatedTotalPrice = totalPrice - cartItem.book.price;
     setTotalPrice(updatedTotalPrice)
@@ -78,6 +90,7 @@ const CartDrawer = () => {
   const add = async cartItem => {
     // To 'add', just +1 its quantity in the db
     const updatedQuantity = cartItem.quantity + 1;
+    console.log(updatedQuantity)
     await axios.put(`/api/cart/${cartItem.id}`, {
       quantity: updatedQuantity,
     });
@@ -96,6 +109,8 @@ const CartDrawer = () => {
   
     // Dispatch the new cart array to the Redux store
     dispatch(setCart(newCart));
+    console.log(newCart)
+    saveCartToLocalStorage(newCart)
     const updatedTotalPrice = totalPrice + cartItem.book.price;
 
     // Update the total price state variable
@@ -106,12 +121,8 @@ const CartDrawer = () => {
 
     setTotalPrice(0)
     dispatch(setCart([]))
+    saveCartToLocalStorage([])
   }
-  useEffect(() => {
-    getUsersCart();
-  }, [user]);
-  
-  if (user.id)
   return (
     <Box
     sx={{ display: 'flex',
@@ -137,7 +148,6 @@ const CartDrawer = () => {
         {/* If loading is true, the cart isn't fetched yet and it will display this MUI loader */}
         {loading && <MuiLoader/>}
         {/* Display the users cart */}
-        {cart.length > 0 &&
         <div style={{ overflow: 'auto' }}>
         {cart.map(cartItem => {
           return (
@@ -171,7 +181,6 @@ const CartDrawer = () => {
             );
           })}
           </div>
-        }
         {cart.length <= 0 && 
         <div>Your cart is empty!</div>
         }

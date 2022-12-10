@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { resetUser, setUser } from "../../store/userSlice";
 import axios from "axios";
 import "./login.css";
+import { setCart } from "../../store/cartSlice";
 
 const Login = () => {
   const { user } = useSelector(state => state.user);
@@ -32,8 +33,10 @@ const Login = () => {
           authorization: token,
         },
       });
-
       dispatch(setUser(response.data));
+      const usersCart = await axios.get(`/api/cart/user/${response.data.id}`)
+      dispatch(setCart(usersCart.data))
+      localStorage.setItem("cart", JSON.stringify(usersCart.data))
     }
   };
 
