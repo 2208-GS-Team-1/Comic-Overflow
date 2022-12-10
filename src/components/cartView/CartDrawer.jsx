@@ -105,8 +105,9 @@ const CartDrawer = () => {
   const handleCheckOut = async () => {
     await axios.get(`api/cart/user/${user.id}/checkOut`)
     const emptyCart = await axios.get(`/cart/user/${user.id}`)
+    console.log(emptyCart)
     setTotalPrice(0)
-    dispatch(setCart(emptyCart))
+    dispatch(setCart([]))
   }
   useEffect(() => {
     getUsersCart();

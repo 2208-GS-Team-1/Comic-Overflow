@@ -1,4 +1,3 @@
-//!Refactor
 import React from "react";
 import { Button } from "@mui/material";
 import { AddShoppingCart } from "@mui/icons-material";
@@ -10,12 +9,6 @@ const allProductsAdd = ({ bookId }) => {
   const dispatch = useDispatch()
   const { cart } = useSelector((state) => state.cart);
   const userId = user.id;
-  //!Reactor
-//Needs to be refactored with the following logic
-    // if that book does not exist in the users active cart, post
-    // else if the book does exist in the users active cart 
-    // make a put req to just increment the quantity.
-//
   const addToCart = async () => {
     try {
         if (!user.id) {
