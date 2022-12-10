@@ -5,7 +5,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setBooks } from "../../store/bookSlice";
+import { setBooks, setSelectedBook } from "../../store/bookSlice";
 
 import MuiLoader from "../MuiLoader";
 
@@ -52,7 +52,8 @@ const AllBooks = () => {
             variant="outlined"
             key={book.id}>
             <div className="productCardImg">
-              <Link to={`/books/${book.id}`}>
+              <Link to={`/books/${book.id}`}
+              >
                 <img src={book.imageURL} />
               </Link>
             </div>

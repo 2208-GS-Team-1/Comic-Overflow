@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { setSelectedBook } from "../../store/bookSlice";
+import { setCart } from "../../store/cartSlice";
 import ReviewsSingleBook from "../Reviews/ReviewsSingleBook";
 import StarRatingAvg from "../Reviews/StarRatingAvg";
 import "./singleProduct.css";
@@ -13,23 +14,56 @@ const SingleProduct = () => {
   // *** WILL NEED REVIEW COMPONENT TO DISPLAY ALL RELATED REVIEWS ***
 
   const dispatch = useDispatch();
+  const [bookQuantity, setBookQuantity] = useState(1)
   const selectedBook = useSelector((state) => state.book.selectedBook);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
+  const { user } = useSelector(state => state.user);
+  const { cart } = useSelector((state) => state.cart);
+  const userId = user.id
+  const bookId = selectedBook.id
 
-  //fetching product's information using ID
+  // fetching product's information using ID
 
   const singleBookHandler = async () => {
+    setLoading(true)
     const bookData = await axios.get(`/api/books/${id}`);
     dispatch(setSelectedBook(bookData.data));
-    setLoading(true);
+    setLoading(false)
   };
 
   useEffect(() => {
     singleBookHandler();
   }, []);
-
-  if (loading) {
+  const handleQuantityChange = (event) => {
+    setBookQuantity(event.target.value)
+  }
+  const addToCart = async () => {
+    try {
+      if (!user.id) {
+          alert("Please login to add to cart");
+      } else {
+          console.log('im here')
+          const existingItem = cart.find((cartItem) => cartItem.book.id === bookId);
+          console.log(existingItem)
+          if(existingItem) {  
+              await axios.put(`/api/cart/${existingItem.id}`, {
+                  quantity: existingItem.quantity + Number(bookQuantity),
+              });
+              const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
+              dispatch(setCart(updatedCart.data))
+          } else {
+              const body = { userId, bookId };
+              await axios.post("/api/cart", body);
+              const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
+              dispatch(setCart(updatedCart.data))
+          }
+      }
+  } catch (error) {
+      console.log(error)
+  }
+  }
+  if (loading) return <div>loading...</div>
     if (selectedBook.stock !== 0) {
       const bookPrice = (selectedBook.price / 100).toFixed(2);
       return (
@@ -67,10 +101,13 @@ const SingleProduct = () => {
                     min="1"
                     max={selectedBook.stock}
                     type="number"
-                    placeholder="1"
+                    value={bookQuantity}
+                    onChange={handleQuantityChange}
                   />
-                  <button name="cartButton">Add to Cart</button>
                 </form>
+                  <button 
+                  onClick={addToCart}
+                  name="cartButton">Add to Cart</button>
               </div>
               <div>
                 <StarRatingAvg key={selectedBook.id} book={selectedBook} />
@@ -95,6 +132,5 @@ const SingleProduct = () => {
       );
     }
   }
-};
 
 export default SingleProduct;
