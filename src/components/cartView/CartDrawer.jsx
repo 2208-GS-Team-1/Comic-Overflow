@@ -102,8 +102,11 @@ const CartDrawer = () => {
     // Update the total price state variable
     setTotalPrice(updatedTotalPrice);
   };
-  const handleCheckOut = () => {
-    // checkout has not been done yet
+  const handleCheckOut = async () => {
+    await axios.get(`api/cart/user/${user.id}/checkOut`)
+    const emptyCart = await axios.get(`/cart/user/${user.id}`)
+    setTotalPrice(0)
+    dispatch(setCart(emptyCart))
   }
   useEffect(() => {
     getUsersCart();
