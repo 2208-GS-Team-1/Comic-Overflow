@@ -19,7 +19,7 @@ import AdminReviewsPage from "./admin/AdminReviewsPage";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { setUser } from "../store/userSlice.js";
-import CartView from "./cartView/CartView.jsx";
+import CartDrawer from "./cartView/CartDrawer.jsx";
 
 const App = () => {
   // eslint-disable-next-line no-unused-vars
@@ -66,6 +66,7 @@ const App = () => {
           <Link to="/login">Log-In</Link>
           <Link to="/createaccount">Create Account</Link>
           {user.id && <Link to="/myAccount">My Account</Link>}
+          <CartDrawer />
         </nav>
 
         {/* Render admin navbar is user is an admin */}
@@ -80,7 +81,6 @@ const App = () => {
           {user.id && <Route path="/myAccount" element={<UserPage />} />}
           <Route path="/books/:id" element={<SingleProduct />} />
           <Route path="/edit" element={<EditUser />} />
-          <Route path="/usercart" element={<CartView />} />
 
           {user.idAdmin && (
             <>

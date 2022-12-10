@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { resetUser, setUser } from "../../store/userSlice";
 import axios from "axios";
 import "./login.css";
-import { Link } from "react-router-dom";
 
 const Login = () => {
   const { user } = useSelector(state => state.user);
@@ -54,13 +53,6 @@ const Login = () => {
     >
         log out
     </button>
-    <Link
-    to='/usercart'
-    >
-    <button>
-        View Cart
-    </button>
-    </Link>
     </div>
     )
   return (
