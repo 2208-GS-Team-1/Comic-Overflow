@@ -80,7 +80,7 @@ router.get("/user/:userId", async (req, res, next) => {
   }
 });
 
-// POST api/cart/user/:userId
+// POST api/cart/user
 // adds an item to given user's cart. (Needs bookId and userId via POST body)
 router.post("/", async (req, res, next) => {
   try {
@@ -255,4 +255,35 @@ router.get(
   }
 );
 
+// Post with a quantity amount > 1
+// POST api/cart/user/:userId/quantity
+router.post('/user/:quantity', async (req,res,next) => {
+  const {bookQuantity} = req.params.quantity
+  const { bookId, userId } = req.body;
+  try {
+    // Check that userId is a valid UUID format BEFORE we use it for query (can cause error)
+    const regexExpforUUID =/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+    const userIDIsUUID = regexExpforUUID.test(userId);
+      if (!userIDIsUUID)
+        return res.status(400).send("User ID does not match UUID format");
+  
+      // Make sure user exists
+      const user = await User.findByPk(userId);
+      console.log(`user: ${user}`);
+      if (!user) return res.status(404).send("User not found");
+      //********************** CHECKING BOOK *******************************/
+      const book = await Book.findByPk(bookId);
+      console.log(book);
+      // Make sure book exists
+      if (!book) return res.status(404).send("Book not found");
+      const createdCartItem = await CartItem.create({
+        bookId: bookId,
+        userId: userId,
+        quantity: bookQuantity
+      });
+      res.status(201).send(createdCartItem);
+  } catch (error) {
+    next(error)
+  }
+})
 module.exports = router;
