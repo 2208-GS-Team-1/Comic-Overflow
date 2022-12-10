@@ -19,12 +19,14 @@ const ReviewsSingleBook = ({ book }) => {
 
   const handleAllReviews = async () => {
     setLoading(true);
+    if(book.id) {
+      const reviews = await axios.get(`/api/reviews/${book.id}`);
+      setAllReviews([...reviews.data]);
+      setLoading(false);
+    }
     // GET all reviews for specific book
-    const reviews = await axios.get(`/api/reviews/${book.id}`);
     //reviews.data = array of reviews for specific book
 
-    setAllReviews([...reviews.data]);
-    setLoading(false);
   };
 
   useEffect(() => {

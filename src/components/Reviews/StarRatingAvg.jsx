@@ -12,16 +12,18 @@ const StarRatingAvg = ({ book }) => {
 
   const handleAvgReview = async () => {
     setLoading(true);
-    // GET all reviews for specific book
-    const reviews = await axios.get(`/api/reviews/${book.id}`);
-    //reviews.data = array of reivews for specific book
-    if (reviews.data.length > 0) {
-      setAvgReview(
-        //use reduce method to take the average of the rating columns if the array.lenth is > 0
-        reviews.data.reduce((total, next) => total + next.rating, 0) /
-          reviews.data.length
-      );
-      setReviewCount(reviews.data.length);
+    if(book.id) {
+      // GET all reviews for specific book
+      const reviews = await axios.get(`/api/reviews/${book.id}`);
+      //reviews.data = array of reivews for specific book
+      if (reviews.data.length > 0) {
+        setAvgReview(
+          //use reduce method to take the average of the rating columns if the array.lenth is > 0
+          reviews.data.reduce((total, next) => total + next.rating, 0) /
+            reviews.data.length
+        );
+        setReviewCount(reviews.data.length);
+      }
     }
 
     setLoading(false);
