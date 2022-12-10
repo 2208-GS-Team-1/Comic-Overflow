@@ -30,12 +30,12 @@ const allProductsAdd = ({ bookId }) => {
                     quantity: existingItem.quantity + 1,
                 });
                 const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
-                dispatch(updatedCart)
+                dispatch(setCart(updatedCart.data))
             } else {
                 const body = { userId, bookId };
                 await axios.post("/api/cart", body);
                 const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
-                dispatch(setCart(updatedCart))
+                dispatch(setCart(updatedCart.data))
             }
         }
     } catch (error) {

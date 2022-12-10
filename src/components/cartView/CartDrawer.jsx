@@ -19,7 +19,7 @@ const CartDrawer = () => {
   const [loading, setLoading] = useState(true)
   const { cart } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.user)
-  const [totalPrice, setTotalPrice] = useState();
+  const [totalPrice, setTotalPrice] = useState(0);
   const dispatch = useDispatch();
   const getUsersCart = async () => {
     // If user slice is not empty, go fetch the cart
@@ -32,10 +32,14 @@ const CartDrawer = () => {
     }
     setLoading(false);
   };
+
   const handleOpen = async () => {
     setIsOpen(true);
+    const totalPriceCalc = cart.reduce((total, index) =>
+      total = total + (index.quantity* index.book.price)
+    ,0)
+    setTotalPrice(totalPriceCalc)
   };
-
   const handleClose = () => {
     setIsOpen(false);
   };
@@ -68,9 +72,9 @@ const CartDrawer = () => {
       // Dispatch the new cart array to the Redux store
       dispatch(setCart(newCart));
 
-      const updatedTotalPrice = totalPrice - cartItem.price;
-      setTotalPrice(updatedTotalPrice)
     }
+    const updatedTotalPrice = totalPrice - cartItem.book.price;
+    setTotalPrice(updatedTotalPrice)
   };
   const add = async cartItem => {
     // To 'add', just +1 its quantity in the db
@@ -94,7 +98,8 @@ const CartDrawer = () => {
   
     // Dispatch the new cart array to the Redux store
     dispatch(setCart(newCart));
-    const updatedTotalPrice = totalPrice + cartItem.price;
+    console.log(cartItem)
+    const updatedTotalPrice = totalPrice + cartItem.book.price;
 
     // Update the total price state variable
     setTotalPrice(updatedTotalPrice);
@@ -173,7 +178,7 @@ const CartDrawer = () => {
           <div
           className='cartTotal'
           >
-            Total: {totalPrice}
+            Total: {(totalPrice / 100).toFixed(2)}
           </div>
           <div
           className='checkoutButton'
