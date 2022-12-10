@@ -5,7 +5,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setBooks, setSelectedBook } from "../../store/bookSlice";
+import { setBooks } from "../../store/bookSlice";
 
 import MuiLoader from "../MuiLoader";
 
