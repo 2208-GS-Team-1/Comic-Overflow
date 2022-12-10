@@ -39,23 +39,26 @@ router.post("/", async (req, res, next) => {
   try {
     console.log(req.body);
     console.log("inside post route");
-    const usernameExists = await User.findAll({
+
+    const userWithSameUsername = await User.findOne({
       where: {
         username: req.body.username,
       },
     });
-    console.log("made it past usernameExists query");
+    console.log("made it past same username query");
+    console.log(userWithSameUsername);
 
-    const emailExists = await User.findAll({
+    const userWithSameEmail = await User.findOne({
       where: {
         email: req.body.email,
       },
     });
-    console.log("made it past emailExists query");
+    console.log("made it past same email query");
+    console.log(userWithSameEmail);
 
-    if (usernameExists.username) {
+    if (userWithSameUsername) {
       res.send("Username already exists").status(409);
-    } else if (emailExists.email) {
+    } else if (userWithSameEmail) {
       res.send("Email already exists").status(409);
     } else {
       console.log("about to create the user using req.body");
