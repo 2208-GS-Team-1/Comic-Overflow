@@ -78,7 +78,6 @@ const CartDrawer = () => {
   const add = async cartItem => {
     // To 'add', just +1 its quantity in the db
     const updatedQuantity = cartItem.quantity + 1;
-    
     await axios.put(`/api/cart/${cartItem.id}`, {
       quantity: updatedQuantity,
     });
@@ -104,8 +103,7 @@ const CartDrawer = () => {
   };
   const handleCheckOut = async () => {
     await axios.get(`api/cart/user/${user.id}/checkOut`)
-    const emptyCart = await axios.get(`/cart/user/${user.id}`)
-    console.log(emptyCart)
+
     setTotalPrice(0)
     dispatch(setCart([]))
   }
