@@ -37,21 +37,29 @@ router.get("/:id", async (req, res, next) => {
 // POST - api/users --> Adds user to db
 router.post("/", async (req, res, next) => {
   try {
+    console.log(req.body);
+    console.log("inside post route");
     const usernameExists = await User.findAll({
       where: {
         username: req.body.username,
       },
     });
+    console.log("made it past usernameExists query");
+
     const emailExists = await User.findAll({
       where: {
         email: req.body.email,
       },
     });
+    console.log("made it past emailExists query");
+
     if (usernameExists.username) {
       res.send("Username already exists").status(409);
     } else if (emailExists.email) {
       res.send("Email already exists").status(409);
     } else {
+      console.log("about to create the user using req.body");
+
       await User.create(req.body);
       res.send("User has been succussfully created").status(201);
     }

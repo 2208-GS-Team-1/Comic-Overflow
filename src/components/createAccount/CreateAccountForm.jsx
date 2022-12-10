@@ -20,10 +20,18 @@ const validationSchema = yup.object({
     .string("Confirm password")
     // This is how you look at 'password' and make sure it is the same:
     .oneOf([yup.ref("password"), null], "Passwords should match"),
-  firstName: yup.string("Enter your first name"),
-  lastName: yup.string("Enter your last name"),
+  firstName: yup
+    .string("Enter your first name")
+    .required("First name is required"),
+  lastName: yup
+    .string("Enter your last name")
+    .required("Last name is required"),
 });
 
+const submitButtonStyle = {
+  margin: "10px",
+  width: "250px",
+};
 function CreateAccountForm() {
   // Redux and React stuff
   const navigate = useNavigate();
@@ -36,17 +44,28 @@ function CreateAccountForm() {
     // Initializes our formik.values object to have these key-value pairs.
     initialValues: {
       email: "",
+      username: "",
       password: "",
       firstName: "",
       lastName: "",
     },
     // Give it our yup validationSchema
     validationSchema: validationSchema,
+
     onSubmit: async values => {
-      console.log(values);
       // Update Backend: axios post req to User
       try {
-        await axios.post("/api/users", values);
+        // On backend, the req.body cannot contain confirmPassword because it breaks sequelize.
+        // So limit what we went back, here.
+        const bodyToSubmit = {
+          email: values.email,
+          username: values.username,
+          password: values.password,
+          firstName: values.firstName,
+          lastName: values.lastName,
+        };
+
+        await axios.post("/api/users", bodyToSubmit);
         /* Ideally would like to log the user in here, and THEN redirect to home
       	But not sure how to generate the JWT and the stuff with authorization.
 				Would also need to dispatch the redux state of user, I think.
@@ -177,9 +196,12 @@ function CreateAccountForm() {
           />
         </Box>
 
-        <Button type="submit" sx={{ width: "300px" }} variant="contained">
+        <button type="submit" style={submitButtonStyle}>
+          submit
+        </button>
+        {/* <Button type="submit" sx={{ width: "300px" }} variant="contained">
           Submit
-        </Button>
+        </Button> */}
 
         {creationSuccess && (
           <Alert sx={{ marginTop: 2 }} severity="success">
