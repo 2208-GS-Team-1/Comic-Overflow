@@ -25,7 +25,7 @@ const allProductsAdd = ({ bookId }) => {
                     dispatch(setCart(updatedCart.data))
                 } else {
                     const bookToAdd = await axios.get(`/api/books/${bookId}`)
-                    if (bookToAdd.stock !== 0) {
+                    if (bookToAdd.stock !== 0 && !existingItem) {
                         const body = { userId, bookId };
                         await axios.post("/api/cart", body);
                         const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
