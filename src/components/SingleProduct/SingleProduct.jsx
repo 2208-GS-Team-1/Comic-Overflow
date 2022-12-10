@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { setSelectedBook } from "../../store/bookSlice";
 import { setCart } from "../../store/cartSlice";
+import SingleProductAdd from "../addToCart/SingleProductAdd";
 import ReviewsSingleBook from "../Reviews/ReviewsSingleBook";
 import StarRatingAvg from "../Reviews/StarRatingAvg";
 import "./singleProduct.css";
@@ -38,63 +39,63 @@ const SingleProduct = () => {
   const handleQuantityChange = (event) => {
     setBookQuantity(event.target.value)
   }
-  const addToCart = async () => {
-    try {
-      if (!user.id) {
-          alert("Please login to add to cart");
-      } else {
-        const existingItem = cart.find((cartItem) => cartItem.book.id === bookId);
-        // If book quantity > 1 and the item already exists in our cart
-          if(bookQuantity > 1 && existingItem){
-            // if the items book stock is > the amount we already have + the amount want to add
-            if(existingItem.book.stock >= (existingItem.quantity + Number(bookQuantity))) {  
-              await axios.put(`/api/cart/${existingItem.id}`, {
-                  quantity: existingItem.quantity + Number(bookQuantity),
-              });
-              const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
-              dispatch(setCart(updatedCart.data))
-            } else {
-              // if the user tries to add more to their cart than the stock has, we max their cart to the stock amount
-              await axios.put(`/api/cart/${existingItem.id}`, {
-                quantity: existingItem.book.stock,
-            })
-            const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
-            dispatch(setCart(updatedCart.data))
-            }
-          } else if (existingItem && bookQuantity === 1){
-            if(existingItem && existingItem.book.stock >= (existingItem.quantity + Number(bookQuantity))) {  
-              await axios.put(`/api/cart/${existingItem.id}`, {
-                  quantity: existingItem.quantity + Number(bookQuantity),
-              });
-              const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
-              dispatch(setCart(updatedCart.data))
-            }
-          } else if(!existingItem){
-            const book = await axios.get(`/api/books/${bookId}`)
-            const bookToAdd = book.data
-            const numBookQuantity = Number(bookQuantity)
-            if(numBookQuantity === 1 && bookToAdd.stock > numBookQuantity){
-              const body = { userId, bookId };
-              await axios.post("/api/cart", body);
-              const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
-              dispatch(setCart(updatedCart.data))
-            } else if (numBookQuantity <= bookToAdd.stock){
-              const body = { userId, bookId };
-            await axios.post(`/api/cart/${numBookQuantity}`, body);
-            const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
-              dispatch(setCart(updatedCart.data))
-            } else {
-              const body = { userId, bookId };
-              await axios.post(`/api/cart/${bookToAdd.stock}`, body);
-              const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
-              dispatch(setCart(updatedCart.data))
-          }
-      }
-    }
-  } catch (error) {
-      console.log(error)
-  }
-  }
+  // const addToCart = async () => {
+  //   try {
+  //     if (!user.id) {
+  //         alert("Please login to add to cart");
+  //     } else {
+  //       const existingItem = cart.find((cartItem) => cartItem.book.id === bookId);
+  //       // If book quantity > 1 and the item already exists in our cart
+  //         if(bookQuantity > 1 && existingItem){
+  //           // if the items book stock is > the amount we already have + the amount want to add
+  //           if(existingItem.book.stock >= (existingItem.quantity + Number(bookQuantity))) {  
+  //             await axios.put(`/api/cart/${existingItem.id}`, {
+  //                 quantity: existingItem.quantity + Number(bookQuantity),
+  //             });
+  //             const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
+  //             dispatch(setCart(updatedCart.data))
+  //           } else {
+  //             // if the user tries to add more to their cart than the stock has, we max their cart to the stock amount
+  //             await axios.put(`/api/cart/${existingItem.id}`, {
+  //               quantity: existingItem.book.stock,
+  //           })
+  //           const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
+  //           dispatch(setCart(updatedCart.data))
+  //           }
+  //         } else if (existingItem && bookQuantity === 1){
+  //           if(existingItem && existingItem.book.stock >= (existingItem.quantity + Number(bookQuantity))) {  
+  //             await axios.put(`/api/cart/${existingItem.id}`, {
+  //                 quantity: existingItem.quantity + Number(bookQuantity),
+  //             });
+  //             const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
+  //             dispatch(setCart(updatedCart.data))
+  //           }
+  //         } else if(!existingItem){
+  //           const book = await axios.get(`/api/books/${bookId}`)
+  //           const bookToAdd = book.data
+  //           const numBookQuantity = Number(bookQuantity)
+  //           if(numBookQuantity === 1 && bookToAdd.stock > numBookQuantity){
+  //             const body = { userId, bookId };
+  //             await axios.post("/api/cart", body);
+  //             const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
+  //             dispatch(setCart(updatedCart.data))
+  //           } else if (numBookQuantity <= bookToAdd.stock){
+  //             const body = { userId, bookId };
+  //           await axios.post(`/api/cart/${numBookQuantity}`, body);
+  //           const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
+  //             dispatch(setCart(updatedCart.data))
+  //           } else {
+  //             const body = { userId, bookId };
+  //             await axios.post(`/api/cart/${bookToAdd.stock}`, body);
+  //             const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
+  //             dispatch(setCart(updatedCart.data))
+  //         }
+  //     }
+  //   }
+  // } catch (error) {
+  //     console.log(error)
+  // }
+  // }
   if (loading) return <div>loading...</div>
     if (selectedBook.stock !== 0) {
       const bookPrice = (selectedBook.price / 100).toFixed(2);
@@ -137,9 +138,10 @@ const SingleProduct = () => {
                     onChange={handleQuantityChange}
                   />
                 </form>
-                  <button 
+                  {/* <button 
                   onClick={addToCart}
-                  name="cartButton">Add to Cart</button>
+                  name="cartButton">Add to Cart</button> */}
+                  <SingleProductAdd bookQuantity={bookQuantity}/>
               </div>
               <div>
                 <StarRatingAvg key={selectedBook.id} book={selectedBook} />
