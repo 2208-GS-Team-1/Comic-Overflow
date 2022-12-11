@@ -4,14 +4,11 @@ import { AddShoppingCart } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setCart, addBookToCart } from "../../store/cartSlice";
-import { useState } from "react";
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
 const allProductsAdd = ({ book }) => {
   const { user } = useSelector(state => state.user);
   const dispatch = useDispatch()
-    const reduxCart = useSelector((state) => state.cart.cart);
   const userId = user.id;
-  const [btnDisabled, setBtnDisabled] = useState(false)
   const loadCartFromLocalStorage = () => {
     // Get the stringified cart from local storage
     const cartString = localStorage.getItem('cart');

@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Drawer, IconButton, Box, Divider, Card } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCart } from "../../store/cartSlice";
 import axios from 'axios';
-import MuiLoader from '../MuiLoader';
 import "./CartDrawerStyles.css"
 
 
 const CartDrawer = () => {
   // const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false)
-  const reduxCart = useSelector((state) => state.cart.cart);
   const { user } = useSelector((state) => state.user)
   const [totalPrice, setTotalPrice] = useState(0);
   const dispatch = useDispatch();
@@ -187,7 +184,6 @@ const cart = loadCartFromLocalStorage();
         </h1>
         <Divider />
         {/* If loading is true, the cart isn't fetched yet and it will display this MUI loader */}
-        {loading && <MuiLoader/>}
         {/* Display the users cart */}
         <div style={{ overflow: 'auto' }}>
         {!cart && <div>your cart is empty!</div>}
