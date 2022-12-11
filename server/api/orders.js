@@ -24,6 +24,17 @@ const authenticateUser = (req, res, next) => {
   });
 };
 
+// GET /api/orders
+// may be used by admin
+router.get("/", async (req, res, next) => {
+  try {
+    const allOrders = await Order.findAll({ include: [CartItem] });
+    res.send(allOrders);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // GET /api/orders/:orderId
 // Get a specific order's information, give an orderId
 router.get("/:orderId", async (req, res, next) => {
@@ -38,10 +49,19 @@ router.get("/:orderId", async (req, res, next) => {
   }
 });
 
-// GET /api/order/users/:users
-// TODO!
+// GET /api/orders/users/:users
+// Get a specific user's order history, including all cart items
 router.get("/users/:userId", async (req, res, next) => {
   const { userId } = req.params;
+  try {
+    const orders = await Order.findAll({
+      where: { userId: userId },
+      include: [CartItem],
+    });
+    res.send(orders);
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

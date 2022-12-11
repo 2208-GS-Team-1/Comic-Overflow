@@ -2,12 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import UserOrders from "../Orders/UserOrders";
 import "./userPage.css";
 
 const UserPage = () => {
   //user can click on the account link to enter this page
   // here, user will be able to update their info
-  const user = useSelector(state => state.user.user);
+  const user = useSelector((state) => state.user.user);
   const id = user.id;
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -42,6 +43,9 @@ const UserPage = () => {
             <button onClick={navigator}>Edit</button>
             <button onClick={() => navigate("/admin")}>Admin Page</button>
           </div>
+        </div>
+        <div>
+          <UserOrders />
         </div>
       </div>
     );
