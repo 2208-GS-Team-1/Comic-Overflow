@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setCart, addBookToCart } from "../../store/cartSlice";
 import { useState } from "react";
-const allProductsAdd = ({ bookId }) => {
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+const allProductsAdd = ({ book }) => {
   const { user } = useSelector(state => state.user);
   const dispatch = useDispatch()
     const reduxCart = useSelector((state) => state.cart.cart);
@@ -32,7 +33,7 @@ const allProductsAdd = ({ bookId }) => {
   const cart = loadCartFromLocalStorage();
   const addToCart = async () => {
     try {
-        const existingItem = cart.find((cartItem) => cartItem.book.id === bookId);
+        const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
         if (!user.id) {
             if(existingItem && existingItem.book.stock >= existingItem.quantity + 1) {
                 const updatedQuantity = existingItem.quantity + 1
@@ -48,7 +49,7 @@ const allProductsAdd = ({ bookId }) => {
                 dispatch(setCart(newCart))
                 saveCartToLocalStorage(newCart)
             }else if(!existingItem) {
-                const { data }= await axios.get(`/api/books/${bookId}`)
+                const { data }= await axios.get(`/api/books/${book.id}`)
                 const bookAndQuantity = {quantity: 1, book:data}
                 dispatch(addBookToCart(bookAndQuantity))
                 saveCartToLocalStorage([...cart, bookAndQuantity])
@@ -57,7 +58,7 @@ const allProductsAdd = ({ bookId }) => {
         } else {
             // existingItem will either return the object its looking for (truthy)
             // or undefined (falsy)
-            const existingItem = cart.find((cartItem) => cartItem.book.id === bookId);
+            const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
             if(existingItem) {  
                 await axios.put(`/api/cart/${existingItem.id}`, {
                     quantity: existingItem.quantity + 1,
@@ -66,6 +67,7 @@ const allProductsAdd = ({ bookId }) => {
                 dispatch(setCart(updatedCart.data))
                 saveCartToLocalStorage(updatedCart.data)
             } else {
+                const bookId = book.id
                 const body = { userId, bookId };
                 await axios.post("/api/cart", body);
                 const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
@@ -80,9 +82,10 @@ const allProductsAdd = ({ bookId }) => {
   return (
     <>
       <Button 
-      disabled={btnDisabled}
+      disabled={book.stock === 0 && true}
       size="small" onClick={addToCart}>
-        <AddShoppingCart />
+        {book.stock !== 0 ? <AddShoppingCart /> : <ProductionQuantityLimitsIcon/> }
+
       </Button>
     </>
   );

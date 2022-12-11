@@ -63,7 +63,7 @@ const AllBooks = () => {
             </div>
             <div className="productCardButtons">
               <Typography>${(book.price / 100).toFixed(2)}</Typography>
-              {book.stock > 0 ? <AllProductsAdd bookId={book.id}/> : <div>out of stock</div>}
+            <AllProductsAdd book={book}/>
             </div>
           </Card>
         );
