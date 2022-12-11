@@ -1,0 +1,14 @@
+.adminUserPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.adminUserTable {
+    outline: 4px solid;
+    outline-color: rgb(148, 148, 148);
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+}

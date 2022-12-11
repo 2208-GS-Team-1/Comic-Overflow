@@ -153,6 +153,7 @@ const cart = loadCartFromLocalStorage();
         setTotalPrice(updatedTotalPrice);
       }
       }
+
   };
   const handleCheckOut = async () => {
     await axios.get(`api/cart/user/${user.id}/checkOut`)
