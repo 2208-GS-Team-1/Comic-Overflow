@@ -6,16 +6,17 @@ import { setSelectedBook } from "../../store/bookSlice";
 import ReviewsSingleBook from "../Reviews/ReviewsSingleBook";
 import StarRatingAvg from "../Reviews/StarRatingAvg";
 import "./singleProduct.css";
+import AllProductsAdd from "../addToCart/AllProductsAdd";
 
 const SingleProduct = () => {
   // when item is clicked from all product page, it's automatically directed to this page.
   // this components will take in the id of the item and display appropriate information.
-  // *** WILL NEED REVIEW COMPONENT TO DISPLAY ALL RELATED REVIEWS ***
 
   const dispatch = useDispatch();
   const selectedBook = useSelector((state) => state.book.selectedBook);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
+  const bookId = id;
 
   //fetching product's information using ID
 
@@ -29,8 +30,8 @@ const SingleProduct = () => {
     singleBookHandler();
   }, []);
 
-  if (loading) {
-    if (selectedBook.stock !== 0) {
+  if(!loading){ return (<div><h1>Oops! Something went wrong!</h1></div>)}
+
       const bookPrice = (selectedBook.price / 100).toFixed(2);
       return (
         <div className="singleProductPage">
@@ -55,11 +56,18 @@ const SingleProduct = () => {
               )}
 
               <div className="isbn">ISBN: {selectedBook.isbn}</div>
+              {/*if the book is out of stock, displayed price & stock status will change */}
+              {(selectedBook.stock !== 0) ?
+              <>
               <div className="price">${bookPrice}</div>
               <p className="inStock">In Stock</p>
-              <div className="quantity">
-                {/* below form will need an on-click function to put product into the cart */}
+              </>:
+              <>
+              <div className="price">$0.00</div>
+              <p className="inStock">Out of Stock</p>
+              </>}
 
+              <div className="quantity">
                 <form className="singleProductForm">
                   <input
                     className="singleProductInput"
@@ -69,7 +77,16 @@ const SingleProduct = () => {
                     type="number"
                     placeholder="1"
                   />
-                  <button name="cartButton">Add to Cart</button>
+                  {/*Cart button will be disabled when out of stock */}
+                  {(selectedBook.stock !== 0)?
+                  <>
+                  <div className="productCardButtons">
+                    <AllProductsAdd bookId={bookId} />
+                  </div>
+                  </>:
+                  <>
+                  <button name="cartButton">Out of Stock</button>
+                  </>}
                 </form>
               </div>
               <div>
@@ -87,14 +104,7 @@ const SingleProduct = () => {
           </div>
         </div>
       );
-    } else {
-      return (
-        <div>
-          <h1>SORRY! SOLD OUT!</h1>
-        </div>
-      );
-    }
-  }
+
 };
 
 export default SingleProduct;
