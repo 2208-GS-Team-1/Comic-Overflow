@@ -2,12 +2,14 @@ import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { Alert, Box, TextField } from "@mui/material";
+
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
 // Validation schema using yup, to check is text field entries are valid.
 const validationSchema = yup.object({
+  username: yup.string("Enter your username").required("Username is required"),
   email: yup
     .string("Enter your email")
     .email("Enter a valid email")
@@ -114,7 +116,7 @@ function CreateAccountForm() {
             type="username"
             label="Username*"
             variant="outlined"
-            fullWidth
+            sx={{ width: "350px" }}
             value={formik.values.username || ""}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
@@ -128,8 +130,8 @@ function CreateAccountForm() {
             name="email"
             type="email"
             label="Email*"
-            fullWidth
             variant="outlined"
+            sx={{ width: "350px" }}
             value={formik.values.email || ""}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -144,7 +146,7 @@ function CreateAccountForm() {
             type="password"
             label="Password*"
             variant="outlined"
-            fullWidth
+            sx={{ width: "350px" }}
             value={formik.values.password || ""}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -159,7 +161,7 @@ function CreateAccountForm() {
             type="password"
             label="Confirm Password*"
             variant="outlined"
-            fullWidth
+            sx={{ width: "350px" }}
             value={formik.values.confirmPassword || ""}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -177,9 +179,9 @@ function CreateAccountForm() {
           <TextField
             name="firstName"
             type="firstName"
-            label="First Name"
+            label="First Name*"
             variant="outlined"
-            fullWidth
+            sx={{ width: "350px" }}
             value={formik.values.firstName || ""}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -192,9 +194,9 @@ function CreateAccountForm() {
           <TextField
             name="lastName"
             type="lastName"
-            label="Last Name"
+            label="Last Name*"
             variant="outlined"
-            fullWidth
+            sx={{ width: "350px" }}
             value={formik.values.lastName || ""}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
