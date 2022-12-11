@@ -83,6 +83,8 @@ const cart = loadCartFromLocalStorage();
         dispatch(setCart(newCart));
         saveCartToLocalStorage(newCart)
       }
+      const updatedTotalPrice = totalPrice - cartItem.book.price;
+      setTotalPrice(updatedTotalPrice)
     } else {
         //else its a guest cart
       if (cartItem.quantity === 1){
@@ -105,12 +107,12 @@ const cart = loadCartFromLocalStorage();
         dispatch(setCart(newCart));
         saveCartToLocalStorage(newCart)
       }
+      const updatedTotalPrice = totalPrice - cartItem.book.price;
+      setTotalPrice(updatedTotalPrice)
     }
-    const updatedTotalPrice = totalPrice - cartItem.book.price;
-    setTotalPrice(updatedTotalPrice)
   };
   const add = async cartItem => {
-    if(user.id) {
+    if(user.id && cartItem.book.stock >= cartItem.quantity + 1) {
       // To 'add', just +1 its quantity in the db
       const updatedQuantity = cartItem.quantity + 1;
       await axios.put(`/api/cart/${cartItem.id}`, {
@@ -131,6 +133,10 @@ const cart = loadCartFromLocalStorage();
       // Dispatch the new cart array to the Redux store
       dispatch(setCart(newCart));
       saveCartToLocalStorage(newCart)
+      const updatedTotalPrice = totalPrice + cartItem.book.price;
+    
+      // Update the total price state variable
+      setTotalPrice(updatedTotalPrice);
     }
     // else we edit the guests cart 
     else {

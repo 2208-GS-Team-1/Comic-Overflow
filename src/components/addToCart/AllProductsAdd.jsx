@@ -29,9 +29,9 @@ const allProductsAdd = ({ book }) => {
 
   const cart = loadCartFromLocalStorage();
   const addToCart = async () => {
-    try {
-        const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
-        if (!user.id) {
+      try {
+          if (!user.id) {
+            const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
             if(existingItem && existingItem.book.stock >= existingItem.quantity + 1) {
                 const updatedQuantity = existingItem.quantity + 1
                 const newCart = cart.map(item => {
@@ -51,11 +51,8 @@ const allProductsAdd = ({ book }) => {
                 dispatch(addBookToCart(bookAndQuantity))
                 saveCartToLocalStorage([...cart, bookAndQuantity])
             }
-
         } else {
-            // existingItem will either return the object its looking for (truthy)
-            // or undefined (falsy)
-            const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
+            console.log(existingItem)
             if(existingItem) {  
                 await axios.put(`/api/cart/${existingItem.id}`, {
                     quantity: existingItem.quantity + 1,
@@ -63,7 +60,7 @@ const allProductsAdd = ({ book }) => {
                 const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
                 dispatch(setCart(updatedCart.data))
                 saveCartToLocalStorage(updatedCart.data)
-            } else {
+            } else if (!existingItem){
                 const bookId = book.id
                 const body = { userId, bookId };
                 await axios.post("/api/cart", body);
