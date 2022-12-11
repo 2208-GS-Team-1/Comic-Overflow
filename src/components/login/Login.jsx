@@ -7,23 +7,23 @@ import { Link } from "react-router-dom";
 
 const Login = () => {
   const { user } = useSelector(state => state.user);
-    
+
   const dispatch = useDispatch();
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
-  const [showPassword, setShowPassword] = useState(false)
-  const handleCheckboxChange = (event) => {
-    setShowPassword(event.target.checked)
-  } 
+  const [showPassword, setShowPassword] = useState(false);
+  const handleCheckboxChange = event => {
+    setShowPassword(event.target.checked);
+  };
   const onChange = ev => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
   };
   const logout = () => {
-    window.localStorage.removeItem('token');
+    window.localStorage.removeItem("token");
     dispatch(resetUser());
-};
+  };
 
   const loginWithToken = async () => {
     const token = window.localStorage.getItem("token");
@@ -46,23 +46,16 @@ const Login = () => {
 
     loginWithToken(token);
   };
-  if(user.id) return (
-    <div>
+  if (user.id)
+    return (
+      <div>
         Welcome {user.firstName} {user.lastName}
-    <button
-    onClick={logout}
-    >
-        log out
-    </button>
-    <Link
-    to='/usercart'
-    >
-    <button>
-        View Cart
-    </button>
-    </Link>
-    </div>
-    )
+        <button onClick={logout}>log out</button>
+        <Link to="/usercart">
+          <button>View Cart</button>
+        </Link>
+      </div>
+    );
   return (
     <div className="loginForm">
       <h2>Login</h2>
@@ -80,13 +73,10 @@ const Login = () => {
           value={credentials.password}
           onChange={onChange}
         />
-            <label
-            className="passwordInput"
-            >
-            Show password
-            <input
-            type="checkbox" onChange={handleCheckboxChange}/>
-            </label>
+        <label className="passwordInput">
+          Show password
+          <input type="checkbox" onChange={handleCheckboxChange} />
+        </label>
         <button>Login</button>
       </form>
     </div>

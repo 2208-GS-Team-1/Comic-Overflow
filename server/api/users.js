@@ -50,9 +50,9 @@ router.post("/", async (req, res, next) => {
     });
 
     if (userWithSameUsername) {
-      res.send("Username already exists").status(409);
+      res.status(400).send("An account with that username already exists");
     } else if (userWithSameEmail) {
-      res.send("Email already exists").status(409);
+      res.status(400).send("An account with that e-mail already exists");
     } else {
       await User.create(req.body);
       res.send("User has been succussfully created").status(201);

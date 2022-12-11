@@ -39,6 +39,7 @@ function CreateAccountForm() {
   // States used for error message display rendering if account creation was successful or not
   const [creationSuccess, setCreationSuccess] = useState(false);
   const [creationFailure, setCreationFailure] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const formik = useFormik({
     // Initializes our formik.values object to have these key-value pairs.
@@ -66,6 +67,8 @@ function CreateAccountForm() {
         };
 
         await axios.post("/api/users", bodyToSubmit);
+        setErrorMessage(errorMessage); // This is the message from the api's res.send
+
         /* Ideally would like to log the user in here, and THEN redirect to home
       	But not sure how to generate the JWT and the stuff with authorization.
 				Would also need to dispatch the redux state of user, I think.
@@ -83,7 +86,10 @@ function CreateAccountForm() {
           navigate("/login");
         }, 2000);
       } catch (err) {
-        console.log("CAUGHT!");
+        // This is the message from the api's res.send
+        const errorMessage = err.response.data;
+        setErrorMessage(errorMessage); // Give that error message to our mui alert
+
         // If account creation failed (eg, an acct with that username already exists)
         setCreationFailure(true);
       }
@@ -209,7 +215,7 @@ function CreateAccountForm() {
 
         {creationFailure && (
           <Alert sx={{ marginTop: 2 }} severity="error">
-            An account with that username or email already exists
+            {errorMessage}
           </Alert>
         )}
       </Box>
