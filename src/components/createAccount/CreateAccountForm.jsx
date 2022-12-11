@@ -2,9 +2,6 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Box, Button, TextField } from '@mui/material';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../../store/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 // Validation schema using yup, to check is text field entries are valid.
@@ -27,8 +24,6 @@ const validationSchema = yup.object({
 
 function CreateAccountForm() {
 	// Redux and React stuff
-	const dispatch = useDispatch();
-	const user = useSelector(state => state.user);
 	const navigate = useNavigate();
 
 	const formik = useFormik({

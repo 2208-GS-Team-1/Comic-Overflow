@@ -1,12 +1,14 @@
-import { Button, Card, CardActions, Typography } from "@mui/material";
-import { sizing } from "@mui/system";
-import { Box } from "@mui/system";
+
+import { Card,  Typography } from "@mui/material";
+
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBooks } from "../../store/bookSlice";
-import { AddShoppingCart } from "@mui/icons-material";
+
+import MuiLoader from "../MuiLoader";
+
 import { Link } from "react-router-dom";
 import "./books.css";
 
@@ -31,7 +33,12 @@ const AllBooks = () => {
   useEffect(() => {
     fetchBooks();
   }, []);
-  if (loading) return <h1>Loading...</h1>;
+  if (loading) return(
+    <div
+    className="loadingContainer">
+      <MuiLoader/>
+    </div>
+  )
   return (
     <div className="productsContainer">
       <h1>All Comics</h1>

@@ -1,7 +1,7 @@
 import React from "react";
 import CreateAccountForm from "./CreateAccountForm.jsx";
 import { Box } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 function CreateAccountContainer() {
   const { user } = useSelector(state => state.user);

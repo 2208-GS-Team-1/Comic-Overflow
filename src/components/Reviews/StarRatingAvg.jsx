@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Rating } from "@mui/material";
 import React, { useEffect, useState } from "react";
 

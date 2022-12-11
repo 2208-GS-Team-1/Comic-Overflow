@@ -1,19 +1,19 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./userPage.css";
 
 const UserPage = () => {
   //user can click on the account link to enter this page
   // here, user will be able to update their info
-  const dispatch = useDispatch();
   const user = useSelector(state => state.user.user);
   const id = user.id;
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const userHandler = async () => {
+    // eslint-disable-next-line no-unused-vars
     const userData = await axios.get(`/api/users/${id} `);
     setLoading(true);
   };
