@@ -1,24 +1,48 @@
-import React from "react";
+import { TableBody } from "@mui/material";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setAllUsers } from "../../store/userSlice";
 import AdminNavbar from "./adminNavbar";
 
 function AdminUsersPage() {
   // If they're not an admin don't let them see this component.
+  const [loading, setLoading] = useState(false);
   const { user } = useSelector(state => state.user);
+  const allUsers = useSelector(state => state.user.allUsers);
   const dispatch = useDispatch();
 
   if (!user.isAdmin) return <h2>You are not an admin, permission denied</h2>;
 
+  const allUserHandler = async () =>{
+    const userDataFetched = await axios.get('/api/users')
+    dispatch(setAllUsers(userDataFetched.data));
+    setLoading(true);
+    console.log('data loading completed');
+  }
+
+  useEffect(()=>{
+    allUserHandler();
+  }, [])
+
+  if(!loading){return (<div>Oops! Something went wrong!</div>)}
+
   return (
     <div>
       <AdminNavbar />
-      <div>Maybe here will be a component to create a new user.</div>
-      Below will be a list of all users... maybe they will be links to more info
-      on them, and from there you can edit or delete.
-      <ul>
-        <li>moe</li>
-        <li>lucy</li>
-      </ul>
+      <div>All Users List</div>
+      <div>
+        <table>
+          <tbody>
+            <tr>
+              <td>Lucy</td>
+            </tr>
+            <tr>
+              <td>Moe</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
