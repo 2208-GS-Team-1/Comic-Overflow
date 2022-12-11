@@ -7,6 +7,7 @@ const StarRatingAvg = ({ book }) => {
   //use local state
   const [avgReview, setAvgReview] = useState(0.0);
   const [reviewCount, setReviewCount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const handleAvgReview = () => {
     // reviews are associated to book prop
@@ -22,6 +23,7 @@ const StarRatingAvg = ({ book }) => {
       setAvgReview(averageReview);
       setReviewCount(reviews.length);
     }
+    setLoading(false);
   };
 
   //useEffect to render the stars using the above function
@@ -29,6 +31,7 @@ const StarRatingAvg = ({ book }) => {
     handleAvgReview();
   }, []);
 
+  if (loading) return <div>Loading...</div>;
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       {/* if length of array > 0 then show the average rating, otherwise show no ratings */}
