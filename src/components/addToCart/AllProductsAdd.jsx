@@ -33,11 +33,26 @@ const allProductsAdd = ({ bookId }) => {
   const addToCart = async () => {
     try {
         if (!user.id) {
-                setBtnDisabled(true)
+            const existingItem = cart.find((cartItem) => cartItem.book.id === bookId);
+            if(existingItem) {
+                const updatedQuantity = existingItem.quantity + 1
+                const newCart = cart.map(item => {
+                  if (item.book.id === existingItem.book.id) {
+                    return {
+                      ...item,
+                      quantity: updatedQuantity,
+                    };
+                  }
+                  return item;
+                });
+                dispatch(setCart(newCart))
+                saveCartToLocalStorage(newCart)
+            }else {
                 const { data }= await axios.get(`/api/books/${bookId}`)
                 const bookAndQuantity = {quantity: 1, book:data}
                 dispatch(addBookToCart(bookAndQuantity))
-                saveCartToLocalStorage(bookAndQuantity)
+                saveCartToLocalStorage([...cart, bookAndQuantity])
+            }
 
         } else {
             // existingItem will either return the object its looking for (truthy)

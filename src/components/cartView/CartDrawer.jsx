@@ -17,7 +17,6 @@ const CartDrawer = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const dispatch = useDispatch();
 // First, define a function that loads the cart from local storage
-    localStorage.setItem("cart", JSON.stringify(reduxCart))
 const loadCartFromLocalStorage = () => {
   // Get the stringified cart from local storage
   const cartString = localStorage.getItem('cart');
