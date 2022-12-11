@@ -77,11 +77,11 @@ const CartDrawer = () => {
   };
   const add = async cartItem => {
     // To 'add', just +1 its quantity in the db
-    const updatedQuantity = cartItem.quantity + 1;
-    await axios.put(`/api/cart/${cartItem.id}`, {
-      quantity: updatedQuantity,
-    });
-  
+    if(cartItem.book.stock > cartItem.quantity){
+      const updatedQuantity = cartItem.quantity + 1;
+      await axios.put(`/api/cart/${cartItem.id}`, {
+        quantity: updatedQuantity,
+      });
       //This map might seem redundant, but without it each time the cart quantities are decremented the array would come back in a differet order,
       // so all the products would move each decrement or increment. Now with this we're keeping the array in place
     const newCart = cart.map(item => {
@@ -97,9 +97,11 @@ const CartDrawer = () => {
     // Dispatch the new cart array to the Redux store
     dispatch(setCart(newCart));
     const updatedTotalPrice = totalPrice + cartItem.book.price;
-
+  
     // Update the total price state variable
     setTotalPrice(updatedTotalPrice);
+    }
+
   };
   const handleCheckOut = async () => {
     await axios.get(`api/cart/user/${user.id}/checkOut`)

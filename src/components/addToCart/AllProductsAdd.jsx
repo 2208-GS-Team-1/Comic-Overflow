@@ -14,21 +14,23 @@ const allProductsAdd = ({ bookId }) => {
         if (!user.id) {
             alert("Please login to add to cart");
         } else {
-            // existingItem will either return the object its looking for (truthy)
-            // or undefined (falsy)
             const existingItem = cart.find((cartItem) => cartItem.book.id === bookId);
-            if(existingItem) {  
-                console.log(existingItem)
-                await axios.put(`/api/cart/${existingItem.id}`, {
-                    quantity: existingItem.quantity + 1,
-                });
-                const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
-                dispatch(setCart(updatedCart.data))
-            } else {
-                const body = { userId, bookId };
-                await axios.post("/api/cart", body);
-                const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
-                dispatch(setCart(updatedCart.data))
+                // existingItem will either return the object its looking for (truthy)
+                // or undefined (falsy)
+                if(existingItem && existingItem.book.stock > existingItem.quantity) {  
+                    await axios.put(`/api/cart/${existingItem.id}`, {
+                        quantity: existingItem.quantity + 1,
+                    });
+                    const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
+                    dispatch(setCart(updatedCart.data))
+                } else {
+                    const bookToAdd = await axios.get(`/api/books/${bookId}`)
+                    if (bookToAdd.stock !== 0 && !existingItem) {
+                        const body = { userId, bookId };
+                        await axios.post("/api/cart", body);
+                        const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
+                        dispatch(setCart(updatedCart.data))
+                    }
             }
         }
     } catch (error) {
