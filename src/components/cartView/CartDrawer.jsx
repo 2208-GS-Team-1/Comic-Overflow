@@ -54,23 +54,74 @@ const cart = loadCartFromLocalStorage();
 
   //subtracts from quantity 
   const subtract = async cartItem => {
-    // If they're deleting their own copy...
-    if (cartItem.quantity === 1) {
-      // Delete in backend
-      await axios.delete(`/api/cart/${cartItem.id}`);
-      // Create a new array of cart items by filtering out the item that was deleted
-      const newCart = cart.filter(item => item.id !== cartItem.id);
-      // Dispatch the new cart array to the Redux store
-      dispatch(setCart(newCart));
-      saveCartToLocalStorage(newCart)
+    // if a user is signed in
+    if(user.id) {
+      // If they're deleting their own copy...
+      if (cartItem.quantity === 1) {
+        // Delete in backend
+        await axios.delete(`/api/cart/${cartItem.id}`);
+        // Create a new array of cart items by filtering out the item that was deleted
+        const newCart = cart.filter(item => item.id !== cartItem.id);
+        // Dispatch the new cart array to the Redux store
+        dispatch(setCart(newCart));
+        saveCartToLocalStorage(newCart)
+      } else {
+        // Else, just subtract one from quantity in backend
+        const updatedQuantity = cartItem.quantity - 1;
+        await axios.put(`/api/cart/${cartItem.id}`, {
+          quantity: updatedQuantity,
+        });
+        //This map might seem redundant, but without it each time the cart quantities are decremented the array would come back in a differet order,
+        // so all the products would move each decrement or increment. Now with this we're keeping the array in place
+        const newCart = cart.map(item => {
+          if (item.id === cartItem.id) {
+            return {
+              ...item,
+              quantity: updatedQuantity,
+            };
+          }
+          return item;
+        });
+    
+        // Dispatch the new cart array to the Redux store
+        dispatch(setCart(newCart));
+        saveCartToLocalStorage(newCart)
+      }
     } else {
-      // Else, just subtract one from quantity in backend
-      const updatedQuantity = cartItem.quantity - 1;
+        //else its a guest cart
+      if (cartItem.quantity === 1){
+        console.log(cartItem)
+        const newCart = cart.filter(item => item.book.id !== cartItem.book.id);
+        console.log(newCart)
+        dispatch(setCart(newCart))
+        saveCartToLocalStorage(newCart)
+      } else {
+        const updatedQuantity = cartItem.quantity - 1
+        const newCart = cart.map(item => {
+          if (item.book.id === cartItem.book.id) {
+            return {
+              ...item,
+              quantity: updatedQuantity,
+            };
+          }
+          return item;
+        });
+        dispatch(setCart(newCart));
+        saveCartToLocalStorage(newCart)
+      }
+    }
+    const updatedTotalPrice = totalPrice - cartItem.book.price;
+    setTotalPrice(updatedTotalPrice)
+  };
+  const add = async cartItem => {
+    if(user.id) {
+      // To 'add', just +1 its quantity in the db
+      const updatedQuantity = cartItem.quantity + 1;
       await axios.put(`/api/cart/${cartItem.id}`, {
         quantity: updatedQuantity,
       });
-      //This map might seem redundant, but without it each time the cart quantities are decremented the array would come back in a differet order,
-      // so all the products would move each decrement or increment. Now with this we're keeping the array in place
+        //This map might seem redundant, but without it each time the cart quantities are decremented the array would come back in a differet order,
+        // so all the products would move each decrement or increment. Now with this we're keeping the array in place
       const newCart = cart.map(item => {
         if (item.id === cartItem.id) {
           return {
@@ -80,38 +131,26 @@ const cart = loadCartFromLocalStorage();
         }
         return item;
       });
-  
+    
       // Dispatch the new cart array to the Redux store
       dispatch(setCart(newCart));
       saveCartToLocalStorage(newCart)
     }
-    const updatedTotalPrice = totalPrice - cartItem.book.price;
-    setTotalPrice(updatedTotalPrice)
-  };
-  const add = async cartItem => {
-    // To 'add', just +1 its quantity in the db
-    const updatedQuantity = cartItem.quantity + 1;
-    console.log(updatedQuantity)
-    await axios.put(`/api/cart/${cartItem.id}`, {
-      quantity: updatedQuantity,
-    });
-  
-      //This map might seem redundant, but without it each time the cart quantities are decremented the array would come back in a differet order,
-      // so all the products would move each decrement or increment. Now with this we're keeping the array in place
-    const newCart = cart.map(item => {
-      if (item.id === cartItem.id) {
-        return {
-          ...item,
-          quantity: updatedQuantity,
-        };
-      }
-      return item;
-    });
-  
-    // Dispatch the new cart array to the Redux store
-    dispatch(setCart(newCart));
-    console.log(newCart)
-    saveCartToLocalStorage(newCart)
+    // else we edit the guests cart 
+    else {
+      const updatedQuantity = cartItem.quantity + 1
+      const newCart = cart.map(item => {
+        if (item.book.id === cartItem.book.id) {
+          return {
+            ...item,
+            quantity: updatedQuantity,
+          };
+        }
+        return item;
+      });
+      dispatch(setCart(newCart));
+      saveCartToLocalStorage(newCart)
+    }
     const updatedTotalPrice = totalPrice + cartItem.book.price;
 
     // Update the total price state variable
