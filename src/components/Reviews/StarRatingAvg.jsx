@@ -8,9 +8,9 @@ const StarRatingAvg = ({ book }) => {
   const [avgReview, setAvgReview] = useState(0.0);
   const [reviewCount, setReviewCount] = useState(0);
 
-  const handleAvgReview = async () => {
+  const handleAvgReview = () => {
     // reviews are associated to book prop
-    const reviews = await book.reviews;
+    const reviews = book.reviews;
     //reviews = array of reviews for specific book
     if (reviews.length > 0) {
       //use reduce method to take the average of the rating columns if the array.lenth is > 0
