@@ -12,11 +12,12 @@ const CartDrawer = () => {
   // const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false)
-  // const { cart } = useSelector((state) => state.cart);
+  const reduxCart = useSelector((state) => state.cart.cart);
   const { user } = useSelector((state) => state.user)
   const [totalPrice, setTotalPrice] = useState(0);
   const dispatch = useDispatch();
 // First, define a function that loads the cart from local storage
+    localStorage.setItem("cart", JSON.stringify(reduxCart))
 const loadCartFromLocalStorage = () => {
   // Get the stringified cart from local storage
   const cartString = localStorage.getItem('cart');
@@ -149,6 +150,7 @@ const cart = loadCartFromLocalStorage();
         {loading && <MuiLoader/>}
         {/* Display the users cart */}
         <div style={{ overflow: 'auto' }}>
+        {!cart && <div>your cart is empty!</div>}
         {cart.map(cartItem => {
           return (
             <div 
@@ -181,9 +183,7 @@ const cart = loadCartFromLocalStorage();
             );
           })}
           </div>
-        {cart.length <= 0 && 
-        <div>Your cart is empty!</div>
-        }
+          <div>Your cart is empty!</div>
           <div
           className='cartTotal'
           >

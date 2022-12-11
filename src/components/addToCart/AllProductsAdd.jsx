@@ -3,12 +3,14 @@ import { Button } from "@mui/material";
 import { AddShoppingCart } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { setCart } from "../../store/cartSlice";
+import { setCart, addBookToCart } from "../../store/cartSlice";
+import { useState } from "react";
 const allProductsAdd = ({ bookId }) => {
   const { user } = useSelector(state => state.user);
   const dispatch = useDispatch()
-//   const { cart } = useSelector((state) => state.cart);
+    const reduxCart = useSelector((state) => state.cart.cart);
   const userId = user.id;
+  const [btnDisabled, setBtnDisabled] = useState(false)
   const loadCartFromLocalStorage = () => {
     // Get the stringified cart from local storage
     const cartString = localStorage.getItem('cart');
@@ -31,13 +33,15 @@ const allProductsAdd = ({ bookId }) => {
   const addToCart = async () => {
     try {
         if (!user.id) {
-            alert("Please login to add to cart");
+                setBtnDisabled(true)
+                const book = await axios.get(`/api/books/${bookId}`)
+                const bookToAdd = book.data
+                dispatch(addBookToCart({quantity: 1, book: bookToAdd}))
         } else {
             // existingItem will either return the object its looking for (truthy)
             // or undefined (falsy)
             const existingItem = cart.find((cartItem) => cartItem.book.id === bookId);
             if(existingItem) {  
-                console.log(existingItem)
                 await axios.put(`/api/cart/${existingItem.id}`, {
                     quantity: existingItem.quantity + 1,
                 });
@@ -58,7 +62,9 @@ const allProductsAdd = ({ bookId }) => {
   };
   return (
     <>
-      <Button size="small" onClick={addToCart}>
+      <Button 
+      disabled={btnDisabled}
+      size="small" onClick={addToCart}>
         <AddShoppingCart />
       </Button>
     </>
