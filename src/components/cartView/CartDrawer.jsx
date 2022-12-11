@@ -137,23 +137,25 @@ const cart = loadCartFromLocalStorage();
     }
     // else we edit the guests cart 
     else {
-      const updatedQuantity = cartItem.quantity + 1
-      const newCart = cart.map(item => {
-        if (item.book.id === cartItem.book.id) {
-          return {
-            ...item,
-            quantity: updatedQuantity,
-          };
-        }
-        return item;
-      });
-      dispatch(setCart(newCart));
-      saveCartToLocalStorage(newCart)
-    }
-    const updatedTotalPrice = totalPrice + cartItem.book.price;
-
-    // Update the total price state variable
-    setTotalPrice(updatedTotalPrice);
+      if(cartItem.book.stock >= cartItem.quantity + 1){
+        const updatedQuantity = cartItem.quantity + 1
+        const newCart = cart.map(item => {
+          if (item.book.id === cartItem.book.id) {
+            return {
+              ...item,
+              quantity: updatedQuantity,
+            };
+          }
+          return item;
+        });
+        dispatch(setCart(newCart));
+        saveCartToLocalStorage(newCart)
+        const updatedTotalPrice = totalPrice + cartItem.book.price;
+    
+        // Update the total price state variable
+        setTotalPrice(updatedTotalPrice);
+      }
+      }
   };
   const handleCheckOut = async () => {
     await axios.get(`api/cart/user/${user.id}/checkOut`)
