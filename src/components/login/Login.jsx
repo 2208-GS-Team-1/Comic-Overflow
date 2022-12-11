@@ -38,7 +38,6 @@ const Login = () => {
       dispatch(setUser(response.data));
       const usersCart = await axios.get(`/api/cart/user/${response.data.id}`)
       dispatch(setCart(usersCart.data))
-      // localStorage.setItem("cart", JSON.stringify(usersCart.data))
     }
   };
 

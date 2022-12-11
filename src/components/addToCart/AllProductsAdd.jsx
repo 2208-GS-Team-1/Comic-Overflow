@@ -34,9 +34,11 @@ const allProductsAdd = ({ bookId }) => {
     try {
         if (!user.id) {
                 setBtnDisabled(true)
-                const book = await axios.get(`/api/books/${bookId}`)
-                const bookToAdd = book.data
-                dispatch(addBookToCart({quantity: 1, book: bookToAdd}))
+                const { data }= await axios.get(`/api/books/${bookId}`)
+                const bookAndQuantity = {quantity: 1, book:data}
+                dispatch(addBookToCart(bookAndQuantity))
+                saveCartToLocalStorage(bookAndQuantity)
+
         } else {
             // existingItem will either return the object its looking for (truthy)
             // or undefined (falsy)

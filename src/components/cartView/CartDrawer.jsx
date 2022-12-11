@@ -35,7 +35,7 @@ const cart = loadCartFromLocalStorage();
   const handleOpen = async () => {
     setIsOpen(true);
     const totalPriceCalc = cart.reduce((total, index) =>
-      total = total + (index.quantity* index.book.price)
+      total = total + (index.quantity * index.book.price)
     ,0)
     setTotalPrice(totalPriceCalc)
   };
