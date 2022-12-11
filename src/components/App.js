@@ -82,7 +82,7 @@ const App = () => {
           <Route path="/books/:id" element={<SingleProduct />} />
           <Route path="/edit" element={<EditUser />} />
 
-          {user.idAdmin && (
+          {user.isAdmin && (
             <>
               <Route path="/admin" element={<AdminHomepage />} />
               <Route path="/admin/users" element={<AdminUsersPage />} />
