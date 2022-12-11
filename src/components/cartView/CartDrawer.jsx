@@ -189,9 +189,8 @@ const loadCartFromLocalStorage = () => {
           },
         }}
         >
-        <h1>
-          Your Cart
-        </h1>
+        {/* eslint-disable-next-line react/no-unescaped-entities */}
+        {user.id ? <h1>{user.firstName}'s Cart</h1> : <h1>Guest Cart</h1>}
         <Divider />
         {/* If loading is true, the cart isn't fetched yet and it will display this MUI loader */}
         {/* Display the users cart */}

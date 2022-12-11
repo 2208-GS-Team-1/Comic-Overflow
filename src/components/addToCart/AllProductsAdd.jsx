@@ -59,7 +59,7 @@ const allProductsAdd = ({ book }) => {
             }
         } else {
             const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
-            if(existingItem) {  
+            if(existingItem && existingItem.book.stock >= existingItem.quantity + 1) {  
                 await axios.put(`/api/cart/${existingItem.id}`, {
                     quantity: existingItem.quantity + 1,
                 });
