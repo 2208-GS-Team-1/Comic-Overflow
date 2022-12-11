@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCart } from "../../store/cartSlice";
 import axios from 'axios';
 import "./CartDrawerStyles.css"
+import { useEffect } from 'react';
 
 
 const CartDrawer = () => {
@@ -12,6 +13,7 @@ const CartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useSelector((state) => state.user)
   const [totalPrice, setTotalPrice] = useState(0);
+  const { cart } = useSelector((state)=> state.cart)
   const dispatch = useDispatch();
 // First, define a function that loads the cart from local storage
 const loadCartFromLocalStorage = () => {
@@ -22,10 +24,8 @@ const loadCartFromLocalStorage = () => {
   const cart = JSON.parse(cartString);
 
   // Return the cart object
-  return cart;
+  dispatch(setCart(cart))
 };
-const cart = loadCartFromLocalStorage();
-
 
   //handleOpen toggles the drawer to open BUT also calcuates the price... its the only way I could make the total work
   const handleOpen = async () => {
@@ -168,6 +168,9 @@ const cart = loadCartFromLocalStorage();
     dispatch(setCart([]))
     saveCartToLocalStorage([])
   }
+  useEffect(()=> {
+    loadCartFromLocalStorage()
+  },[])
   return (
     <Box
     sx={{ display: 'flex',

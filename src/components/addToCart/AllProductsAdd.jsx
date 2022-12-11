@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@mui/material";
 import { AddShoppingCart } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantity
 const allProductsAdd = ({ book }) => {
   const { user } = useSelector(state => state.user);
   const dispatch = useDispatch()
+  const { cart } = useSelector(state => state.cart)
   const userId = user.id;
   const loadCartFromLocalStorage = () => {
     // Get the stringified cart from local storage
@@ -17,7 +18,7 @@ const allProductsAdd = ({ book }) => {
     const cart = JSON.parse(cartString);
   
     // Return the cart object
-    return cart;
+    dispatch(setCart(cart))
   };
   const saveCartToLocalStorage = cart => {
     // Local storage can only store strings, so we need to convert the cart object to a string
@@ -27,32 +28,37 @@ const allProductsAdd = ({ book }) => {
     localStorage.setItem('cart', cartString);
   };
 
-  const cart = loadCartFromLocalStorage();
+  useEffect(()=> {
+    loadCartFromLocalStorage()
+  },[])
   const addToCart = async () => {
       try {
           if (!user.id) {
-            const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
-            if(existingItem && existingItem.book.stock >= existingItem.quantity + 1) {
+              const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
+              if(existingItem && existingItem.book.stock >= existingItem.quantity + 1) {
+                console.log(`we're adding an item that is already in the cart`)
                 const updatedQuantity = existingItem.quantity + 1
                 const newCart = cart.map(item => {
-                  if (item.book.id === existingItem.book.id) {
-                    return {
-                      ...item,
-                      quantity: updatedQuantity,
-                    };
-                  }
-                  return item;
+                    if (item.book.id === existingItem.book.id) {
+                        return {
+                            ...item,
+                            quantity: updatedQuantity,
+                        };
+                    }
+                    return item;
                 });
                 dispatch(setCart(newCart))
                 saveCartToLocalStorage(newCart)
-            }else if(!existingItem) {
+            }else 
+            if(!existingItem) {
+                console.log(`we're adding a new item`)
                 const { data }= await axios.get(`/api/books/${book.id}`)
                 const bookAndQuantity = {quantity: 1, book:data}
                 dispatch(addBookToCart(bookAndQuantity))
                 saveCartToLocalStorage([...cart, bookAndQuantity])
             }
         } else {
-            console.log(existingItem)
+            const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
             if(existingItem) {  
                 await axios.put(`/api/cart/${existingItem.id}`, {
                     quantity: existingItem.quantity + 1,
