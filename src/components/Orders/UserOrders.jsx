@@ -1,8 +1,16 @@
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Card,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import UserOrdersDetails from "./UserOrdersDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const UserOrders = () => {
   const user = useSelector((state) => state.user.user);
@@ -14,7 +22,6 @@ const UserOrders = () => {
     try {
       //GET all orders associated with user
       const ordersData = await axios.get(`/api/orders/users/${user.id}`);
-      console.log(ordersData.data);
       setOrders(ordersData.data);
     } catch (err) {
       console.error(err);
@@ -30,20 +37,29 @@ const UserOrders = () => {
     <div>
       <h2>Past Orders</h2>
       {orders.map((order) => (
-        <div key={order.id}>
-          Summary: <div>Total Price: ${(order.price / 100).toFixed(2)}</div>
-          <div>Delivery Status: {order.orderStatus}</div>
+        <Card
+          key={order.id}
+          variant="outlined"
+          style={{ margin: "10px", padding: "10px" }}>
+          <Typography variant="h5">Summary for Order #{order.id}</Typography>
           <div>Date Ordered: {order.createdAt.split("T")[0]}</div>
-          <div>Order ID: {order.id}</div>
-          Details:
+          <div>Total Price: ${(order.price / 100).toFixed(2)}</div>
+          <div>Delivery Status: {order.orderStatus}</div>
           <div>
-            {order.cartItems.map((cartItem) => {
-              return (
-                <UserOrdersDetails key={cartItem.id} cartItem={cartItem} />
-              );
-            })}
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography>Expand Order Details</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {order.cartItems.map((cartItem) => {
+                  return (
+                    <UserOrdersDetails key={cartItem.id} cartItem={cartItem} />
+                  );
+                })}
+              </AccordionDetails>
+            </Accordion>
           </div>
-        </div>
+        </Card>
       ))}
     </div>
   );

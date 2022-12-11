@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { Card, CardContent, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
@@ -22,14 +23,21 @@ const UserOrdersDetails = ({ cartItem }) => {
   }, []);
   if (loading) return <div>Loading...</div>;
   return (
-    <div style={{ border: "5px", borderColor: "black", borderStyle: "solid" }}>
-      <div>Book Title: {book.title}</div>
-      <div>Volume: {book.volume}</div>
-      <div>Quantity: {cartItem.quantity}</div>
-      <div>
-        Subtotal: ${(cartItem.priceTimesQuantityAtCheckOut / 100).toFixed(2)}
-      </div>
-    </div>
+    <Card
+      style={{
+        margin: "10px",
+        border: "solid",
+        borderColor: "FFD813",
+      }}>
+      <CardContent>
+        <Typography variant="h6">Title: {book.title}</Typography>
+        <div>Volume: {book.volume}</div>
+        <div>Quantity: {cartItem.quantity}</div>
+        <div>
+          Subtotal: ${(cartItem.priceTimesQuantityAtCheckOut / 100).toFixed(2)}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
