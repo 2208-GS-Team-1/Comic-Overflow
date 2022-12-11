@@ -220,7 +220,6 @@ const cart = loadCartFromLocalStorage();
             );
           })}
           </div>
-          <div>Your cart is empty!</div>
           <div
           className='cartTotal'
           >
