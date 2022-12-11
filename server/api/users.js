@@ -55,7 +55,7 @@ router.post("/", async (req, res, next) => {
       res.status(400).send("An account with that e-mail already exists");
     } else {
       await User.create(req.body);
-      res.send("User has been succussfully created").status(201);
+      res.send("User has been successfully created").status(201);
     }
   } catch (err) {
     next(err);
