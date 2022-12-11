@@ -7,27 +7,21 @@ const StarRatingAvg = ({ book }) => {
   //use local state
   const [avgReview, setAvgReview] = useState(0.0);
   const [reviewCount, setReviewCount] = useState(0);
-  const [loading, setLoading] = useState(false);
 
-  const handleAvgReview = () => {
-    setLoading(true);
-    // GET all reviews for specific book
-    const reviews = book.reviews;
-    //reviews = array of reivews for specific book
+  const handleAvgReview = async () => {
+    // reviews are associated to book prop
+    const reviews = await book.reviews;
+    //reviews = array of reviews for specific book
     if (reviews.length > 0) {
+      //use reduce method to take the average of the rating columns if the array.lenth is > 0
       const totalReviews = reviews.reduce(
         (total, next) => total + next.rating,
         0
       );
       const averageReview = totalReviews / reviews.length;
-      setAvgReview(
-        //use reduce method to take the average of the rating columns if the array.lenth is > 0
-        averageReview
-      );
+      setAvgReview(averageReview);
       setReviewCount(reviews.length);
     }
-
-    setLoading(false);
   };
 
   //useEffect to render the stars using the above function
@@ -35,7 +29,6 @@ const StarRatingAvg = ({ book }) => {
     handleAvgReview();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       {/* if length of array > 0 then show the average rating, otherwise show no ratings */}
