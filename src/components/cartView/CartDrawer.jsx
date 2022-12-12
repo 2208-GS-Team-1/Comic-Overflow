@@ -196,7 +196,7 @@ const loadCartFromLocalStorage = () => {
         {/* Display the users cart */}
         <div style={{ overflow: 'auto' }}>
         {!cart && <div>your cart is empty!</div>}
-        {cart.map(cartItem => {
+        {cart && cart.map(cartItem => {
           return (
             <div 
             className='cartItem'

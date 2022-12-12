@@ -254,5 +254,52 @@ router.get(
     }
   }
 );
+router.post("/quantity", async (req, res, next) => {
+  try {
+    // Needs userId and bookId from POST body and params
+    const { bookId, userId, quantityToAdd } = req.body;
+
+    //********************** CHECKING USER *******************************/
+
+    // Check that userId is a valid UUID format BEFORE we use it for query (can cause error)
+    const regexExpforUUID =
+      /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+    const userIDIsUUID = regexExpforUUID.test(userId);
+    if (!userIDIsUUID)
+      return res.status(400).send("User ID does not match UUID format");
+
+    // Make sure user exists
+    const user = await User.findByPk(userId);
+    console.log(`user: ${user}`);
+    if (!user) return res.status(404).send("User not found");
+
+    //********************** CHECKING BOOK *******************************/
+    // Before creating a new cartitem, make sure the book is not sold out.
+    const book = await Book.findByPk(bookId);
+    console.log(book);
+    // Make sure book exists
+    if (!book) return res.status(404).send("Book not found");
+
+    // If book is sold out, cannot be added to cart
+    if (book.stock < 1) {
+      res
+        .status(400)
+        .send("ERROR: Book is out of stock, unable to add to cart.");
+    }
+
+    // If it's not sold out, we can make it a cart item.
+    else {
+      const createdCartItem = await CartItem.create({
+        bookId: bookId,
+        userId: userId,
+        quantity: quantityToAdd,
+      });
+      console.log("Add to cart successful!");
+      res.status(201).send(createdCartItem);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;

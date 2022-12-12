@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { setSelectedBook } from "../../store/bookSlice";
+import SingleProductAdd from "../addToCart/SingleProductAdd";
 import ReviewsSingleBook from "../Reviews/ReviewsSingleBook";
 import StarRatingAvg from "../Reviews/StarRatingAvg";
 import "./singleProduct.css";
@@ -15,6 +16,7 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const selectedBook = useSelector((state) => state.book.selectedBook);
   const [loading, setLoading] = useState(false);
+  const [quantityChange, setQuantityChange] = useState(1)
   const { id } = useParams();
 
   //fetching product's information using ID
@@ -24,6 +26,13 @@ const SingleProduct = () => {
     dispatch(setSelectedBook(bookData.data));
     setLoading(true);
   };
+
+  const handleQuantityChange = (event) => {
+    const quantityToAdd = Number(event.target.value)
+    console.log(typeof quantityToAdd)
+    setQuantityChange(quantityToAdd)
+    console.log(quantityChange)
+  }
 
   useEffect(() => {
     singleBookHandler();
@@ -67,7 +76,9 @@ const SingleProduct = () => {
               </>}
 
               <div className="quantity">
-                <form className="singleProductForm">
+                <form className="singleProductForm"
+
+                >
                   <input
                     className="singleProductInput"
                     name="quantity"
@@ -75,16 +86,17 @@ const SingleProduct = () => {
                     max={selectedBook.stock}
                     type="number"
                     placeholder="1"
+                    value={quantityChange.toString()}
+                    onChange={handleQuantityChange}
+                    // value={quantityToAdd}
                   />
                   {/*Cart button will be disabled when out of stock */}
                   {(selectedBook.stock !== 0)?
-                  <>
                   <div className="productCardButtons">
-                    {/* <AllProductsAdd bookId={bookId} /> */}
+                  <SingleProductAdd book={selectedBook} quantity={quantityChange}/>
                   </div>
-                  </>:
-                  <>
-                  <button name="cartButton">Out of Stock</button>
+                  : 
+                  <>Out of Stock
                   </>}
                 </form>
               </div>

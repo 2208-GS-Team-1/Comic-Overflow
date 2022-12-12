@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect } from "react";
 import { Button } from "@mui/material";
 import { AddShoppingCart } from "@mui/icons-material";
@@ -5,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setCart, addBookToCart } from "../../store/cartSlice";
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
-const allProductsAdd = ({ book }) => {
+const AllProductsAdd = ({ book }) => {
   const { user } = useSelector(state => state.user);
   const dispatch = useDispatch()
   const { cart } = useSelector(state => state.cart)
@@ -36,6 +37,7 @@ const allProductsAdd = ({ book }) => {
           if (!user.id) {
               const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
               if(existingItem && existingItem.book.stock >= existingItem.quantity + 1) {
+                console.log('we should be here')
                 const updatedQuantity = existingItem.quantity + 1
                 const newCart = cart.map(item => {
                     if (item.book.id === existingItem.book.id) {
@@ -57,7 +59,8 @@ const allProductsAdd = ({ book }) => {
             }
         } else {
             const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
-            if(existingItem && existingItem.book.stock >= existingItem.quantity + 1) {  
+            if(existingItem && existingItem.book.stock >= existingItem.quantity + 1) {
+                console.log(existingItem.id)
                 await axios.put(`/api/cart/${existingItem.id}`, {
                     quantity: existingItem.quantity + 1,
                 });
@@ -89,4 +92,4 @@ const allProductsAdd = ({ book }) => {
   );
 };
 
-export default allProductsAdd;
+export default AllProductsAdd;
