@@ -29,9 +29,7 @@ const SingleProduct = () => {
 
   const handleQuantityChange = (event) => {
     const quantityToAdd = Number(event.target.value)
-    console.log(typeof quantityToAdd)
     setQuantityChange(quantityToAdd)
-    console.log(quantityChange)
   }
 
   useEffect(() => {
