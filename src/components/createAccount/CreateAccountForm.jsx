@@ -83,10 +83,8 @@ function CreateAccountForm() {
         const guestCart = JSON.parse(cartString)
         if(guestCart.length > 0){
           const usersEmail = bodyToSubmit.email
-          console.log(usersEmail)
           const newUser = await axios.get(`/api/users/${usersEmail}`)
           const userId = newUser.data.id
-          console.log(newUser)
           await Promise.all(guestCart.map(async (cartItem)=> {
             let bookId = cartItem.book.id
             let quantityToAdd = cartItem.quantity

@@ -95,9 +95,7 @@ const loadCartFromLocalStorage = () => {
     } else {
         //else its a guest cart
       if (cartItem.quantity === 1){
-        console.log(cartItem)
         const newCart = cart.filter(item => item.book.id !== cartItem.book.id);
-        console.log(newCart)
         dispatch(setCart(newCart))
         saveCartToLocalStorage(newCart)
       } else {

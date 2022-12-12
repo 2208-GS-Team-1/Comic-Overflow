@@ -104,17 +104,13 @@ const SingleProductAdd = ({ book, quantity }) => {
                     const body = { userId, bookId, quantityToAdd };
                     await axios.post("/api/cart/quantity", body);
                     const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
-                    console.log(updatedCart)
                     dispatch(setCart(updatedCart.data))
                     saveCartToLocalStorage(updatedCart.data)
                 } else if(bookToAdd.stock < quantity){
-                    console.log('we should be here')
                     const quantityToAdd = bookToAdd.stock
-                    console.log(quantityToAdd)
                     const body = { userId, bookId, quantityToAdd };
                     await axios.post("/api/cart/quantity", body);
                     const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
-                    console.log(updatedCart)
                     dispatch(setCart(updatedCart.data))
                     saveCartToLocalStorage(updatedCart.data)
                 }
