@@ -7,7 +7,6 @@ import { clearCart, setCart } from "../../store/cartSlice";
 
 const Login = () => {
   const { user } = useSelector(state => state.user);
-   const { cart } = useSelector(state => state.cart)
   const dispatch = useDispatch();
   const [credentials, setCredentials] = useState({
     username: "",
