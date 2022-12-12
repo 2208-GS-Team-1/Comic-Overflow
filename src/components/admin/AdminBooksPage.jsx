@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBooks } from "../../store/bookSlice";
 import AdminNavbar from "./adminNavbar";
+import { Link } from "react-router-dom";
 
 function AdminBooksPage() {
   // If they're not an admin don't let them see this component.
@@ -17,7 +18,6 @@ function AdminBooksPage() {
     try {
       const {data} = await axios.get("/api/books");
       dispatch(setBooks(data));
-      console.log(data);
       setLoading(true);
     } catch (error) {
       console.log(error)
@@ -45,7 +45,9 @@ function AdminBooksPage() {
                   {index}: {book.title} {book.volume}
                 </td>
                 <td className="adminProductButton">
+                  <Link to={`/admin/books/${book.id}`}>
                   <button>Edit</button>
+                  </Link>
                 </td>
               </tr>
             )
