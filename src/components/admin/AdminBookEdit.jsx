@@ -1,12 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { setSelectedBook } from '../../store/bookSlice';
 
 const AdminBookEdit = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const {id} = useParams();
     const [loading, setLoading] = useState(false);
     const selectedBook = useSelector((state)=> state.book.selectedBook);
@@ -87,10 +86,11 @@ const AdminBookEdit = () => {
             isDeactivated };
         await axios.put(`/api/books/${id}`, updatedBook);
         refresh();
-        // navigate(-1);
 }
 
     if(!loading){ return (<div>Oops, something went wrong!</div>)}
+
+    const bookPrice = (selectedBook.price / 100).toFixed(2);
 
     return (
         <div className='formBase'>
@@ -98,17 +98,28 @@ const AdminBookEdit = () => {
                 <form onSubmit={bookUpdater}>
                     <h1>Update Product</h1>
                     <div className='formInput'>
-                        <input className='editInput' placeholder={selectedBook.title} onChange={titleHandler}/>
-                        <input className='editInput' placeholder={selectedBook.author} onChange={authorHandler} />
-                        <input className='editInput' placeholder={selectedBook.description} onChange={descrbHandler} />
-                        <input className='editInput' placeholder={selectedBook.genre} onChange={genreHandler} />
-                        <input className='editInput' placeholder={selectedBook.volume} onChange={volumeHandler} />
-                        <input className='editInput' placeholder={selectedBook.yearOfPublish} onChange={yopHandler} />
-                        <input className='editInput' placeholder={(selectedBook.isbn === null)? 'no isbn yet': 'isbn'} onChange={isbnHandler} />
-                        <input className='editInput' placeholder={(selectedBook.edition.length === 0)? 'no edition info': selectedBook.edition} onChange={editionHandler} />
-                        <input className='editInput' placeholder={selectedBook.price} onChange={priceHandler} />
-                        <input className='editInput' placeholder={selectedBook.stock} onChange={stockHandler} />
-                        <input className='editInput' placeholder={(selectedBook.isDeactivated === false)? 'false':'true'} onChange={statusHandler} />
+                        <label htmlFor="title">Title</label>
+                        <input id="title" className='editInput' placeholder={selectedBook.title} onChange={titleHandler}/>
+                        <label htmlFor="author">Author</label>
+                        <input id="author" className='editInput' placeholder={selectedBook.author} onChange={authorHandler} />
+                        <label htmlFor="description">Description</label>
+                        <input id="description" className='editInput' placeholder={selectedBook.description} onChange={descrbHandler} />
+                        <label htmlFor="genre">Genre</label>
+                        <input id="genre" className='editInput' placeholder={selectedBook.genre} onChange={genreHandler} />
+                        <label htmlFor="volume">Volume</label>
+                        <input id="volume" className='editInput' placeholder={selectedBook.volume} onChange={volumeHandler} />
+                        <label htmlFor="yop">Year of Publishing</label>
+                        <input id="yop" className='editInput' placeholder={selectedBook.yearOfPublish} onChange={yopHandler} />
+                        <label htmlFor="isbn">ISBN</label>
+                        <input id="isbn" className='editInput' placeholder={(selectedBook.isbn === null)? 'no isbn yet': 'isbn'} onChange={isbnHandler} />
+                        <label htmlFor="edition">Edition</label>
+                        <input id="edition" className='editInput' placeholder={(selectedBook.edition.length === 0)? 'no edition info': selectedBook.edition} onChange={editionHandler} />
+                        <label htmlFor="price">Price</label>
+                        <input id="price" className='editInput' placeholder={bookPrice} onChange={priceHandler} />
+                        <label htmlFor="stock">Stock</label>
+                        <input id="stock" className='editInput' placeholder={selectedBook.stock} onChange={stockHandler} />
+                        <label htmlFor="status">Status</label>
+                        <input id="status" className='editInput' placeholder={(selectedBook.isDeactivated === false)? 'false':'true'} onChange={statusHandler} />
                         <button>Submit</button>
                     </div>
                 </form>
