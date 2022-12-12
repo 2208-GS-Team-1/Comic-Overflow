@@ -42,7 +42,6 @@ const AllBooks = () => {
   return (
     <div className="productsContainer">
       <h1>All Comics</h1>
-
     <div className="allBooks">
       {books.map((book) => {
         return (

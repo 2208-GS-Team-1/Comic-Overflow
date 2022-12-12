@@ -209,7 +209,7 @@ const loadCartFromLocalStorage = () => {
           return (
             <div 
             className='cartItem'
-              key={cartItem.id}
+              key={cartItem.book.id}
             >
               <Card
               sx={{ boxShadow: 6, margin: '8px' }}
@@ -241,7 +241,7 @@ const loadCartFromLocalStorage = () => {
           <div
           className='cartTotal'
           >
-            Total: {(totalPrice / 100).toFixed(2)}
+            Total: ${(totalPrice / 100).toFixed(2)}
           </div>
           <div
           className='checkoutButton'

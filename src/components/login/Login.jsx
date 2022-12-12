@@ -73,8 +73,14 @@ const combineCarts = async (userId, bookId, quantity) => {
           await combineCarts(response.data.id, cartItem.book.id, cartItem.quantity)
         }))
       } else {
-        dispatch(setCart(usersCart.data))
-        localStorage.setItem("cart", JSON.stringify(usersCart.data))
+        if (usersCart.data){
+          dispatch(setCart(usersCart.data))
+          localStorage.setItem("cart", JSON.stringify(usersCart.data))
+        } else {
+          dispatch(setCart([]))
+          localStorage.setItem("cart", JSON.stringify([]))
+
+        }
       }
     }
   };
