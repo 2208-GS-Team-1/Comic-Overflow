@@ -162,11 +162,15 @@ const loadCartFromLocalStorage = () => {
 
   };
   const handleCheckOut = async () => {
-    await axios.get(`api/cart/user/${user.id}/checkOut`)
-
-    setTotalPrice(0)
-    dispatch(setCart([]))
-    saveCartToLocalStorage([])
+    if (user.id){
+      await axios.get(`api/cart/user/${user.id}/checkOut`)
+  
+      setTotalPrice(0)
+      dispatch(setCart([]))
+      saveCartToLocalStorage([])
+    } else {
+      alert('please sign in to checkout!')
+    }
   }
   useEffect(()=> {
     loadCartFromLocalStorage()

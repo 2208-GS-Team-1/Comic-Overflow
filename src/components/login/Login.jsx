@@ -7,7 +7,7 @@ import { clearCart, setCart } from "../../store/cartSlice";
 
 const Login = () => {
   const { user } = useSelector(state => state.user);
-
+   const { cart } = useSelector(state => state.cart)
   const dispatch = useDispatch();
   const [credentials, setCredentials] = useState({
     username: "",
@@ -38,7 +38,6 @@ const Login = () => {
       dispatch(setUser(response.data));
       const usersCart = await axios.get(`/api/cart/user/${response.data.id}`)
       dispatch(setCart(usersCart.data))
-      console.log(usersCart.data)
       localStorage.setItem("cart", JSON.stringify(usersCart.data))
     }
   };
@@ -48,7 +47,6 @@ const Login = () => {
     const response = await axios.post("/api/auth", credentials);
     const token = response.data;
     window.localStorage.setItem("token", token);
-
     loginWithToken(token);
   };
   if (user.id)
