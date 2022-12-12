@@ -246,7 +246,7 @@ const loadCartFromLocalStorage = () => {
           <div
           className='checkoutButton'
           >
-          <button onClick={handleCheckOut}>Check Out Now</button>
+          <button disabled={!cart || cart.length == 0 ? true : false}onClick={handleCheckOut}>Check Out Now</button>
           </div>
       </Drawer>
       <IconButton onClick={handleOpen}><ShoppingCartIcon/></IconButton>
