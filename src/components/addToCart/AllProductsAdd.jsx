@@ -36,7 +36,6 @@ const allProductsAdd = ({ book }) => {
           if (!user.id) {
               const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
               if(existingItem && existingItem.book.stock >= existingItem.quantity + 1) {
-                console.log(`we're adding an item that is already in the cart`)
                 const updatedQuantity = existingItem.quantity + 1
                 const newCart = cart.map(item => {
                     if (item.book.id === existingItem.book.id) {
@@ -51,7 +50,6 @@ const allProductsAdd = ({ book }) => {
                 saveCartToLocalStorage(newCart)
             }else 
             if(!existingItem) {
-                console.log(`we're adding a new item`)
                 const { data }= await axios.get(`/api/books/${book.id}`)
                 const bookAndQuantity = {quantity: 1, book:data}
                 dispatch(addBookToCart(bookAndQuantity))

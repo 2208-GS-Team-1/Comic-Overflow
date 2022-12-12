@@ -6,7 +6,7 @@ import { setSelectedBook } from "../../store/bookSlice";
 import ReviewsSingleBook from "../Reviews/ReviewsSingleBook";
 import StarRatingAvg from "../Reviews/StarRatingAvg";
 import "./singleProduct.css";
-import AllProductsAdd from "../addToCart/AllProductsAdd";
+
 
 const SingleProduct = () => {
   // when item is clicked from all product page, it's automatically directed to this page.
@@ -16,7 +16,6 @@ const SingleProduct = () => {
   const selectedBook = useSelector((state) => state.book.selectedBook);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
-  const bookId = id;
 
   //fetching product's information using ID
 
@@ -81,7 +80,7 @@ const SingleProduct = () => {
                   {(selectedBook.stock !== 0)?
                   <>
                   <div className="productCardButtons">
-                    <AllProductsAdd bookId={bookId} />
+                    {/* <AllProductsAdd bookId={bookId} /> */}
                   </div>
                   </>:
                   <>
