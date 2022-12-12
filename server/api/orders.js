@@ -43,6 +43,7 @@ router.get("/:orderId", async (req, res, next) => {
     const order = await Order.findByPk(orderId, {
       include: [User, CartItem],
     });
+    !order && res.status(404).send("Order not found");
     res.send(order);
   } catch (error) {
     next(error);

@@ -23,7 +23,7 @@ import CartDrawer from "./cartView/CartDrawer.jsx";
 
 const App = () => {
   // eslint-disable-next-line no-unused-vars
-  const { user } = useSelector(state => state.user);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const loginWithToken = async () => {
@@ -81,7 +81,6 @@ const App = () => {
           {user.id && <Route path="/myAccount" element={<UserPage />} />}
           <Route path="/books/:id" element={<SingleProduct />} />
           <Route path="/edit" element={<EditUser />} />
-
           {user.isAdmin && (
             <>
               <Route path="/admin" element={<AdminHomepage />} />
