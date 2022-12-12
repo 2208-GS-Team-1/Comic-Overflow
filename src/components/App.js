@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { setUser } from "../store/userSlice.js";
 import CartDrawer from "./cartView/CartDrawer.jsx";
+import AdminBookEdit from "./admin/AdminBookEdit.jsx";
 
 const App = () => {
   // eslint-disable-next-line no-unused-vars
@@ -89,6 +90,7 @@ const App = () => {
               <Route path="/admin/books" element={<AdminBooksPage />} />
               <Route path="/admin/reviews" element={<AdminReviewsPage />} />
               <Route path="/admin/orders" element={<AdminOrdersPage />} />
+              <Route path="/admin/books/:id" element= {<AdminBookEdit />} />
             </>
           )}
         </Routes>
