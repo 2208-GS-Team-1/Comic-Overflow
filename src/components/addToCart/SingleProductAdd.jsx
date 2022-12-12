@@ -64,12 +64,17 @@ const SingleProductAdd = ({ book, quantity }) => {
                 dispatch(setCart(newCart))
                 saveCartToLocalStorage(newCart)
             }
-            else 
-            if(!existingItem && quantity !== 0) {
-                const { data }= await axios.get(`/api/books/${book.id}`)
-                const bookAndQuantity = {quantity: 1, book:data}
-                dispatch(addBookToCart(bookAndQuantity))
-                saveCartToLocalStorage([...cart, bookAndQuantity])
+            else if(!existingItem) {
+                const { data } = await axios.get(`/api/books/${book.id}`)
+                if(data.stock >= quantity){
+                    const bookAndQuantity = {quantity: quantity, book:data}
+                    dispatch(addBookToCart(bookAndQuantity))
+                    saveCartToLocalStorage([...cart, bookAndQuantity])
+                } else if (data.stock < quantity){
+                    const bookAndQuantity = {quantity: data.stock, book:data}
+                    dispatch(addBookToCart(bookAndQuantity))
+                    saveCartToLocalStorage([...cart, bookAndQuantity])
+                }
             }
         } else if (user.id) {
             const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
