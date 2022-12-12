@@ -11,7 +11,7 @@ const UserOrdersDetails = ({ cartItem }) => {
   const fetchBook = async () => {
     setLoading(true);
     try {
-      const bookData = await axios.get(`/api/books/${cartItem.id}`);
+      const bookData = await axios.get(`/api/books/${cartItem.bookId}`);
       setBook(bookData.data);
     } catch (err) {
       console.error(err);

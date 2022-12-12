@@ -6,7 +6,7 @@ const volleyball = require("volleyball");
 // Set up middleware
 app.use(volleyball);
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: false }));
 
 // Set up routes
 app.use("/api", require("./api"));
