@@ -70,6 +70,21 @@ function CreateAccountForm() {
 
         await axios.post("/api/users", bodyToSubmit);
         setErrorMessage(errorMessage); // This is the message from the api's res.send
+        const cartString = localStorage.getItem("cart")
+        const guestCart = JSON.parse(cartString)
+        if(guestCart.length > 0){
+          const usersEmail = bodyToSubmit.email
+          console.log(usersEmail)
+          const newUser = await axios.get(`/api/users/${usersEmail}`)
+          const userId = newUser.data.id
+          console.log(newUser)
+          await Promise.all(guestCart.map(async (cartItem)=> {
+            let bookId = cartItem.book.id
+            let quantityToAdd = cartItem.quantity
+            let body = { userId, bookId, quantityToAdd}
+            await axios.post("/api/cart/quantity", body);
+          }))
+        }
 
         /* Ideally would like to log the user in here, and THEN redirect to home
       	But not sure how to generate the JWT and the stuff with authorization.
@@ -77,12 +92,11 @@ function CreateAccountForm() {
 				
 				So for now, just redirect them to the login page so they can log in with new account.
 			  */
-
+        
         // Update the state that is used to trigger the mui Alert Success component
         setCreationSuccess(true);
         // In case it failed before, set that state too, so the failure message disappears
         setCreationFailure(false);
-
         // Wait 3 seconds before redirecting the user to login page
         setTimeout(() => {
           navigate("/login");
