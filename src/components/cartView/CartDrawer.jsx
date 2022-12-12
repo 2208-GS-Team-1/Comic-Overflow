@@ -19,12 +19,19 @@ const CartDrawer = () => {
 const loadCartFromLocalStorage = () => {
   // Get the stringified cart from local storage
   const cartString = localStorage.getItem('cart');
+  if (!cartString){
+    const emptyCart = JSON.stringify([])
+    localStorage.setItem('cart', emptyCart)
+    const newCart = localStorage.getItem('cart');
+    const cart = JSON.parse(newCart);
+    dispatch(setCart(cart))
 
-  // Parse the stringified cart to get the original cart object
-  const cart = JSON.parse(cartString);
-
-  // Return the cart object
-  dispatch(setCart(cart))
+  } else{
+    // Parse the stringified cart to get the original cart object
+    const cart = JSON.parse(cartString);
+    // Return the cart object
+    dispatch(setCart(cart))
+  }
 };
 
   //handleOpen toggles the drawer to open BUT also calcuates the price... its the only way I could make the total work

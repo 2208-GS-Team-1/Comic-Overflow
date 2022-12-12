@@ -14,12 +14,19 @@ const AllProductsAdd = ({ book }) => {
   const loadCartFromLocalStorage = () => {
     // Get the stringified cart from local storage
     const cartString = localStorage.getItem('cart');
+    if (!cartString){
+      const emptyCart = JSON.stringify([])
+      localStorage.setItem('cart', emptyCart)
+      const newCart = localStorage.getItem('cart');
+      const cart = JSON.parse(newCart);
+      dispatch(setCart(cart))
   
-    // Parse the stringified cart to get the original cart object
-    const cart = JSON.parse(cartString);
-  
-    // Return the cart object
-    dispatch(setCart(cart))
+    } else{
+      // Parse the stringified cart to get the original cart object
+      const cart = JSON.parse(cartString);
+      // Return the cart object
+      dispatch(setCart(cart))
+    }
   };
   const saveCartToLocalStorage = cart => {
     // Local storage can only store strings, so we need to convert the cart object to a string
@@ -37,7 +44,6 @@ const AllProductsAdd = ({ book }) => {
           if (!user.id) {
               const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
               if(existingItem && existingItem.book.stock >= existingItem.quantity + 1) {
-                console.log('we should be here')
                 const updatedQuantity = existingItem.quantity + 1
                 const newCart = cart.map(item => {
                     if (item.book.id === existingItem.book.id) {
