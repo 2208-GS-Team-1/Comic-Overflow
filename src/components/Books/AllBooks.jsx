@@ -20,6 +20,7 @@ const AllBooks = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const books = useSelector((state) => state.book.books);
+  const [selectedSort,setSelectedSort] = useState('unsorted')
   const fetchBooks = async () => {
     setLoading(true);
     try {
@@ -39,11 +40,32 @@ const AllBooks = () => {
       <MuiLoader/>
     </div>
   )
+  const handleSortChange = (event) => {
+    setSelectedSort(event.target.value)
+  }
+  // 'sortedBooks' is the sorted array that we loop over to allow the user to sort by what they want
+  let sortedBooks = [...books]
+  // switch case that sorts the array based on the selected sort
+  const sortBooks = () => {
+    switch(selectedSort){
+      case 'ascending':
+        sortedBooks.sort((a,b)=>(a.price > b.price) ? 1 : -1)
+      break
+      case "descending":
+        sortedBooks.sort((a,b)=>(a.price < b.price) ? 1 : -1)
+      break
+      case "unsorted":
+        sortedBooks = [...books]
+      break
+    }
+  }
+  sortBooks()
   return (
     <div className="productsContainer">
       <h1>All Comics</h1>
+    
     <div className="allBooks">
-      {books.map((book) => {
+      {selectedSort.map((book) => {
         return (
           <Card
             sx={{ boxShadow: 2 }}
