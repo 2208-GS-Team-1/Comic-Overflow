@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Drawer, IconButton, Box, Divider, Card } from '@mui/material';
+import { Drawer, IconButton, Box, Divider, Card, Badge } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCart } from "../../store/cartSlice";
@@ -33,6 +33,7 @@ const loadCartFromLocalStorage = () => {
     dispatch(setCart(cart))
   }
 };
+  const totalItems = cart.reduce((total,index) => total + index.quantity, 0)
 
   //handleOpen toggles the drawer to open BUT also calcuates the price... its the only way I could make the total work
   const handleOpen = async () => {
@@ -166,6 +167,7 @@ const loadCartFromLocalStorage = () => {
       }
 
   };
+
   const handleCheckOut = async () => {
     if (user.id){
       const token = window.localStorage.getItem("token");
@@ -254,7 +256,11 @@ const loadCartFromLocalStorage = () => {
           <button disabled={!cart || cart.length == 0 ? true : false}onClick={handleCheckOut}>Check Out Now</button>
           </div>
       </Drawer>
-      <IconButton onClick={handleOpen}><ShoppingCartIcon/></IconButton>
+      <IconButton onClick={handleOpen}>
+        <Badge badgeContent={totalItems} max={99} color="primary">
+        <ShoppingCartIcon/>
+        </Badge>
+        </IconButton>
       </Box>
   );
 }
