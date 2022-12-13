@@ -42,7 +42,7 @@ function AdminBooksPage() {
             return (
               <tr className="adminProducttr" key={book.id}>
                 <td className="adminProducttd">
-                  {index}: {book.title} {book.volume} {book.edition}
+                  {index}: {book.title} {book.volume} {book.edition} 
                 </td>
                 <td className="adminProductButton">
                   <Link to={`/admin/books/${book.id}`}>
