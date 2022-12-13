@@ -79,7 +79,6 @@ const combineCarts = async (userId, bookId, quantity) => {
         } else {
           dispatch(setCart([]))
           localStorage.setItem("cart", JSON.stringify([]))
-
         }
       }
     }
