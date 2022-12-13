@@ -4,7 +4,8 @@ import { resetUser, setUser } from "../../store/userSlice";
 import axios from "axios";
 import "./login.css";
 import { clearCart, setCart } from "../../store/cartSlice";
-import { Checkbox, FormControlLabel, FormGroup, Button, TextField } from "@mui/material";
+import { Checkbox, FormControlLabel, FormGroup, Button, TextField, FormControl, Card } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const { user } = useSelector(state => state.user);
@@ -101,39 +102,51 @@ const combineCarts = async (userId, bookId, quantity) => {
     );
   return (
     <div className="loginForm">
+      <Card
+      className="loginCard"
+      sx={{ boxShadow: 4 }}
+      >
       <h2>Login</h2>
-      <form onSubmit={attemptLogin}>
+      <FormControl onSubmit={attemptLogin}
+      className="loginFields"
+      >
         <TextField
           label="username"
           value={credentials.username}
           name="username"
           onChange={onChange}
+          sx={{ input: { fontFamily: "'Dogfish', sans-serif" } }}
         />
-        <input
-          placeholder="password"
+        <TextField
           name="password"
+          label="password"
           type={showPassword ? "text" : "password"}
           value={credentials.password}
           onChange={onChange}
+          sx={{ input: { fontFamily: "'Dogfish', sans-serif" } }}
         />
-
-            <FormGroup>
-                <FormControlLabel   label="Show password"
-                control={
-                <Checkbox 
-                onChange={handleCheckboxChange}
-                color="default"
+          <FormControlLabel label="Show password"
+            control={
+             <Checkbox 
+              onChange={handleCheckboxChange}
+              color="default"
                 />
-            }
+          }
                 />
-            </FormGroup>
-
-        <Button
-        variant="contained"
-        sx={{backgroundColor:"gray"}}
-        >
-            Login</Button>
-      </form>
+                </FormControl>
+            <button
+            onClick={attemptLogin}
+            >
+            Login
+            </button>
+            <h3>New customer?</h3>
+            <Link
+            style={{ color:'black', fontFamily: "'Dogfish', sans-serif", cursor: "pointer"}}
+            to={'/createaccount'}
+            >
+            <p style={{ cursor: "pointer"}}>Sign up now!</p>
+            </Link>
+      </Card>
     </div>
   );
 };
