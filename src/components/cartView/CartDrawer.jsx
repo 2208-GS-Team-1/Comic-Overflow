@@ -168,8 +168,13 @@ const loadCartFromLocalStorage = () => {
   };
   const handleCheckOut = async () => {
     if (user.id){
-      await axios.get(`api/cart/user/${user.id}/checkOut`)
-  
+      const token = window.localStorage.getItem("token");
+      await axios.get(`api/cart/user/${user.id}/checkOut`,{
+        headers: {
+          authorization: "Bearer " + token
+        }
+      })
+      
       setTotalPrice(0)
       dispatch(setCart([]))
       saveCartToLocalStorage([])

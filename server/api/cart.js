@@ -10,8 +10,7 @@ const { User, CartItem, Book, Order } = require("../db");
 // authenticateUser is a middleware used to check the JWT
 // Used in all singular-cart routes
 const authenticateUser = (req, res, next) => {
-  console.log("hit auth");
-
+  console.log(req.headers.authorization);
   const header = req.headers.authorization;
   //separate the token from the word "Bearer"
   const token = header && header.split(" ")[1];
@@ -167,7 +166,7 @@ router.put("/:cartItemId", async (req, res, next) => {
 // Checks out a given user's active cart
 router.get(
   "/user/:userId/checkOut",
-
+  authenticateUser,
   async (req, res, next) => {
     try {
       // ************************** GETTING USER'S ACTIVE CART **************************** //
