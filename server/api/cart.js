@@ -1,7 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const { User, CartItem, Book, Order } = require("../db");
+const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
 /* TODO: 
   Put authenticateUserthis back in routes 
@@ -291,6 +293,39 @@ router.post("/quantity", async (req, res, next) => {
       console.log("Add to cart successful!");
       res.status(201).send(createdCartItem);
     }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/checkout", async (req, res, next) => {
+  //grab order details from req.body
+  const cart = req.body;
+  try {
+    //create stripe session
+    const session = await stripe.checkout.sessions.create({
+      //use preset stripe keys to set payment type, mode, line_items
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: cart.map((cartItem) => {
+        return {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: cartItem.book.title,
+            },
+            unit_amount: cartItem.book.price,
+          },
+          quantity: cartItem.quantity,
+        };
+      }),
+      //set url that page goes to after success
+      success_url: `${process.env.SERVER_URL}/myAccount`,
+      //set url that page goes to after failure (required)
+      cancel_url: `${process.env.SERVER_URL}/myAccount`,
+    });
+    //send url json back to post request
+    res.json({ url: session.url });
   } catch (err) {
     next(err);
   }
