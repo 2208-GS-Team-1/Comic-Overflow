@@ -314,6 +314,9 @@ router.post("/checkout", async (req, res, next) => {
             product_data: {
               name: cartItem.book.title,
             },
+            automatic_tax: {
+              enabled: true,
+            },
             unit_amount: cartItem.book.price,
           },
           quantity: cartItem.quantity,

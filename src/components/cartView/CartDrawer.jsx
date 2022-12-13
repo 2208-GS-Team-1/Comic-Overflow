@@ -171,22 +171,20 @@ const CartDrawer = () => {
   const handleCheckOut = async () => {
     if (user.id) {
       console.log(cart);
+      //Need to recomment this back in!!
       // const token = window.localStorage.getItem("token");
-      const res = await axios.post(
-        `/api/cart/checkout`,
-        cart
-        // {
-        //   headers: {
-        //     authorization: "Bearer " + token,
-        //   },
-        // }
-      );
+      const res = await axios.post(`/api/cart/checkout`, cart);
       let url = res.data.url;
       window.location = url;
       //need to figure out how to change the below code to only be handled on Pay from Stripe site
-      setTotalPrice(0);
-      dispatch(setCart([]));
-      saveCartToLocalStorage([]);
+      // await axios.get(`api/cart/user/${user.id}/checkOut`,{
+      //   headers: {
+      //     authorization: "Bearer " + token
+      //   }
+      // })
+      // setTotalPrice(0);
+      // dispatch(setCart([]));
+      // saveCartToLocalStorage([]);
     } else {
       alert("please sign in to checkout!");
     }
