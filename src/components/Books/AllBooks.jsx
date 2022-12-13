@@ -1,5 +1,5 @@
 
-import { Card,  Typography } from "@mui/material";
+import { Autocomplete, Card,  FormControl,  InputLabel,  MenuItem,  Select,  TextField,  Typography } from "@mui/material";
 
 import axios from "axios";
 import React, { useEffect } from "react";
@@ -57,15 +57,44 @@ const AllBooks = () => {
       case "unsorted":
         sortedBooks = [...books]
       break
+      case "a-z":
+        sortedBooks.sort(function(a, b){
+          if(a.title < b.title) { return -1; }
+          if(a.title > b.title) { return 1; }
+          return 0;
+      })
+        break
+        case "z-a":
+          sortedBooks.sort(function(a, b){
+            if(a.title > b.title) { return -1; }
+            if(a.title < b.title) { return 1; }
+            return 0;
+        })
+          break
     }
   }
   sortBooks()
   return (
     <div className="productsContainer">
       <h1>All Comics</h1>
-    
+      <div className="sortBar">
+    <FormControl variant="filled" sx={{color: "black", m: 1, minWidth: 120 }} size="small">
+    <InputLabel sx={{color:"black"}}>Sort</InputLabel>
+    <Select
+    onChange={handleSortChange}
+    label="Sort"
+    value={selectedSort}
+    >
+      <MenuItem value="unsorted">unsorted</MenuItem>
+      <MenuItem value="ascending">Price: low to high</MenuItem>
+      <MenuItem value="descending">Price: high to low</MenuItem>
+      <MenuItem value="a-z">Title: A-Z</MenuItem>
+      <MenuItem value="z-a">Title: Z-A</MenuItem>
+    </Select>
+    </FormControl>
+      </div>
     <div className="allBooks">
-      {selectedSort.map((book) => {
+      {sortedBooks.map((book) => {
         return (
           <Card
             sx={{ boxShadow: 2 }}
