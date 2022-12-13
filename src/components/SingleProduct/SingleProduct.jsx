@@ -3,18 +3,20 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { setSelectedBook } from "../../store/bookSlice";
+import SingleProductAdd from "../addToCart/SingleProductAdd";
 import ReviewsSingleBook from "../Reviews/ReviewsSingleBook";
 import StarRatingAvg from "../Reviews/StarRatingAvg";
 import "./singleProduct.css";
 
+
 const SingleProduct = () => {
   // when item is clicked from all product page, it's automatically directed to this page.
   // this components will take in the id of the item and display appropriate information.
-  // *** WILL NEED REVIEW COMPONENT TO DISPLAY ALL RELATED REVIEWS ***
 
   const dispatch = useDispatch();
   const selectedBook = useSelector((state) => state.book.selectedBook);
   const [loading, setLoading] = useState(false);
+  const [quantityChange, setQuantityChange] = useState(1)
   const { id } = useParams();
 
   //fetching product's information using ID
@@ -25,12 +27,17 @@ const SingleProduct = () => {
     setLoading(true);
   };
 
+  const handleQuantityChange = (event) => {
+    const quantityToAdd = Number(event.target.value)
+    setQuantityChange(quantityToAdd)
+  }
+
   useEffect(() => {
     singleBookHandler();
   }, []);
 
-  if (loading) {
-    if (selectedBook.stock !== 0) {
+  if(!loading){ return (<div><h1>Oops! Something went wrong!</h1></div>)}
+
       const bookPrice = (selectedBook.price / 100).toFixed(2);
       return (
         <div className="singleProductPage">
@@ -55,12 +62,21 @@ const SingleProduct = () => {
               )}
 
               <div className="isbn">ISBN: {selectedBook.isbn}</div>
+              {/*if the book is out of stock, displayed price & stock status will change */}
+              {(selectedBook.stock !== 0) ?
+              <>
               <div className="price">${bookPrice}</div>
               <p className="inStock">In Stock</p>
-              <div className="quantity">
-                {/* below form will need an on-click function to put product into the cart */}
+              </>:
+              <>
+              <div className="price">$0.00</div>
+              <p className="inStock">Out of Stock</p>
+              </>}
 
-                <form className="singleProductForm">
+              <div className="quantity">
+                <form className="singleProductForm"
+
+                >
                   <input
                     className="singleProductInput"
                     name="quantity"
@@ -68,8 +84,18 @@ const SingleProduct = () => {
                     max={selectedBook.stock}
                     type="number"
                     placeholder="1"
+                    value={quantityChange.toString()}
+                    onChange={handleQuantityChange}
+                    // value={quantityToAdd}
                   />
-                  <button name="cartButton">Add to Cart</button>
+                  {/*Cart button will be disabled when out of stock */}
+                  {(selectedBook.stock !== 0)?
+                  <div className="productCardButtons">
+                  <SingleProductAdd book={selectedBook} quantity={quantityChange}/>
+                  </div>
+                  : 
+                  <>Out of Stock
+                  </>}
                 </form>
               </div>
               <div>
@@ -87,14 +113,7 @@ const SingleProduct = () => {
           </div>
         </div>
       );
-    } else {
-      return (
-        <div>
-          <h1>SORRY! SOLD OUT!</h1>
-        </div>
-      );
-    }
-  }
+
 };
 
 export default SingleProduct;

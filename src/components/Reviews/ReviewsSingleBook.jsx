@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Card,
   CardContent,
@@ -8,21 +9,18 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./reviewsSingleBook.css";
-// import { useSelector } from "react-redux";
 
 const ReviewsSingleBook = ({ book }) => {
-  //selectedBook is already in redux from clicking on book
-  // const selectedBook = useSelector((state) => state.book.selectedBook);
   const [allReviews, setAllReviews] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleAllReviews = async () => {
     setLoading(true);
-    // GET all reviews for specific book
+    // GET all reviews for specific book. Need to make api call because User is not associated to Book
     const reviews = await axios.get(`/api/reviews/${book.id}`);
     //reviews.data = array of reviews for specific book
 
-    setAllReviews([...reviews.data]);
+    setAllReviews(reviews.data);
     setLoading(false);
   };
 

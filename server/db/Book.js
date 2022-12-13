@@ -73,6 +73,12 @@ const Book = db.define("book", {
       min: 0, // Don't allow a negative stock
     },
   },
+
+  isDeactivated: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
 });
 
 module.exports = Book;

@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { Book } = require("../db");
+const { Book, Review } = require("../db");
 
 // GET - api/books --> Gets all books from the db
 router.get("/", async (req, res, next) => {
   try {
-    const allBooks = await Book.findAll();
+    const allBooks = await Book.findAll({
+      include: [Review],
+    });
     res.send(allBooks);
   } catch (err) {
     next(err);
@@ -14,7 +16,9 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;
   try {
-    const singleBook = await Book.findByPk(id);
+    const singleBook = await Book.findByPk(id, {
+      include: [Review],
+    });
     singleBook ? res.send(singleBook) : res.send("Book not found").status(404);
   } catch (err) {
     next(err);

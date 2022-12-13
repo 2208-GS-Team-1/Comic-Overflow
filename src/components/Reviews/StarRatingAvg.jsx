@@ -1,5 +1,5 @@
+/* eslint-disable react/prop-types */
 import { Rating } from "@mui/material";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const StarRatingAvg = ({ book }) => {
@@ -7,22 +7,22 @@ const StarRatingAvg = ({ book }) => {
   //use local state
   const [avgReview, setAvgReview] = useState(0.0);
   const [reviewCount, setReviewCount] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const handleAvgReview = async () => {
-    setLoading(true);
-    // GET all reviews for specific book
-    const reviews = await axios.get(`/api/reviews/${book.id}`);
-    //reviews.data = array of reivews for specific book
-    if (reviews.data.length > 0) {
-      setAvgReview(
-        //use reduce method to take the average of the rating columns if the array.lenth is > 0
-        reviews.data.reduce((total, next) => total + next.rating, 0) /
-          reviews.data.length
+  const handleAvgReview = () => {
+    // reviews are associated to book prop
+    const reviews = book.reviews;
+    //reviews = array of reviews for specific book
+    if (reviews.length > 0) {
+      //use reduce method to take the average of the rating columns if the array.lenth is > 0
+      const totalReviews = reviews.reduce(
+        (total, next) => total + next.rating,
+        0
       );
-      setReviewCount(reviews.data.length);
+      const averageReview = totalReviews / reviews.length;
+      setAvgReview(averageReview);
+      setReviewCount(reviews.length);
     }
-
     setLoading(false);
   };
 
@@ -42,10 +42,8 @@ const StarRatingAvg = ({ book }) => {
           "No ratings yet!"
         )}
       </span>
-      {reviewCount > 0 ? (
+      {reviewCount > 0 && (
         <span style={{ display: "inline-block" }}>({reviewCount})</span>
-      ) : (
-        ""
       )}
     </div>
   );

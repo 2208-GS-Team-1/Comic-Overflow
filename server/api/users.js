@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User, CartItem } = require("../db");
+const { User } = require("../db");
 
 // GET - api/users --> Gets all users from the db
 router.get("/", async (req, res, next) => {
@@ -11,7 +11,20 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
-// GET - api/users/:id --> Gets all users from the db
+router.get("/:email", async (req, res, next) => {
+  const usersEmail = req.params.email;
+  try {
+    const user = await User.findOne({
+      where: {
+        email: usersEmail,
+      },
+    });
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+});
+// GET - api/users/:id --> Gets single user from the db
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;
   const regexExp =
@@ -32,32 +45,36 @@ router.get("/:id", async (req, res, next) => {
     res.send("ID is not a UUID").status(404);
   }
 });
+
 // POST - api/users --> Adds user to db
 router.post("/", async (req, res, next) => {
   try {
-    const usernameExists = await User.findAll({
+    const userWithSameUsername = await User.findOne({
       where: {
         username: req.body.username,
       },
     });
-    const emailExists = await User.findAll({
+
+    const userWithSameEmail = await User.findOne({
       where: {
         email: req.body.email,
       },
     });
-    if (usernameExists.username) {
-      res.send("Username already exists").status(409);
-    } else if (emailExists.email) {
-      res.send("Email already exists").status(409);
+
+    if (userWithSameUsername) {
+      res.status(400).send("An account with that username already exists");
+    } else if (userWithSameEmail) {
+      res.status(400).send("An account with that e-mail already exists");
     } else {
       await User.create(req.body);
-      res.send("User has been succussfully created").status(201);
+      res.send("User has been successfully created").status(201);
     }
   } catch (err) {
     next(err);
   }
 });
 
+// POST - api/users --> Updates user with given id
 router.put("/:id", async (req, res, next) => {
   try {
     const { address, email, phoneNumber } = req.body;

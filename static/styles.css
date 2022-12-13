@@ -6,6 +6,21 @@ body {
 
 /* Main Page's header design */
 
+.upperBar {
+  display: flex;
+  background-color: black;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: row;
+  height: 30px;
+}
+
+.upperBarMessage {
+  color: white;
+  font-size: 10pt;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 .main_header {
   display: flex;
   justify-content: center;
