@@ -41,7 +41,7 @@ const AdminBookEdit = () => {
     const authorHandler = (event) => {
         setAuthor(event.target.value)
     }
-    const descrbHandler = (event) => {
+    const descriptionHandler = (event) => {
     setdescription(event.target.value)
     }
     const genreHandler = (event) => {
@@ -84,13 +84,16 @@ const AdminBookEdit = () => {
             price, 
             stock,
             isDeactivated };
-        await axios.put(`/api/books/${id}`, updatedBook);
-        refresh();
+        try {
+            await axios.put(`/api/books/${id}`, updatedBook);
+            refresh();
+        } catch (error) {
+            console.log(error)
+        }
 }
 
     if(!loading){ return (<div>Oops, something went wrong!</div>)}
 
-    const bookPrice = (selectedBook.price / 100).toFixed(2);
 
     return (
         <div className='formBase'>
@@ -103,7 +106,7 @@ const AdminBookEdit = () => {
                         <label htmlFor="author">Author</label>
                         <input id="author" className='editInput' placeholder={selectedBook.author} onChange={authorHandler} />
                         <label htmlFor="description">Description</label>
-                        <input id="description" className='editInput' placeholder={selectedBook.description} onChange={descrbHandler} />
+                        <textarea rows="10" id="description" className='editInput' placeholder={selectedBook.description} onChange={descriptionHandler} />
                         <label htmlFor="genre">Genre</label>
                         <input id="genre" className='editInput' placeholder={selectedBook.genre} onChange={genreHandler} />
                         <label htmlFor="volume">Volume</label>
@@ -111,14 +114,14 @@ const AdminBookEdit = () => {
                         <label htmlFor="yop">Year of Publishing</label>
                         <input id="yop" className='editInput' placeholder={selectedBook.yearOfPublish} onChange={yopHandler} />
                         <label htmlFor="isbn">ISBN</label>
-                        <input id="isbn" className='editInput' placeholder={(selectedBook.isbn === null)? 'no isbn yet': 'isbn'} onChange={isbnHandler} />
+                        <input id="isbn" className='editInput' placeholder={(selectedBook.isbn === null)? 'no isbn yet': `${selectedBook.isbn}`} onChange={isbnHandler} />
                         <label htmlFor="edition">Edition</label>
                         <input id="edition" className='editInput' placeholder={(selectedBook.edition.length === 0)? 'no edition info': selectedBook.edition} onChange={editionHandler} />
-                        <label htmlFor="price">Price</label>
-                        <input id="price" className='editInput' placeholder={bookPrice} onChange={priceHandler} />
+                        <label htmlFor="price">Price in cents</label>
+                        <input id="price" className='editInput' placeholder={selectedBook.price} onChange={priceHandler} />
                         <label htmlFor="stock">Stock</label>
                         <input id="stock" className='editInput' placeholder={selectedBook.stock} onChange={stockHandler} />
-                        <label htmlFor="status">Status</label>
+                        <label htmlFor="status">Deactivation status</label>
                         <input id="status" className='editInput' placeholder={(selectedBook.isDeactivated === false)? 'false':'true'} onChange={statusHandler} />
                         <button>Submit</button>
                     </div>
