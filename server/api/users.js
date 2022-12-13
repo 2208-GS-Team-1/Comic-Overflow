@@ -11,7 +11,19 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
-
+router.get("/:email", async (req, res, next) => {
+  const usersEmail = req.params.email;
+  try {
+    const user = await User.findOne({
+      where: {
+        email: usersEmail,
+      },
+    });
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+});
 // GET - api/users/:id --> Gets single user from the db
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;

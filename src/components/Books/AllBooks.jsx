@@ -42,7 +42,6 @@ const AllBooks = () => {
   return (
     <div className="productsContainer">
       <h1>All Comics</h1>
-
     <div className="allBooks">
       {books.map((book) => {
         return (
@@ -63,7 +62,7 @@ const AllBooks = () => {
             </div>
             <div className="productCardButtons">
               <Typography>${(book.price / 100).toFixed(2)}</Typography>
-              <AllProductsAdd bookId={book.id}/>
+            <AllProductsAdd book={book}/>
             </div>
           </Card>
         );

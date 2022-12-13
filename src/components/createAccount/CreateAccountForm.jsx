@@ -6,6 +6,8 @@ import { Alert, Box, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setCart } from "../../store/cartSlice";
 
 // Validation schema using yup, to check is text field entries are valid.
 const validationSchema = yup.object({
@@ -37,12 +39,19 @@ const submitButtonStyle = {
 function CreateAccountForm() {
   // Redux and React stuff
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // States used for error message display rendering if account creation was successful or not
   const [creationSuccess, setCreationSuccess] = useState(false);
   const [creationFailure, setCreationFailure] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+  const clearCart = async () => {
+    const emptyCart = JSON.stringify([])
+    localStorage.setItem('cart', emptyCart)
+    const newCart = localStorage.getItem('cart')
+    const freshCart = JSON.parse(newCart)
+    dispatch(setCart(freshCart))
+  }
   const formik = useFormik({
     // Initializes our formik.values object to have these key-value pairs.
     initialValues: {
@@ -70,19 +79,32 @@ function CreateAccountForm() {
 
         await axios.post("/api/users", bodyToSubmit);
         setErrorMessage(errorMessage); // This is the message from the api's res.send
-
+        const cartString = localStorage.getItem("cart")
+        const guestCart = JSON.parse(cartString)
+        if(guestCart.length > 0){
+          const usersEmail = bodyToSubmit.email
+          const newUser = await axios.get(`/api/users/${usersEmail}`)
+          const userId = newUser.data.id
+          await Promise.all(guestCart.map(async (cartItem)=> {
+            let bookId = cartItem.book.id
+            let quantityToAdd = cartItem.quantity
+            let body = { userId, bookId, quantityToAdd}
+            await axios.post("/api/cart/quantity", body);
+          }))
+        }
+        
+        await clearCart();
         /* Ideally would like to log the user in here, and THEN redirect to home
       	But not sure how to generate the JWT and the stuff with authorization.
 				Would also need to dispatch the redux state of user, I think.
 				
 				So for now, just redirect them to the login page so they can log in with new account.
 			  */
-
+        
         // Update the state that is used to trigger the mui Alert Success component
         setCreationSuccess(true);
         // In case it failed before, set that state too, so the failure message disappears
         setCreationFailure(false);
-
         // Wait 3 seconds before redirecting the user to login page
         setTimeout(() => {
           navigate("/login");
