@@ -354,7 +354,6 @@ Throughout the backstabbing and assassination attempts, the Buddha remains stead
       genre: "slice of life",
     },
   ];
-  console.log(evenMorebooks.length);
   await Promise.all(evenMorebooks.map(book => Book.create(book)));
 
   const [
