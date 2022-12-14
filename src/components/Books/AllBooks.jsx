@@ -26,7 +26,7 @@ const AllBooks = () => {
   const fetchBooks = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get("/api/books");
+      const { data } = await axios.get("/api/books/active");
       dispatch(setBooks(data));
     } catch (err) {
       console.log(err); //<- not sure if we want the err console logged but fine for dev purposes.

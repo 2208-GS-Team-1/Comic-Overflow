@@ -13,6 +13,20 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
+//GET - /api/books/active
+router.get("/active", async (req, res, next) => {
+  try {
+    const allBooks = await Book.findAll({
+      where: {
+        isDeactivated: false,
+      },
+      include: [Review],
+    });
+    res.send(allBooks);
+  } catch (err) {
+    next(err);
+  }
+});
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;
   try {
