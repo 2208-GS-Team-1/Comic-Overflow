@@ -315,9 +315,6 @@ router.post("/checkout", async (req, res, next) => {
               name: cartItem.book.title,
               images: [cartItem.book.image],
             },
-            automatic_tax: {
-              enabled: true,
-            },
             unit_amount: cartItem.book.price,
           },
           quantity: cartItem.quantity,
