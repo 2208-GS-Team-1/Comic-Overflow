@@ -31,14 +31,15 @@ const Slider = () => {
         <div className="container" >
           <img src={imageArray[currentSlide]}  />
         </div>
-        <div className='icons'>
+        {/* icons are disabled for now */}
+        {/* <div className='icons'>
           <div className='icon'>
             <i className="gg-play-track-prev-r" onClick={prevSlide}></i>
           </div>
           <div className='icon'>
             <i className="gg-push-chevron-right-r" onClick={nextSlide}></i>
           </div>
-        </div>
+        </div> */}
       </div>
     );
 };
