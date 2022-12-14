@@ -2,7 +2,7 @@
 import { Card,  FormControl,  InputLabel,  MenuItem,  Select, Typography } from "@mui/material";
 import ReactPaginate from 'react-paginate';
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBooks } from "../../store/bookSlice";
@@ -17,6 +17,7 @@ import AllProductsAdd from "../addToCart/AllProductsAdd"
 
 
 const AllBooks = () => {
+  const wrapperRef = useRef(null);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const books = useSelector((state) => state.book.books);
@@ -35,6 +36,7 @@ const AllBooks = () => {
 
   useEffect(() => {
     fetchBooks();
+
   }, []);
   if (loading) return(
     <div
@@ -47,6 +49,7 @@ const AllBooks = () => {
   }
   function handlePageClick({ selected: selectedPage }) {
     setCurrentPage(selectedPage);
+    wrapperRef.current.scrollIntoView();
   }
   // 'sortedBooks' is the sorted array that we loop over to allow the user to sort by what they want
   let sortedBooks = [...books]
@@ -85,9 +88,11 @@ const AllBooks = () => {
             const currentPageData = sortedBooks
                 .slice(offset, offset + PER_PAGE)
             const pageCount = Math.ceil(sortedBooks.length / PER_PAGE);
+            // const pageCount = 30
             //
             return (
-    <div className="productsContainer">
+      <div className="productsContainer">
+      <div ref={wrapperRef}></div>
       <h1>All Comics</h1>
       <div className="sortBar">
     <FormControl variant="filled" sx={{color: "black", m: 1, minWidth: 120 }} size="small">
@@ -131,6 +136,9 @@ const AllBooks = () => {
         );
       })}
     </div>
+    <div
+    className="paginateContainer"
+    >
     <ReactPaginate
       previousLabel={"← Previous"}
       nextLabel={"Next →"}
@@ -142,6 +150,7 @@ const AllBooks = () => {
       disabledClassName={"pagination__link--disabled"}
       activeClassName={"pagination__link--active"}
     />
+    </div>
     </div>
   );
 };

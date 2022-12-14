@@ -2,13 +2,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid red;
+}
+.productsContainer h1 {
+    margin: 12px 0 0 0;
+    padding: 0;
 }
 .allBooks{
     display: grid;
     grid-template-columns: repeat(4, 160px);
     justify-content: space-around;
-    border: 1px solid black;
+    padding: 12px;
     width: 736px;
 }
 .productCard {
@@ -17,8 +20,7 @@
     justify-content: center;
     align-items: center;
     width: 160px;
-
-    margin: 12px;
+    margin-bottom: 12px;
 }
 .productCard img {
     height: 250px;
@@ -51,13 +53,16 @@
     justify-content: space-between;
     list-style: none;
     cursor: pointer;
+    padding: 0;
   }
   
   .pagination a {
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #6c7ac9;
-    color: #6c7ac9;
+    border: 1px solid black;
+    margin: 4px;
+    font-family: 'Dogfish', sans-serif;
+    color: black;
   }
   
   .pagination__link {
@@ -66,10 +71,20 @@
   
   .pagination__link--active a {
     color: #fff;
-    background: #6c7ac9;
+    background-color: rgb(255, 216, 19);
+    color: black;
+
   }
   
   .pagination__link--disabled a {
     color: rgb(198, 197, 202);
     border: 1px solid rgb(198, 197, 202);
+  }
+.paginateContainer{
+    display: flex;
+    justify-content: center;
+    width: 800px;
+}
+html {
+    scroll-behavior: smooth;
   }
