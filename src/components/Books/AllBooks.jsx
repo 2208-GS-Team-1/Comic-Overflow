@@ -22,7 +22,7 @@ const AllBooks = () => {
   const [loading, setLoading] = useState(false);
   const books = useSelector((state) => state.book.books);
   const [currentPage, setCurrentPage] = useState(0);
-  const [selectedSort,setSelectedSort] = useState('unsorted')
+  const [selectedSort,setSelectedSort] = useState('newest')
   const fetchBooks = async () => {
     setLoading(true);
     try {
@@ -65,6 +65,13 @@ const AllBooks = () => {
           case "unsorted":
             sortedBooks = [...books]
             break
+            case "newest":
+              sortedBooks.sort((a,b)=>{
+                if(a.createdAt > b.createdAt) {return -1;}
+                if(a.createdAt < b.createdAt) {return 1;}
+                return 0;
+              })
+            break
             case "a-z":
               sortedBooks.sort(function(a, b){
                 if(a.title < b.title) { return -1; }
@@ -102,11 +109,11 @@ const AllBooks = () => {
     label="Sort"
     value={selectedSort}
     >
-      <MenuItem value="unsorted">unsorted</MenuItem>
-      <MenuItem value="ascending">Price: low to high</MenuItem>
-      <MenuItem value="descending">Price: high to low</MenuItem>
-      <MenuItem value="a-z">Title: A-Z</MenuItem>
-      <MenuItem value="z-a">Title: Z-A</MenuItem>
+      <MenuItem value="newest">Newest Arrivals</MenuItem>
+      <MenuItem value="ascending">Price, low to high</MenuItem>
+      <MenuItem value="descending">Price, high to low</MenuItem>
+      <MenuItem value="a-z">Title, A-Z</MenuItem>
+      <MenuItem value="z-a">Title, Z-A</MenuItem>
     </Select>
     </FormControl>
       </div>
