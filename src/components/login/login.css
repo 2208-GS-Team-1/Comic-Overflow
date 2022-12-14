@@ -3,7 +3,6 @@
     flex-direction: column;
     align-items: center;
     margin-top: 10px;
-    border: 1px solid red
 }
 .loginForm form {
     display: flex;
