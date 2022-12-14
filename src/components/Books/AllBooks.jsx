@@ -14,6 +14,7 @@ import AllProductsAdd from "../addToCart/AllProductsAdd"
 
 
 const AllBooks = () => {
+  // useRef allows us to make a reference to a DOM node
   const wrapperRef = useRef(null);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -49,6 +50,7 @@ const AllBooks = () => {
   // handle the react page # state
   function handlePageClick({ selected: selectedPage }) {
     setCurrentPage(selectedPage);
+    // so when we scroll to the current wrapper ref, right now we scroll to the top of the page`
     wrapperRef.current.scrollIntoView();
   }
   // 'sortedBooks' is the sorted array that we loop over to allow the user to sort by what they want
@@ -90,15 +92,17 @@ const AllBooks = () => {
             }
             sortBooks()
 // PAGINATION
+// Hardcoded # of books per page, if in the future we wanted the user to be able to change the # of items per page
+// we would then could have state determine this.
 const PER_PAGE = 15;
 const offset = currentPage * PER_PAGE;
 const currentPageData = sortedBooks
 .slice(offset, offset + PER_PAGE)
 const pageCount = Math.ceil(sortedBooks.length / PER_PAGE);
-// const pageCount = 30
 //
 return (
       <div className="productsContainer">
+        {/* VV this is the node we're referencing */}
       <div ref={wrapperRef}></div>
       <h1>All Comics</h1>
       <div className="sortBar">
