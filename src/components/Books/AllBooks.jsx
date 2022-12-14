@@ -89,15 +89,15 @@ const AllBooks = () => {
               }
             }
             sortBooks()
-            // PAGINATION
-            const PER_PAGE = 15;
-            const offset = currentPage * PER_PAGE;
-            const currentPageData = sortedBooks
-                .slice(offset, offset + PER_PAGE)
-            const pageCount = Math.ceil(sortedBooks.length / PER_PAGE);
-            // const pageCount = 30
-            //
-            return (
+// PAGINATION
+const PER_PAGE = 15;
+const offset = currentPage * PER_PAGE;
+const currentPageData = sortedBooks
+.slice(offset, offset + PER_PAGE)
+const pageCount = Math.ceil(sortedBooks.length / PER_PAGE);
+// const pageCount = 30
+//
+return (
       <div className="productsContainer">
       <div ref={wrapperRef}></div>
       <h1>All Comics</h1>
