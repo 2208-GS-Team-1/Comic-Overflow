@@ -36,12 +36,13 @@ function RouteContainer({ user }) {
             <Route path="/admin" element={<AdminHomepage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
             <Route path="/admin/books" element={<AdminBooksPage />} />
+            <Route path="/admin/books/:id" element={<AdminBookEdit />} />
             <Route path="/admin/reviews" element={<AdminReviewsPage />} />
             <Route path="/admin/orders" element={<AdminOrdersPage />} />
-            <Route path="/admin/books/:id" element={<AdminBookEdit />} />
           </>
         )}
 
+        <Route path="/404" element={<ErrorComponent />} />
         <Route path="/*" element={<ErrorComponent />} />
       </Routes>
     </div>

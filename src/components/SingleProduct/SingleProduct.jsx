@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { setSelectedBook } from "../../store/bookSlice";
 import SingleProductAdd from "../addToCart/SingleProductAdd";
 import ReviewsSingleBook from "../Reviews/ReviewsSingleBook";
@@ -14,7 +14,8 @@ const SingleProduct = () => {
   // this components will take in the id of the item and display appropriate information.
 
   const dispatch = useDispatch();
-  const selectedBook = useSelector((state) => state.book.selectedBook);
+  const navigate = useNavigate();
+  const selectedBook = useSelector(state => state.book.selectedBook);
   const [loading, setLoading] = useState(false);
   const [quantityChange, setQuantityChange] = useState(1);
   const { id } = useParams();
@@ -22,12 +23,17 @@ const SingleProduct = () => {
   //fetching product's information using ID
 
   const singleBookHandler = async () => {
-    const bookData = await axios.get(`/api/books/${id}`);
-    dispatch(setSelectedBook(bookData.data));
-    setLoading(true);
+    try {
+      const bookData = await axios.get(`/api/books/${id}`);
+      dispatch(setSelectedBook(bookData.data));
+      setLoading(true);
+    } catch (err) {
+      // If axios fetch fails (eg, a user's url is /books/snfjgkdfn)
+      navigate("/404");
+    }
   };
 
-  const handleQuantityChange = (event) => {
+  const handleQuantityChange = event => {
     const quantityToAdd = Number(event.target.value);
     setQuantityChange(quantityToAdd);
   };
