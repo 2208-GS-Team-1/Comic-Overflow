@@ -1,4 +1,3 @@
-const { Title } = require("@mui/icons-material");
 const express = require("express");
 const router = express.Router();
 const { Book, Review } = require("../db");
@@ -7,6 +6,20 @@ const { Book, Review } = require("../db");
 router.get("/", async (req, res, next) => {
   try {
     const allBooks = await Book.findAll({
+      include: [Review],
+    });
+    res.send(allBooks);
+  } catch (err) {
+    next(err);
+  }
+});
+//GET - /api/books/active
+router.get("/active", async (req, res, next) => {
+  try {
+    const allBooks = await Book.findAll({
+      where: {
+        isDeactivated: false,
+      },
       include: [Review],
     });
     res.send(allBooks);
@@ -26,7 +39,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-//POST -api/books -> Updates book with given id
+//PUT -api/books -> Updates book with given id
 router.put("/:id", async (req, res, next) => {
   try {
     const {
@@ -61,6 +74,7 @@ router.put("/:id", async (req, res, next) => {
       isDeactivated,
     });
     res.status(201).send("Book was updated");
+
   } catch (error) {
     next(error);
   }
