@@ -6,12 +6,9 @@ import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBooks } from "../../store/bookSlice";
-
 import MuiLoader from "../MuiLoader";
-
 import { Link } from "react-router-dom";
 import "./books.css";
-
 import StarRatingAvg from "../Reviews/StarRatingAvg";
 import AllProductsAdd from "../addToCart/AllProductsAdd"
 
@@ -38,15 +35,18 @@ const AllBooks = () => {
     fetchBooks();
 
   }, []);
+  // If loading, display a mui loader
   if (loading) return(
     <div
     className="loadingContainer">
       <MuiLoader/>
     </div>
   )
+  // Handle the react sort state chaning
   const handleSortChange = (event) => {
     setSelectedSort(event.target.value)
   }
+  // handle the react page # state
   function handlePageClick({ selected: selectedPage }) {
     setCurrentPage(selectedPage);
     wrapperRef.current.scrollIntoView();
