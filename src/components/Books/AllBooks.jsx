@@ -83,7 +83,7 @@ const AllBooks = () => {
             }
             sortBooks()
             // PAGINATION
-            const PER_PAGE = 12;
+            const PER_PAGE = 20;
             const offset = currentPage * PER_PAGE;
             const currentPageData = sortedBooks
                 .slice(offset, offset + PER_PAGE)

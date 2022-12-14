@@ -9,10 +9,12 @@
 }
 .allBooks{
     display: grid;
-    grid-template-columns: repeat(4, 160px);
+    grid-template-columns: repeat(5, auto);
     justify-content: space-around;
-    padding: 12px;
-    width: 736px;
+    /* padding: 12px; */
+    /* width: 736px; */
+    column-gap: 24px;
+    row-gap: 24px;
 }
 .productCard {
     display: flex;
@@ -46,6 +48,14 @@
     justify-content: center;
     align-items: center;
     height: 20px;
+}
+.sortBar{
+    display: flex;
+    flex-direction: row;
+    /* border: 1px solid red; */
+    align-items: center;
+    justify-content: flex-start;
+    width: 924px;
 }
 /* PAGINATION STYLES */
 .pagination {
