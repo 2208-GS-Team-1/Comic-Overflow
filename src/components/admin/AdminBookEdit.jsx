@@ -8,7 +8,7 @@ const AdminBookEdit = () => {
     const dispatch = useDispatch();
     const {id} = useParams();
     const [loading, setLoading] = useState(false);
-    const selectedBook = useSelector((state)=> state.book.selectedBook);
+    const selectedBook = useSelector(state=> state.book.selectedBook);
     const [title, setTitle] = useState(selectedBook.title);
     const [author, setAuthor] = useState(selectedBook.author);
     const [description, setdescription] = useState(selectedBook.description);
