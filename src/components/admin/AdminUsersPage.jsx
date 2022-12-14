@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllUsers } from "../../store/userSlice";
-import AdminNavbar from "./adminNavbar";
 import "./admin.css";
 
 function AdminUsersPage() {

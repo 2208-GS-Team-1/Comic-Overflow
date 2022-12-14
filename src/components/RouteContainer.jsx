@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Home from "./Home/Home.jsx";
+import ErrorComponent from "../ErrorComponent.jsx";
 import Login from "./login/Login";
 import CreateAccountContainer from "./createAccount/CreateAccountContainer.jsx";
 import AllBooks from "./Books/AllBooks.jsx";
@@ -40,6 +41,8 @@ function RouteContainer({ user }) {
             <Route path="/admin/books/:id" element={<AdminBookEdit />} />
           </>
         )}
+
+        <Route path="/*" element={<ErrorComponent />} />
       </Routes>
     </div>
   );
