@@ -42,7 +42,7 @@ router.get("/:id", async (req, res, next) => {
       next(err);
     }
   } else {
-    res.send("ID is not a UUID").status(404);
+    res.status(404).send("ID is not a UUID");
   }
 });
 
@@ -67,7 +67,7 @@ router.post("/", async (req, res, next) => {
       res.status(400).send("An account with that e-mail already exists");
     } else {
       await User.create(req.body);
-      res.send("User has been successfully created").status(201);
+      res.status(201).send("User has been successfully created");
     }
   } catch (err) {
     next(err);
@@ -86,7 +86,7 @@ router.put("/:id", async (req, res, next) => {
       email,
       phoneNumber,
     });
-    res.send("User was updated").status(201);
+    res.status(201).send("User was updated");
   } catch (err) {
     next(err);
   }
@@ -105,14 +105,14 @@ router.delete("/:id", async (req, res, next) => {
         },
       });
       !userToDelete
-        ? res.send("User does not exist").status(400)
+        ? res.status(400).send("User does not exist")
         : await userToDelete.destroy(),
-        res.send("User deleted").status(200);
+        res.status(200).send("User deleted");
     } catch (err) {
       next(err);
     }
   } else {
-    res.send("Not a UUID").status(404);
+    res.status(404).send("Not a UUID");
   }
 });
 

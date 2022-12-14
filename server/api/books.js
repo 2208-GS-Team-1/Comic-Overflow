@@ -60,7 +60,7 @@ router.put("/:id", async (req, res, next) => {
       stock,
       isDeactivated,
     });
-    res.send("Book was updated").status(201);
+    res.status(201).send("Book was updated");
   } catch (error) {
     next(error);
   }
