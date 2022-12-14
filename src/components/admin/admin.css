@@ -29,3 +29,8 @@
     display: flex;
     flex-direction: column;
 }
+
+.adminProductButton {
+    display: flex;
+    flex-direction: row;
+}
