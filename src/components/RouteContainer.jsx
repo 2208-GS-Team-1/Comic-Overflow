@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Home from "./Home/Home.jsx";
-import ErrorComponent from "../ErrorComponent.jsx";
+import ErrorComponent from "./ErrorComponent";
 import Login from "./login/Login";
 import CreateAccountContainer from "./createAccount/CreateAccountContainer.jsx";
 import AllBooks from "./Books/AllBooks.jsx";
