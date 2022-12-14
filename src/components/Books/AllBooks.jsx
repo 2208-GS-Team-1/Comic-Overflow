@@ -83,7 +83,7 @@ const AllBooks = () => {
             }
             sortBooks()
             // PAGINATION
-            const PER_PAGE = 20;
+            const PER_PAGE = 15;
             const offset = currentPage * PER_PAGE;
             const currentPageData = sortedBooks
                 .slice(offset, offset + PER_PAGE)
@@ -110,7 +110,12 @@ const AllBooks = () => {
     </Select>
     </FormControl>
       </div>
+      <Card
+      className="cardForAllProducts"
+      sx={{ boxShadow: 2 }}
+      >
     <div className="allBooks">
+
       {currentPageData.map((book) => {
         return (
           <Card
@@ -136,6 +141,7 @@ const AllBooks = () => {
         );
       })}
     </div>
+    </Card>
     <div
     className="paginateContainer"
     >
