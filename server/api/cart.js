@@ -313,6 +313,7 @@ router.post("/checkout", async (req, res, next) => {
             currency: "usd",
             product_data: {
               name: cartItem.book.title,
+              images: [cartItem.book.image],
             },
             automatic_tax: {
               enabled: true,
@@ -333,5 +334,45 @@ router.post("/checkout", async (req, res, next) => {
     next(err);
   }
 });
+
+const secret =
+  "whsec_e4c9ca1c2aaf726d3726a30f8cde3c73ab09d6c986428b183dbb6e03fc869269";
+
+router.post(
+  "/payment",
+  express.raw({ type: "application/json" }),
+  (request, response) => {
+    const sig = request.headers["stripe-signature"];
+
+    let event;
+    console.log(request.headers);
+    try {
+      event = stripe.webhooks.constructEvent(
+        request.body,
+        sig,
+        process.env.SECRET
+      );
+    } catch (err) {
+      console.error(err);
+      response.status(400).send(`Webhook Error: ${err.message}`);
+      return;
+    }
+
+    // Handle the event
+    const session = event.data.object;
+    switch (event.type) {
+      case "checkout.session.completed":
+        console.log(session);
+        // Then define and call a function to handle the event checkout.session.completed
+        break;
+      // ... handle other event types
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    // Return a 200 response to acknowledge receipt of the event
+    response.send();
+  }
+);
 
 module.exports = router;

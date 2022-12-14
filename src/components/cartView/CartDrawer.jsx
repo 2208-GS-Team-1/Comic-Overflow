@@ -170,11 +170,11 @@ const CartDrawer = () => {
   };
   const handleCheckOut = async () => {
     if (user.id) {
-      console.log(cart);
       //Need to recomment this back in!!
       // const token = window.localStorage.getItem("token");
       const res = await axios.post(`/api/cart/checkout`, cart);
       let url = res.data.url;
+      //take user to the Stripe checkout site
       window.location = url;
       //need to figure out how to change the below code to only be handled on Pay from Stripe site
       // await axios.get(`api/cart/user/${user.id}/checkOut`,{
