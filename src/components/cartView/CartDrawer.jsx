@@ -257,7 +257,7 @@ const loadCartFromLocalStorage = () => {
           </div>
       </Drawer>
       <IconButton onClick={handleOpen}>
-        <Badge badgeContent={totalItems} max={99} color="primary">
+        <Badge badgeContent={totalItems} max={99} color='primary'>
         <ShoppingCartIcon/>
         </Badge>
         </IconButton>
