@@ -130,6 +130,7 @@ const AllBooks = () => {
           </Card>
         );
       })}
+    </div>
     <ReactPaginate
       previousLabel={"← Previous"}
       nextLabel={"Next →"}
@@ -141,7 +142,6 @@ const AllBooks = () => {
       disabledClassName={"pagination__link--disabled"}
       activeClassName={"pagination__link--active"}
     />
-    </div>
     </div>
   );
 };
