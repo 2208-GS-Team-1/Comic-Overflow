@@ -61,8 +61,12 @@ const pageCount = Math.ceil(allUsers.length / PER_PAGE);
                     </td>
                     <td className="adminUserButtons">
                       {/* below buttons should be replaced with components later */}
+                      <div>
                       <button>View</button>
+                      </div>
+                      <div>
                       <button>Edit</button>
+                      </div>
                     </td>
                   </tr>
                 );

@@ -12,6 +12,11 @@
     display: flex;
     flex-direction: column;
 }
+.adminUserButtons{
+    display: flex;
+    flex-direction: row;
+    gap:10px
+}
 
 /* Below is for Admin Product page */
 
@@ -28,12 +33,16 @@
     padding: 50px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    min-width: 690px;
 }
 
 .adminProductButton {
     display: flex;
     flex-direction: row;
+    gap:10px
 }
+.adminProductTd
 /* PAGINATION STYLES */
 .pagination {
     display: flex;
