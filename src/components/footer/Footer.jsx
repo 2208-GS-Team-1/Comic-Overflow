@@ -11,10 +11,14 @@ import {
 
 function Footer(props) {
   const container = {
-    width: "100vw",
-    padding: 1,
     color: "white",
     backgroundColor: "rgb(54, 54, 54)",
+    paddingTop: "3em",
+    bottom: "0",
+    width: "100%",
+    // width: "100vw",
+    padding: 1,
+    marginTop: "25px",
   };
   const footerRowStyle = {
     display: "flex",

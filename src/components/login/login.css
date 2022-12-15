@@ -1,24 +1,25 @@
-.loginForm{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-    border: 1px solid red
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  border: 1px solid red;
+  min-height: 70vh;
 }
 .loginForm form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .loginForm form input {
-    width: 200px;
-    margin: 8px;
+  width: 200px;
+  margin: 8px;
 }
 .passwordInput {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .passwordInput input {
-    width: auto !important;
+  width: auto !important;
 }

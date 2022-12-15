@@ -23,39 +23,40 @@ const Login = () => {
     window.localStorage.removeItem("token");
     dispatch(resetUser());
     dispatch(clearCart());
-    localStorage.setItem('cart', JSON.stringify([]))
-};
+    localStorage.setItem("cart", JSON.stringify([]));
+  };
 
-
-const combineCarts = async (userId, bookId, quantity) => {
-  //Get users cart
-  const existingCart = await axios.get(`/api/cart/user/${userId}`)
-  // Pulling data out of existingCart
-  const usersExistingCart = existingCart.data
-  //Check if user already has this book in their cart
-  const existingItem = usersExistingCart.find((cartItem) => cartItem.book.id === bookId);
-  if (!existingItem){
-    const quantityToAdd = quantity
-    const body = { userId, bookId, quantityToAdd }
-    await axios.post("/api/cart/quantity", body);
-  } else {
-    const enoughStock = (existingItem.quantity + quantity)
-    if (existingItem && existingItem.book.stock >= enoughStock){
-      const quantityToAdd = enoughStock
-      await axios.put(`/api/cart/${existingItem.id}`, {
-        quantity: quantityToAdd
-    });
-    } else if (existingItem && existingItem.book.stock < enoughStock){
-      const quantityToAdd = existingItem.book.stock;
-      await axios.put(`/api/cart/${existingItem.id}`, {
-        quantity: quantityToAdd,
-    });
+  const combineCarts = async (userId, bookId, quantity) => {
+    //Get users cart
+    const existingCart = await axios.get(`/api/cart/user/${userId}`);
+    // Pulling data out of existingCart
+    const usersExistingCart = existingCart.data;
+    //Check if user already has this book in their cart
+    const existingItem = usersExistingCart.find(
+      cartItem => cartItem.book.id === bookId
+    );
+    if (!existingItem) {
+      const quantityToAdd = quantity;
+      const body = { userId, bookId, quantityToAdd };
+      await axios.post("/api/cart/quantity", body);
+    } else {
+      const enoughStock = existingItem.quantity + quantity;
+      if (existingItem && existingItem.book.stock >= enoughStock) {
+        const quantityToAdd = enoughStock;
+        await axios.put(`/api/cart/${existingItem.id}`, {
+          quantity: quantityToAdd,
+        });
+      } else if (existingItem && existingItem.book.stock < enoughStock) {
+        const quantityToAdd = existingItem.book.stock;
+        await axios.put(`/api/cart/${existingItem.id}`, {
+          quantity: quantityToAdd,
+        });
+      }
     }
-  }
-  const combinedCart = await axios.get(`/api/cart/user/${userId}`)
-  dispatch(setCart(combinedCart.data))
-  localStorage.setItem("cart", JSON.stringify(combinedCart.data))
-}
+    const combinedCart = await axios.get(`/api/cart/user/${userId}`);
+    dispatch(setCart(combinedCart.data));
+    localStorage.setItem("cart", JSON.stringify(combinedCart.data));
+  };
   const loginWithToken = async () => {
     const token = window.localStorage.getItem("token");
     if (token) {
@@ -65,20 +66,26 @@ const combineCarts = async (userId, bookId, quantity) => {
         },
       });
       dispatch(setUser(response.data));
-      const usersCart = await axios.get(`/api/cart/user/${response.data.id}`)
-      const localStorageCart = localStorage.getItem('cart')
-      const cart = JSON.parse(localStorageCart)
-      if (cart.length > 0){
-        await Promise.all(cart.map(async (cartItem)=> {
-          await combineCarts(response.data.id, cartItem.book.id, cartItem.quantity)
-        }))
+      const usersCart = await axios.get(`/api/cart/user/${response.data.id}`);
+      const localStorageCart = localStorage.getItem("cart");
+      const cart = JSON.parse(localStorageCart);
+      if (cart.length > 0) {
+        await Promise.all(
+          cart.map(async cartItem => {
+            await combineCarts(
+              response.data.id,
+              cartItem.book.id,
+              cartItem.quantity
+            );
+          })
+        );
       } else {
-        if (usersCart.data){
-          dispatch(setCart(usersCart.data))
-          localStorage.setItem("cart", JSON.stringify(usersCart.data))
+        if (usersCart.data) {
+          dispatch(setCart(usersCart.data));
+          localStorage.setItem("cart", JSON.stringify(usersCart.data));
         } else {
-          dispatch(setCart([]))
-          localStorage.setItem("cart", JSON.stringify([]))
+          dispatch(setCart([]));
+          localStorage.setItem("cart", JSON.stringify([]));
         }
       }
     }
@@ -93,7 +100,7 @@ const combineCarts = async (userId, bookId, quantity) => {
   };
   if (user.id)
     return (
-      <div>
+      <div className="loginForm">
         Welcome {user.firstName} {user.lastName}
         <button onClick={logout}>Log out</button>
       </div>
