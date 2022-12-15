@@ -108,13 +108,9 @@ const Login = () => {
 
   // This would only be seen if a user manually went to this route,
   // or on a slow connection while logging in and waiting for useNavigate to fire.
+  // Given a minheight of 70 to fix issue with footer as a quickfix
   if (user.id)
-    return (
-      <div className="loginForm">
-        Welcome {user.firstName} {user.lastName}
-        <button onClick={logout}>Log out</button>
-      </div>
-    );
+    return <p style={{ minHeight: "70vh" }}>You are already logged in!</p>;
 
   return (
     <div className="loginForm">
