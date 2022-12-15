@@ -81,9 +81,10 @@ function CreateAccountForm() {
         setErrorMessage(errorMessage); // This is the message from the api's res.send
         const cartString = localStorage.getItem("cart")
         const guestCart = JSON.parse(cartString)
+        // When a guest makes a cart, and wants to transfer it to their account we find them by their email and transwer›
         if(guestCart.length > 0){
           const usersEmail = bodyToSubmit.email
-          const newUser = await axios.get(`/api/users/${usersEmail}`)
+          const newUser = await axios.get(`/api/users/email/${usersEmail}`)
           const userId = newUser.data.id
           await Promise.all(guestCart.map(async (cartItem)=> {
             let bookId = cartItem.book.id

@@ -22,7 +22,6 @@ const StyledBadge = styled(Badge)(() => ({
     border: `2px solid black`,
     padding: "0 4px",
     color: "black",
-
     backgroundColor: "rgb(255, 216, 19)",
   },
 }));
@@ -188,7 +187,7 @@ const CartDrawer = () => {
   const handleCheckOut = async () => {
     if (user.id) {
       const token = window.localStorage.getItem("token");
-      await axios.get(`api/cart/user/${user.id}/checkOut`, {
+      await axios.get(`/api/cart/user/${user.id}/checkOut`, {
         headers: {
           authorization: "Bearer " + token,
         },
@@ -263,9 +262,9 @@ const CartDrawer = () => {
         </div>
       </Drawer>
       <IconButton onClick={handleOpen}>
-        <StyledBadge badgeContent={totalItems} max={99}>
+        <Badge badgeContent={totalItems} max={99} color="primary">
           <ShoppingCartIcon />
-        </StyledBadge>
+        </Badge>
       </IconButton>
     </Box>
   );
