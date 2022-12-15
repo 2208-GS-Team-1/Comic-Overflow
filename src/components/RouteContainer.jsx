@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -25,8 +26,14 @@ function RouteContainer({ user }) {
         <Route path="/books" element={<AllBooks />} />
         <Route path="/books/:id" element={<SingleProduct />} />
 
+        {/*only non-logged clients can go to login and createaccount route */}
+        {!user.id && (
+          <>
+            <Route path="/createaccount" element={<CreateAccountContainer />} />
+          </>
+        )}
         <Route path="/login" element={<Login />} />
-        <Route path="/createaccount" element={<CreateAccountContainer />} />
+
         {/*only logged in user will be able to access my account page */}
         {user.id && <Route path="/myAccount" element={<UserPage />} />}
         <Route path="/edit" element={<EditUser />} />

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { clearCart } from "../../store/cartSlice";
 import { resetUser } from "../../store/userSlice";
 import UserOrders from "../Orders/UserOrders";
 import "./userPage.css";
@@ -30,8 +31,13 @@ const UserPage = () => {
   }, []);
 
   const logout = () => {
-    window.localStorage.removeItem("token");
-    dispatch(resetUser());
+    localStorage.removeItem("token");
+    dispatch(resetUser()); // clear redux user
+    dispatch(clearCart()); // clear redux cart
+    localStorage.setItem("cart", JSON.stringify([]));
+
+    // On logout, redirect them to home
+    navigate("/");
   };
 
   if (loading) {
