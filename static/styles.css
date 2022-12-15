@@ -9,7 +9,7 @@ body {
 .upperBar {
   display: flex;
   background-color: black;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   flex-direction: row;
   height: 30px;
