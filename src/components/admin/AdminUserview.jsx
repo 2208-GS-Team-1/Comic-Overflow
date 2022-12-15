@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import axios from "axios";
@@ -10,6 +10,7 @@ const AdminUserView = () => {
     const dispatch = useDispatch();
     const {id} = useParams();
     const user = useSelector((state) => state.user.user)
+    const [loading, setLoading] = useState(false);
 
     const userHandler = async () => {
         try {
