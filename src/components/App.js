@@ -20,10 +20,11 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { setUser } from "../store/userSlice.js";
 import CartDrawer from "./cartView/CartDrawer.jsx";
+import CompletedOrder from "./Orders/CompletedOrder.jsx";
 
 const App = () => {
   // eslint-disable-next-line no-unused-vars
-  const { user } = useSelector(state => state.user);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const loginWithToken = async () => {
@@ -81,6 +82,7 @@ const App = () => {
           {user.id && <Route path="/myAccount" element={<UserPage />} />}
           <Route path="/books/:id" element={<SingleProduct />} />
           <Route path="/edit" element={<EditUser />} />
+          <Route path="/completedOrder" element={<CompletedOrder />} />
 
           {user.isAdmin && (
             <>
