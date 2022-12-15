@@ -12,6 +12,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 router.get("/:email", async (req, res, next) => {
+  console.log("EMAIL IS GETTING HIT")
   const usersEmail = req.params.email;
   try {
     const user = await User.findOne({
@@ -26,6 +27,7 @@ router.get("/:email", async (req, res, next) => {
 });
 // GET - api/users/:id --> Gets single user from the db
 router.get("/:id", async (req, res, next) => {
+  console.log("TEST")
   const id = req.params.id;
   const regexExp =
     /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;

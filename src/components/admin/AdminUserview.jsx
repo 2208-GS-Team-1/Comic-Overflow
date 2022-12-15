@@ -1,21 +1,38 @@
-// import axios from 'axios';
 import React from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from '../../store/userSlice';
 
-const AdminUserview = () => {
-    // const {id} = useParams();
-    // const dispatch = useDispatch();
-    // const navigate = useNavigate();
+//hey guys! 
+//so this is supposed to be super simple but it's giving me some trouble
+// data is coming up as empty
+//jumping into voice chat room
+// ROSE - OKKKKKK omg caps
+const AdminUserView = () => {
+    const dispatch = useDispatch();
+    const {id} = useParams();
+    // const user = useSelector((state) => state.user.user)
 
-    // const userHandler = async () =>{
-    //     try {
-    //         const {data} = await axios.get(`/api/users/${id}`)
-    //         console.log(data);
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
+    const userHandler = async () => {
+        try {
+            const user = await axios.get(`/api/users/${id}`) 
+            // dispatch(setUser(data));
+            console.log(user);
+            
+        } catch (error) {
+            console.log(error)
+        }
+        console.log(id)
+    }
+
+    useEffect(()=>{
+        if(!id){
+            return 
+        }
+        userHandler();
+    }, [id])
 
     return (
         <div>
@@ -24,4 +41,4 @@ const AdminUserview = () => {
     );
 };
 
-export default AdminUserview;
+export default AdminUserView;

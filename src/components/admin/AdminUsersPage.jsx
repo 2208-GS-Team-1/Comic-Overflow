@@ -48,7 +48,7 @@ function AdminUsersPage() {
                       {index}: {user.firstName} {user.lastName}
                     </td>
                     <td className="adminUserButtons">
-                      <Link path={`/admin/users/${user.id}`}>
+                      <Link to={`/admin/users/${user.id}`}>
                       <button>View/Edit</button>
                       </Link>
                     </td>
