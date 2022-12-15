@@ -35,12 +35,6 @@ const App = () => {
       <div className="upperBar">
         <div className="searchBar">{/* placeholder for search bar */}</div>
         <p className="upperBarMessage">FREE SHIPPING on order over $50!</p>
-        <div className="userLinks">
-          <div className="loginLink">{/* placeholder for login*/}</div>
-          <div className="createAccountLink">
-            {/* placeholder for create Account */}
-          </div>
-        </div>
       </div>
       <div className="main_header">
         <h1>Comic Overflow</h1>
@@ -50,8 +44,7 @@ const App = () => {
         <nav className="navbar">
           <Link to="/">Home</Link>
           <Link to="/books">Books</Link>
-          <Link to="/login">Log-In</Link>
-          <Link to="/createaccount">Create Account</Link>
+          {!user.id && <Link to="/login">Log-In</Link>}
           {user.id && <Link to="/myAccount">My Account</Link>}
           <CartDrawer />
         </nav>
