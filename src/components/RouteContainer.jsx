@@ -12,10 +12,10 @@ import UserPage from "./UserPage/UserPage.jsx";
 import EditUser from "./UserPage/EditUser.jsx";
 
 import AdminHomepage from "./admin/AdminHomepage.jsx";
-import AdminOrdersPage from "./admin/AdminOrdersPage";
+// import AdminOrdersPage from "./admin/AdminOrdersPage";
 import AdminBooksPage from "./admin/AdminBooksPage";
 import AdminUsersPage from "./admin/AdminUsersPage";
-import AdminReviewsPage from "./admin/AdminReviewsPage";
+// import AdminReviewsPage from "./admin/AdminReviewsPage";
 import AdminBookEdit from "./admin/AdminBookEdit.jsx";
 
 function RouteContainer({ user }) {
