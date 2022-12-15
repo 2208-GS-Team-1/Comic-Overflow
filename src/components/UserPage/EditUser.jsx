@@ -15,6 +15,8 @@ const EditUser = () => {
   const [email, setEmail] = useState(user.email);
   const [phoneNumber, setNumber] = useState(user.phoneNumber);
 
+  const [errorMessage, setErrorMessage] = useState(false);
+
   const addressHandler = event => {
     setAddress(event.target.value);
   };
@@ -26,13 +28,23 @@ const EditUser = () => {
   };
 
   const updateHandler = async event => {
-    event.preventDefault();
-    const updateData = { address, email, phoneNumber };
-    console.log(updateData);
-    await axios.put(`/api/users/${id}`, updateData);
-    const userData = await axios.get(`/api/users/${id}`);
-    dispatch(setUser(userData.data));
-    navigate("/myAccount");
+    try {
+      console.log("inside update handler");
+
+      event.preventDefault();
+      const updateData = { address, email, phoneNumber };
+      console.log(updateData);
+
+      await axios.put(`/api/users/${id}`, updateData);
+      const userData = await axios.get(`/api/users/${id}`);
+
+      console.log(userData);
+
+      dispatch(setUser(userData.data));
+      navigate("/myAccount");
+    } catch (err) {
+      setErrorMessage(true);
+    }
   };
 
   return (
@@ -67,6 +79,9 @@ const EditUser = () => {
             <button type="submit" className="accountButton">
               Submit
             </button>
+            {errorMessage && (
+              <p>Update request failed, please change fields and try again.</p>
+            )}
           </div>
         </form>
       </div>
