@@ -7,6 +7,7 @@ import { setUser } from "../store/userSlice.js";
 import CartDrawer from "./cartView/CartDrawer.jsx";
 import RouteContainer from "./RouteContainer.jsx";
 import AdminNavbar from "./admin/adminNavbar.jsx";
+import Footer from "./footer/Footer.jsx";
 
 const App = () => {
   // eslint-disable-next-line no-unused-vars
@@ -52,6 +53,7 @@ const App = () => {
         {user.isAdmin && <AdminNavbar />}
 
         <RouteContainer user={user} />
+        <Footer />
       </div>
     </div>
   );
