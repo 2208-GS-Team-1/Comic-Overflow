@@ -32,10 +32,10 @@ function RouteContainer({ user }) {
         <Route path="/createaccount" element={<CreateAccountContainer />} />
         {/*only logged in user will be able to access my account page */}
         {user.id && <Route path="/myAccount" element={<UserPage />} />}
-        <Route path="/edit" element={<EditUser />} />
         {user.id && (
           <Route path="completedOrder" element={<CompletedOrder />} />
         )}
+        <Route path="/edit" element={<EditUser />} />
 
         {user.isAdmin && (
           <>
