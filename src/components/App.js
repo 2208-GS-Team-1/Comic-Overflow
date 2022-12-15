@@ -11,7 +11,7 @@ import Footer from "./footer/Footer.jsx";
 
 const App = () => {
   // eslint-disable-next-line no-unused-vars
-  const { user } = useSelector(state => state.user);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const loginWithToken = async () => {
@@ -50,6 +50,7 @@ const App = () => {
           <CartDrawer />
         </nav>
         {/* Render admin navbar is user is an admin */}
+
         {user.isAdmin && <AdminNavbar />}
 
         <RouteContainer user={user} />
