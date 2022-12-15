@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Drawer, IconButton, Box, Divider, Card } from "@mui/material";
+
+import { Drawer, IconButton, Box, Divider, Card, Badge } from "@mui/material";›
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../store/cartSlice";
@@ -10,9 +11,11 @@ import { useEffect } from "react";
 const CartDrawer = () => {
   // const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useSelector((state) => state.user);
+
+  const { user } = useSelector(state => state.user);
   const [totalPrice, setTotalPrice] = useState(0);
-  const { cart } = useSelector((state) => state.cart);
+  const { cart } = useSelector(state => state.cart);
+
   const dispatch = useDispatch();
   // First, define a function that loads the cart from local storage
   const loadCartFromLocalStorage = () => {
@@ -31,6 +34,9 @@ const CartDrawer = () => {
       dispatch(setCart(cart));
     }
   };
+
+  const totalItems = cart.reduce((total, index) => total + index.quantity, 0);
+
 
   //handleOpen toggles the drawer to open BUT also calcuates the price... its the only way I could make the total work
   const handleOpen = async () => {
@@ -55,7 +61,8 @@ const CartDrawer = () => {
   };
 
   //subtracts from quantity
-  const subtract = async (cartItem) => {
+
+  const subtract = async cartItem => {
     // if a user is signed in
     if (user.id) {
       // If they're deleting their own copy...
@@ -94,14 +101,14 @@ const CartDrawer = () => {
     } else {
       //else its a guest cart
       if (cartItem.quantity === 1) {
-        const newCart = cart.filter(
-          (item) => item.book.id !== cartItem.book.id
-        );
+
+        const newCart = cart.filter(item => item.book.id !== cartItem.book.id);
         dispatch(setCart(newCart));
         saveCartToLocalStorage(newCart);
       } else {
         const updatedQuantity = cartItem.quantity - 1;
-        const newCart = cart.map((item) => {
+
+        const newCart = cart.map(item => {
           if (item.book.id === cartItem.book.id) {
             return {
               ...item,
@@ -117,7 +124,8 @@ const CartDrawer = () => {
       setTotalPrice(updatedTotalPrice);
     }
   };
-  const add = async (cartItem) => {
+
+  const add = async cartItem => {
     if (user.id && cartItem.book.stock >= cartItem.quantity + 1) {
       // To 'add', just +1 its quantity in the db
       const updatedQuantity = cartItem.quantity + 1;
@@ -126,7 +134,8 @@ const CartDrawer = () => {
       });
       //This map might seem redundant, but without it each time the cart quantities are decremented the array would come back in a differet order,
       // so all the products would move each decrement or increment. Now with this we're keeping the array in place
-      const newCart = cart.map((item) => {
+
+      const newCart = cart.map(item => {
         if (item.id === cartItem.id) {
           return {
             ...item,
@@ -148,7 +157,9 @@ const CartDrawer = () => {
     else {
       if (cartItem.book.stock >= cartItem.quantity + 1) {
         const updatedQuantity = cartItem.quantity + 1;
-        const newCart = cart.map((item) => {
+
+        const newCart = cart.map(item => {
+
           if (item.book.id === cartItem.book.id) {
             return {
               ...item,
@@ -166,12 +177,26 @@ const CartDrawer = () => {
       }
     }
   };
+
   const handleCheckOut = async () => {
     if (user.id) {
+
       const res = await axios.post(`/api/cart/checkout`, cart);
       let url = res.data.url;
       //take user to the Stripe checkout site
       window.location = url;
+
+//       const token = window.localStorage.getItem("token");
+//       await axios.get(`/api/cart/user/${user.id}/checkOut`, {
+//         headers: {
+//           authorization: "Bearer " + token,
+//         },
+//       });
+
+//       setTotalPrice(0);
+//       dispatch(setCart([]));
+//       saveCartToLocalStorage([]);
+
     } else {
       alert("please sign in to checkout!");
     }
@@ -181,7 +206,9 @@ const CartDrawer = () => {
   }, []);
   return (
     <Box
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+
+      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+    >
       <Drawer
         anchor="right"
         open={isOpen}
@@ -191,7 +218,9 @@ const CartDrawer = () => {
             alignItems: "center",
             width: "400px",
           },
-        }}>
+
+        }}
+      >
         {/* eslint-disable-next-line react/no-unescaped-entities */}
         {user.id ? <h1>{user.firstName}'s Cart</h1> : <h1>Guest Cart</h1>}
         <Divider />
@@ -200,7 +229,9 @@ const CartDrawer = () => {
         <div style={{ overflow: "auto" }}>
           {!cart && <div>your cart is empty!</div>}
           {cart &&
-            cart.map((cartItem) => {
+
+            cart.map(cartItem => {
+
               return (
                 <div className="cartItem" key={cartItem.book.id}>
                   <Card sx={{ boxShadow: 6, margin: "8px" }}>
@@ -229,13 +260,18 @@ const CartDrawer = () => {
         <div className="checkoutButton">
           <button
             disabled={!cart || cart.length == 0 ? true : false}
+
             onClick={handleCheckOut}>
+
             Check Out Now
           </button>
         </div>
       </Drawer>
       <IconButton onClick={handleOpen}>
-        <ShoppingCartIcon />
+
+        <Badge badgeContent={totalItems} max={99} color="primary">
+          <ShoppingCartIcon />
+        </Badge>
       </IconButton>
     </Box>
   );

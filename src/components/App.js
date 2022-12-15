@@ -1,26 +1,13 @@
 import React, { useEffect } from "react";
-import Home from "./Home/Home.jsx";
-import { Link, Routes, Route } from "react-router-dom";
-// import Books from './Books.jsx';
-import Login from "./login/Login";
-import CreateAccountContainer from "./createAccount/CreateAccountContainer.jsx";
-import AllBooks from "./Books/AllBooks.jsx";
-import SingleProduct from "./SingleProduct/SingleProduct.jsx";
-import UserPage from "./UserPage/UserPage.jsx";
-import EditUser from "./UserPage/EditUser.jsx";
-
-import AdminHomepage from "./admin/AdminHomepage.jsx";
-
-import AdminOrdersPage from "./admin/AdminOrdersPage";
-import AdminBooksPage from "./admin/AdminBooksPage";
-import AdminUsersPage from "./admin/AdminUsersPage";
-import AdminReviewsPage from "./admin/AdminReviewsPage";
-
-import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../store/userSlice.js";
+
 import CartDrawer from "./cartView/CartDrawer.jsx";
 import CompletedOrder from "./Orders/CompletedOrder.jsx";
+import RouteContainer from "./RouteContainer.jsx";
+import AdminNavbar from "./admin/adminNavbar.jsx";
 
 const App = () => {
   // eslint-disable-next-line no-unused-vars
@@ -69,31 +56,12 @@ const App = () => {
           {user.id && <Link to="/myAccount">My Account</Link>}
           <CartDrawer />
         </nav>
-
         {/* Render admin navbar is user is an admin */}
-        {/* {user.isAdmin && <AdminNavbar />} */}
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/books" element={<AllBooks />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/createaccount" element={<CreateAccountContainer />} />
-          {/*only logged in user will be able to access my account page */}
-          {user.id && <Route path="/myAccount" element={<UserPage />} />}
-          <Route path="/books/:id" element={<SingleProduct />} />
-          <Route path="/edit" element={<EditUser />} />
-          <Route path="/completedOrder" element={<CompletedOrder />} />
+        {user.isAdmin && <AdminNavbar />}
 
-          {user.isAdmin && (
-            <>
-              <Route path="/admin" element={<AdminHomepage />} />
-              <Route path="/admin/users" element={<AdminUsersPage />} />
-              <Route path="/admin/books" element={<AdminBooksPage />} />
-              <Route path="/admin/reviews" element={<AdminReviewsPage />} />
-              <Route path="/admin/orders" element={<AdminOrdersPage />} />
-            </>
-          )}
-        </Routes>
+
+        <RouteContainer user={user} />
       </div>
     </div>
   );

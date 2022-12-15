@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import AdminNavbar from "./adminNavbar";
 
 function AdminOrdersPage() {
   // If they're not an admin don't let them see this component.
@@ -9,7 +8,6 @@ function AdminOrdersPage() {
 
   return (
     <div>
-      <AdminNavbar />
       <ul>
         a list of all orders will go here...
         <li>order 1 (user: moe)</li>

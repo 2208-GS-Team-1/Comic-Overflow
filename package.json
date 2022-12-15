@@ -29,6 +29,8 @@
     "formik": "^2.2.9",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",
+    "prop-types": "^15.8.1",
+    "react-paginate": "^8.1.4",
     "sequelize": "^6.25.3",
     "stripe": "^11.3.0",
     "style-loader": "^3.3.1",
