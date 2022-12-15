@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../store/userSlice.js";
 
 import CartDrawer from "./cartView/CartDrawer.jsx";
-import CompletedOrder from "./Orders/CompletedOrder.jsx";
 import RouteContainer from "./RouteContainer.jsx";
 import AdminNavbar from "./admin/adminNavbar.jsx";
 
@@ -59,7 +58,6 @@ const App = () => {
         {/* Render admin navbar is user is an admin */}
 
         {user.isAdmin && <AdminNavbar />}
-
 
         <RouteContainer user={user} />
       </div>

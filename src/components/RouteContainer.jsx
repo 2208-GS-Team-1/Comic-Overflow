@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -9,6 +11,7 @@ import AllBooks from "./Books/AllBooks.jsx";
 import SingleProduct from "./SingleProduct/SingleProduct.jsx";
 import UserPage from "./UserPage/UserPage.jsx";
 import EditUser from "./UserPage/EditUser.jsx";
+import CompletedOrder from "./Orders/CompletedOrder.jsx";
 
 import AdminHomepage from "./admin/AdminHomepage.jsx";
 import AdminOrdersPage from "./admin/AdminOrdersPage";
@@ -30,6 +33,9 @@ function RouteContainer({ user }) {
         {/*only logged in user will be able to access my account page */}
         {user.id && <Route path="/myAccount" element={<UserPage />} />}
         <Route path="/edit" element={<EditUser />} />
+        {user.id && (
+          <Route path="completedOrder" element={<CompletedOrder />} />
+        )}
 
         {user.isAdmin && (
           <>
