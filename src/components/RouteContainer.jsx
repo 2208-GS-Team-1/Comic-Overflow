@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -16,6 +17,7 @@ import AdminBooksPage from "./admin/AdminBooksPage";
 import AdminUsersPage from "./admin/AdminUsersPage";
 import AdminReviewsPage from "./admin/AdminReviewsPage";
 import AdminBookEdit from "./admin/AdminBookEdit.jsx";
+import AdminUserview from "./admin/AdminUserview.jsx";
 
 function RouteContainer({ user }) {
   return (
@@ -35,6 +37,7 @@ function RouteContainer({ user }) {
           <>
             <Route path="/admin" element={<AdminHomepage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
+            <Route path="/admin/users/:id" element ={<AdminUserview />} />
             <Route path="/admin/books" element={<AdminBooksPage />} />
             <Route path="/admin/books/:id" element={<AdminBookEdit />} />
             <Route path="/admin/reviews" element={<AdminReviewsPage />} />
