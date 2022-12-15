@@ -1,3 +1,4 @@
+import { Avatar } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,6 +46,17 @@ const UserPage = () => {
       <div className="userAccount">
         <div className="accountDetail">
           <h1>Account Detail</h1>
+          <div className="imageWrapper">
+            <Avatar
+              alt={`${user.firstName} ${user.lastName}`}
+              src={user.imageURL}
+              sx={{
+                height: 100,
+                width: 100,
+                border: `5px solid rgb(255, 216, 19)`,
+              }}
+            />
+          </div>
           <p>
             Name: {user.firstName} {user.lastName}
           </p>
@@ -55,7 +67,6 @@ const UserPage = () => {
           <div className="accountButton">
             <button onClick={navigator}>Edit</button>
             <button onClick={logout}>Logout</button>
-            {/* <button onClick={() => navigate("/admin")}>Admin Page</button> */}
           </div>
         </div>
         <div>

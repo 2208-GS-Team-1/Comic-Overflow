@@ -12,7 +12,6 @@ import {
   Card,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import MuiLoader from "../MuiLoader";
 
 const Login = () => {
   const { user } = useSelector(state => state.user);
