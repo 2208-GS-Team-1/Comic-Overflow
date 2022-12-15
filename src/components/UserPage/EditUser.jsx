@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./userPage.css";
 import { setUser } from "../../store/userSlice";
+import { Alert } from "@mui/material";
 
 const EditUser = () => {
   const navigate = useNavigate();
@@ -16,7 +17,6 @@ const EditUser = () => {
   const [phoneNumber, setNumber] = useState(user.phoneNumber);
 
   const [errorMessage, setErrorMessage] = useState(false);
-
   const addressHandler = event => {
     setAddress(event.target.value);
   };
@@ -29,18 +29,11 @@ const EditUser = () => {
 
   const updateHandler = async event => {
     try {
-      console.log("inside update handler");
-
       event.preventDefault();
-      const updateData = { address, email, phoneNumber };
-      console.log(updateData);
-
-      await axios.put(`/api/users/${id}`, updateData);
-      const userData = await axios.get(`/api/users/${id}`);
-
-      console.log(userData);
-
-      dispatch(setUser(userData.data));
+      const updateData = { address, email, phoneNumber }; // this is our body to PUT with
+      await axios.put(`/api/users/${id}`, updateData); // PUT req
+      const userData = await axios.get(`/api/users/${id}`); // Refetch from backend
+      dispatch(setUser(userData.data)); // dispatch to reflect changes
       navigate("/myAccount");
     } catch (err) {
       setErrorMessage(true);
@@ -67,6 +60,7 @@ const EditUser = () => {
               className="editInput"
               value={email}
               required
+              type="email"
               onChange={emailHandler}
             />
 
@@ -80,7 +74,9 @@ const EditUser = () => {
               Submit
             </button>
             {errorMessage && (
-              <p>Update request failed, please change fields and try again.</p>
+              <Alert severity="error" sx={{ marginTop: "5px" }}>
+                Error - An account with that email is already taken.
+              </Alert>
             )}
           </div>
         </form>

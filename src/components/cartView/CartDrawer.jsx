@@ -262,9 +262,9 @@ const CartDrawer = () => {
         </div>
       </Drawer>
       <IconButton onClick={handleOpen}>
-        <Badge badgeContent={totalItems} max={99} color="primary">
+        <StyledBadge badgeContent={totalItems} max={99}>
           <ShoppingCartIcon />
-        </Badge>
+        </StyledBadge>
       </IconButton>
     </Box>
   );
