@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setBooks } from "../../store/bookSlice";
 import AdminNavbar from "./adminNavbar";
 import { Link } from "react-router-dom";
+import AdminBookDelete from "./AdminBookDelete";
 
 function AdminBooksPage() {
   // If they're not an admin don't let them see this component.
@@ -55,6 +56,7 @@ function AdminBooksPage() {
                       <Link to={`/admin/books/${book.id}`}>
                         <button>Edit</button>
                       </Link>
+                      <AdminBookDelete bookId = {book.id} deactivated ={book.isDeactivated} bookHandler={bookHandler} />
                     </td>
                   </tr>
                 );
