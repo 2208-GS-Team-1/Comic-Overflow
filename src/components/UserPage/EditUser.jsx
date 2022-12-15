@@ -28,7 +28,8 @@ const EditUser = () => {
   const updateHandler = async event => {
     event.preventDefault();
     const updateData = { address, email, phoneNumber };
-    await axios.put(`api/users/${id}`, updateData);
+    console.log(updateData);
+    await axios.put(`/api/users/${id}`, updateData);
     const userData = await axios.get(`/api/users/${id}`);
     dispatch(setUser(userData.data));
     navigate("/myAccount");
@@ -42,22 +43,30 @@ const EditUser = () => {
             {user.firstName} {user.lastName}'s Account
           </h1>
           <div className="formInput">
+            <p>Address:</p>
             <input
               className="editInput"
-              value={address}
+              value={address || ""}
               onChange={addressHandler}
             />
+
+            <label>Email*:</label>
             <input
               className="editInput"
               value={email}
+              required
               onChange={emailHandler}
             />
+
+            <label>Phone Number:</label>
             <input
               className="editInput"
-              value={phoneNumber}
+              value={phoneNumber || ""}
               onChange={numberHandler}
             />
-            <button className="accountButton">Submit</button>
+            <button type="submit" className="accountButton">
+              Submit
+            </button>
           </div>
         </form>
       </div>

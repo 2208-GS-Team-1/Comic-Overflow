@@ -74,7 +74,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// POST - api/users --> Updates user with given id
+// PUT - /api/users/:id --> Updates user with given id
 router.put("/:id", async (req, res, next) => {
   try {
     const { address, email, phoneNumber } = req.body;
