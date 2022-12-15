@@ -44,7 +44,7 @@ const App = () => {
         <nav className="navbar">
           <Link to="/">Home</Link>
           <Link to="/books">Books</Link>
-          {!user.id && <Link to="/login">Log-In</Link>}
+          {!user.id && <Link to="/login">Login</Link>}
           {user.id && <Link to="/myAccount">My Account</Link>}
           <CartDrawer />
         </nav>
