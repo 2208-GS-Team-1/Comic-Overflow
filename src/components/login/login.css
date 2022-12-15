@@ -15,6 +15,7 @@
 }
 .loginCard h3{
     font-family: 'Dogfish', sans-serif;
+    margin: 24px 0 0 0;
 }
 .loginFields{
     gap: 20px;
