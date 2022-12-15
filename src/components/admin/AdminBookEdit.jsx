@@ -33,10 +33,6 @@ const AdminBookEdit = () => {
     adminBookFetcher();
   }, []);
 
-  const refresh = () => {
-    window.location.reload(false);
-  };
-
   const titleHandler = event => {
     setTitle(event.target.value);
   };
