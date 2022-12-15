@@ -32,12 +32,6 @@ function Footer(props) {
     padding: "20px",
   };
   const noMargin = { margin: "0px" };
-  const socialsContainerStyle = {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-    justifyContent: "space-between",
-  };
 
   const paymentIconContainerStyle = {
     display: "flex",
