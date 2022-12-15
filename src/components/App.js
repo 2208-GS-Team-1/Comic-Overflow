@@ -34,7 +34,7 @@ const App = () => {
   return (
     <div>
       <div className="upperBar">
-        <div className="searchBar">{/* placeholder for search bar */}</div>
+        {/* <div className="searchBar"> search bar placeholder? </div> */}
         <p className="upperBarMessage">FREE SHIPPING on order over $50!</p>
       </div>
       <div className="main_header">
