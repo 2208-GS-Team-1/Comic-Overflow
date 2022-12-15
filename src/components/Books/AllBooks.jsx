@@ -29,7 +29,7 @@ const AllBooks = () => {
   const fetchBooks = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get("/api/books/active");
+      const { data } = await axios.get("/api/books/all/active");
       dispatch(setBooks(data));
     } catch (err) {
       console.log(err);
