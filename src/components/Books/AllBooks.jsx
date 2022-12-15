@@ -123,7 +123,7 @@ const AllBooks = () => {
       <div className="sortBar">
         <FormControl
           variant="filled"
-          sx={{ color: "black", m: 1, minWidth: 120 }}
+          sx={{ backgroundColor:"white",color: "black", m: 1, minWidth: 120 }}
           size="small"
         >
           <InputLabel sx={{ color: "black" }}>Sort</InputLabel>

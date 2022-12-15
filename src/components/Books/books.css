@@ -15,6 +15,10 @@
     column-gap: 24px;
     row-gap: 24px;
 }
+.productsContainer h1{
+  letter-spacing: 4px;
+  font-size: 48px;
+}
 .productCard {
     display: flex;
     flex-direction: column;
