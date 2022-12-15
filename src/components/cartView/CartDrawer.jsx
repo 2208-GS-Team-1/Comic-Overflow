@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Drawer, IconButton, Box, Divider, Card, Badge } from "@mui/material";
+import {
+  Drawer,
+  IconButton,
+  Box,
+  Divider,
+  Card,
+  Badge,
+  styled,
+} from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../store/cartSlice";
@@ -7,6 +15,16 @@ import axios from "axios";
 import "./CartDrawerStyles.css";
 import { useEffect } from "react";
 
+const StyledBadge = styled(Badge)(() => ({
+  "& .MuiBadge-badge": {
+    right: -3,
+    top: 13,
+    border: `2px solid black`,
+    padding: "0 4px",
+    color: "black",
+    backgroundColor: "rgb(255, 216, 19)",
+  },
+}));
 const CartDrawer = () => {
   // const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
@@ -244,9 +262,9 @@ const CartDrawer = () => {
         </div>
       </Drawer>
       <IconButton onClick={handleOpen}>
-        <Badge badgeContent={totalItems} max={99} color="primary">
+        <StyledBadge badgeContent={totalItems} max={99}>
           <ShoppingCartIcon />
-        </Badge>
+        </StyledBadge>
       </IconButton>
     </Box>
   );

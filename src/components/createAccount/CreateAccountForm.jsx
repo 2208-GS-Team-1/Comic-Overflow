@@ -46,12 +46,12 @@ function CreateAccountForm() {
   const [creationFailure, setCreationFailure] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const clearCart = async () => {
-    const emptyCart = JSON.stringify([])
-    localStorage.setItem('cart', emptyCart)
-    const newCart = localStorage.getItem('cart')
-    const freshCart = JSON.parse(newCart)
-    dispatch(setCart(freshCart))
-  }
+    const emptyCart = JSON.stringify([]);
+    localStorage.setItem("cart", emptyCart);
+    const newCart = localStorage.getItem("cart");
+    const freshCart = JSON.parse(newCart);
+    dispatch(setCart(freshCart));
+  };
   const formik = useFormik({
     // Initializes our formik.values object to have these key-value pairs.
     initialValues: {
@@ -79,21 +79,23 @@ function CreateAccountForm() {
 
         await axios.post("/api/users", bodyToSubmit);
         setErrorMessage(errorMessage); // This is the message from the api's res.send
-        const cartString = localStorage.getItem("cart")
-        const guestCart = JSON.parse(cartString)
+        const cartString = localStorage.getItem("cart");
+        const guestCart = JSON.parse(cartString);
         // When a guest makes a cart, and wants to transfer it to their account we find them by their email and transwer›
-        if(guestCart.length > 0){
-          const usersEmail = bodyToSubmit.email
-          const newUser = await axios.get(`/api/users/email/${usersEmail}`)
-          const userId = newUser.data.id
-          await Promise.all(guestCart.map(async (cartItem)=> {
-            let bookId = cartItem.book.id
-            let quantityToAdd = cartItem.quantity
-            let body = { userId, bookId, quantityToAdd}
-            await axios.post("/api/cart/quantity", body);
-          }))
+        if (guestCart.length > 0) {
+          const usersEmail = bodyToSubmit.email;
+          const newUser = await axios.get(`/api/users/email/${usersEmail}`);
+          const userId = newUser.data.id;
+          await Promise.all(
+            guestCart.map(async cartItem => {
+              let bookId = cartItem.book.id;
+              let quantityToAdd = cartItem.quantity;
+              let body = { userId, bookId, quantityToAdd };
+              await axios.post("/api/cart/quantity", body);
+            })
+          );
         }
-        
+
         await clearCart();
         /* Ideally would like to log the user in here, and THEN redirect to home
       	But not sure how to generate the JWT and the stuff with authorization.
@@ -101,7 +103,7 @@ function CreateAccountForm() {
 				
 				So for now, just redirect them to the login page so they can log in with new account.
 			  */
-        
+
         // Update the state that is used to trigger the mui Alert Success component
         setCreationSuccess(true);
         // In case it failed before, set that state too, so the failure message disappears
@@ -228,21 +230,20 @@ function CreateAccountForm() {
           />
         </Box>
 
-        <button type="submit" style={submitButtonStyle}>
-          Submit
-        </button>
-
         {creationSuccess && (
           <Alert sx={{ marginTop: 2 }} severity="success">
             Account created! Redirecting to login page...
           </Alert>
         )}
-
         {creationFailure && (
           <Alert sx={{ marginTop: 2 }} severity="error">
             {errorMessage}
           </Alert>
         )}
+
+        <button type="submit" style={submitButtonStyle}>
+          Submit
+        </button>
       </Box>
     </div>
   );
