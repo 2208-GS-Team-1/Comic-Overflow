@@ -11,7 +11,7 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
-router.get("/:email", async (req, res, next) => {
+router.get("/email/:email", async (req, res, next) => {
   const usersEmail = req.params.email;
   try {
     const user = await User.findOne({
