@@ -8,15 +8,15 @@ import {
   FaCcVisa,
   FaPaypal,
 } from "react-icons/fa";
+import { Typography } from "@mui/material";
 
-function Footer(props) {
+function Footer() {
   const container = {
     color: "white",
     backgroundColor: "rgb(54, 54, 54)",
     paddingTop: "3em",
     bottom: "0",
     width: "100%",
-    // width: "100vw",
     padding: 1,
     marginTop: "25px",
   };
@@ -31,7 +31,6 @@ function Footer(props) {
     gap: 1,
     padding: "20px",
   };
-  const noMargin = { margin: "0px" };
 
   const paymentIconContainerStyle = {
     display: "flex",
@@ -44,17 +43,17 @@ function Footer(props) {
       <div className="footer-row" style={footerRowStyle}>
         <div className="footer-column" style={footerColumnStyle}>
           <p>Store Location: </p>
-          <p style={noMargin}>123 North East Street New York, NY, USA</p>
-
-          <p>Tel: 342-123-4567</p>
+          <Typography variant="body1">123 North East Street</Typography>
+          <Typography variant="body1">New York, NY, USA</Typography>
+          <Typography variant="body1">Tel: 342-123-4567</Typography>
         </div>
 
         <div className="footer-column" style={footerColumnStyle}>
-          <h4>Links:</h4>
-          <p style={noMargin}>Contact us</p>
-          <p style={noMargin}>About us</p>
-          <p style={noMargin}>FAQ</p>
-          <p style={noMargin}>Terms of Service</p>
+          <p>Links:</p>
+          <Typography variant="body1"> Contact Us </Typography>
+          <Typography variant="body1"> About Us </Typography>
+          <Typography variant="body1"> FAQ </Typography>
+          <Typography variant="body1"> Terms of Service </Typography>
         </div>
 
         <div className="socials-container" style={footerColumnStyle}>
