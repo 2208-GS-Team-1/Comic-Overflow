@@ -1,13 +1,22 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { resetUser, setUser } from "../../store/userSlice";
+import { setUser } from "../../store/userSlice";
 import axios from "axios";
 import "./login.css";
-import { clearCart, setCart } from "../../store/cartSlice";
+import { setCart } from "../../store/cartSlice";
+import {
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  FormControl,
+  Card,
+} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { user } = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
@@ -18,12 +27,6 @@ const Login = () => {
   };
   const onChange = ev => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
-  };
-  const logout = () => {
-    window.localStorage.removeItem("token");
-    dispatch(resetUser());
-    dispatch(clearCart());
-    localStorage.setItem("cart", JSON.stringify([]));
   };
 
   const combineCarts = async (userId, bookId, quantity) => {
@@ -57,6 +60,7 @@ const Login = () => {
     dispatch(setCart(combinedCart.data));
     localStorage.setItem("cart", JSON.stringify(combinedCart.data));
   };
+
   const loginWithToken = async () => {
     const token = window.localStorage.getItem("token");
     if (token) {
@@ -65,6 +69,7 @@ const Login = () => {
           authorization: token,
         },
       });
+
       dispatch(setUser(response.data));
       const usersCart = await axios.get(`/api/cart/user/${response.data.id}`);
       const localStorageCart = localStorage.getItem("cart");
@@ -89,6 +94,8 @@ const Login = () => {
         }
       }
     }
+    // now that they've logged in, bring them to home page
+    navigate("/");
   };
 
   const attemptLogin = async event => {
@@ -98,6 +105,9 @@ const Login = () => {
     window.localStorage.setItem("token", token);
     loginWithToken(token);
   };
+
+  // This would only be seen if a user manually went to this route,
+  // or on a slow connection while logging in and waiting for useNavigate to fire.
   if (user.id)
     return (
       <div className="loginForm">
@@ -105,29 +115,47 @@ const Login = () => {
         <button onClick={logout}>Log out</button>
       </div>
     );
+
   return (
     <div className="loginForm">
-      <h2>Login</h2>
-      <form onSubmit={attemptLogin}>
-        <input
-          placeholder="username"
-          value={credentials.username}
-          name="username"
-          onChange={onChange}
-        />
-        <input
-          placeholder="password"
-          name="password"
-          type={showPassword ? "text" : "password"}
-          value={credentials.password}
-          onChange={onChange}
-        />
-        <label className="passwordInput">
-          Show password
-          <input type="checkbox" onChange={handleCheckboxChange} />
-        </label>
-        <button>Login</button>
-      </form>
+      <Card className="loginCard" sx={{ boxShadow: 4 }}>
+        <h2>Login</h2>
+        <FormControl onSubmit={attemptLogin} className="loginFields">
+          <TextField
+            label="username"
+            value={credentials.username}
+            name="username"
+            onChange={onChange}
+            sx={{ input: { fontFamily: "'Dogfish', sans-serif" } }}
+          />
+          <TextField
+            name="password"
+            label="password"
+            type={showPassword ? "text" : "password"}
+            value={credentials.password}
+            onChange={onChange}
+            sx={{ input: { fontFamily: "'Dogfish', sans-serif" } }}
+          />
+          <FormControlLabel
+            label="Show password"
+            control={
+              <Checkbox onChange={handleCheckboxChange} color="default" />
+            }
+          />
+        </FormControl>
+        <button onClick={attemptLogin}>Login</button>
+        <h3>New customer?</h3>
+        <Link
+          style={{
+            color: "black",
+            fontFamily: "'Dogfish', sans-serif",
+            cursor: "pointer",
+          }}
+          to={"/createaccount"}
+        >
+          <p style={{ cursor: "pointer" }}>Sign up now!</p>
+        </Link>
+      </Card>
     </div>
   );
 };
