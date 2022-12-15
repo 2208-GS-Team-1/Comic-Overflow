@@ -71,9 +71,6 @@ const Login = () => {
         },
       });
 
-      console.log("response.data: ");
-      console.log(response.data);
-
       dispatch(setUser(response.data));
       const usersCart = await axios.get(`/api/cart/user/${response.data.id}`);
       const localStorageCart = localStorage.getItem("cart");
@@ -110,6 +107,8 @@ const Login = () => {
     loginWithToken(token);
   };
 
+  // This would only be seen if a user manually went to this route,
+  // or on a slow connection while logging in and waiting for useNavigate to fire.
   if (user.id)
     return (
       <div style={{ display: "flex", justifyContent: "center" }}>
