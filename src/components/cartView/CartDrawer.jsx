@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Drawer, IconButton, Box, Divider, Card, Badge } from "@mui/material";›
+import { Drawer, IconButton, Box, Divider, Card, Badge } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../store/cartSlice";
