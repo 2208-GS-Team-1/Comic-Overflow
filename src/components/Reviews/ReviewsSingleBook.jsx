@@ -27,7 +27,7 @@ const ReviewsSingleBook = ({ book }) => {
       setAllReviews(reviews.data);
       setLoading(false);
     } catch (err) {
-      console.log("caught inside reviews!");
+      console.log(err);
       navigate("/404");
     }
   };

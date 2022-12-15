@@ -12,7 +12,6 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 // authenticateUser is a middleware used to check the JWT
 // Used in all singular-cart routes
 const authenticateUser = (req, res, next) => {
-  console.log(req.headers.authorization);
   const header = req.headers.authorization;
   //separate the token from the word "Bearer"
   const token = header && header.split(" ")[1];
@@ -94,13 +93,11 @@ router.post("/", async (req, res, next) => {
 
     // Make sure user exists
     const user = await User.findByPk(userId);
-    console.log(`user: ${user}`);
     if (!user) return res.status(404).send("User not found");
 
     //********************** CHECKING BOOK *******************************/
     // Before creating a new cartitem, make sure the book is not sold out.
     const book = await Book.findByPk(bookId);
-    console.log(book);
     // Make sure book exists
     if (!book) return res.status(404).send("Book not found");
 
@@ -117,7 +114,6 @@ router.post("/", async (req, res, next) => {
         bookId: bookId,
         userId: userId,
       });
-      console.log("Add to cart successful!");
       res.status(201).send(createdCartItem);
     }
   } catch (err) {
@@ -266,13 +262,11 @@ router.post("/quantity", async (req, res, next) => {
 
     // Make sure user exists
     const user = await User.findByPk(userId);
-    console.log(`user: ${user}`);
     if (!user) return res.status(404).send("User not found");
 
     //********************** CHECKING BOOK *******************************/
     // Before creating a new cartitem, make sure the book is not sold out.
     const book = await Book.findByPk(bookId);
-    console.log(book);
     // Make sure book exists
     if (!book) return res.status(404).send("Book not found");
 
@@ -290,7 +284,6 @@ router.post("/quantity", async (req, res, next) => {
         userId: userId,
         quantity: quantityToAdd,
       });
-      console.log("Add to cart successful!");
       res.status(201).send(createdCartItem);
     }
   } catch (err) {

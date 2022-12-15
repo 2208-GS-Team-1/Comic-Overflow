@@ -11,7 +11,7 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
-router.get("/:email", async (req, res, next) => {
+router.get("/email/:email", async (req, res, next) => {
   const usersEmail = req.params.email;
   try {
     const user = await User.findOne({
@@ -74,12 +74,24 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// POST - api/users --> Updates user with given id
+// PUT - /api/users/:id --> Updates user with given id
 router.put("/:id", async (req, res, next) => {
   try {
     const { address, email, phoneNumber } = req.body;
-
     const id = req.params.id;
+
+    // email field must be unique, dont allow this updated email to be one we already have.
+    const userWithSameEmail = await User.findOne({
+      where: {
+        email: email,
+      },
+    });
+
+    // If the user with this email is NOT this user (identified by id)
+    // 400 it.
+    if (userWithSameEmail && userWithSameEmail.id !== id)
+      return res.status(400).send("An account with that e-mail already exists");
+
     const updatedUser = await User.findByPk(id);
     await updatedUser.update({
       address,
