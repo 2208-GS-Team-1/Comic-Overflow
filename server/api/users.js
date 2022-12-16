@@ -79,7 +79,7 @@ router.post("/", async (req, res, next) => {
 // PUT - /api/users/:id --> Updates user with given id
 router.put("/:id", async (req, res, next) => {
   try {
-    const { address, email, phoneNumber } = req.body;
+    const { address, email, phoneNumber, firstName, lastName, birthday } = req.body;
     const id = req.params.id;
 
     // email field must be unique, dont allow this updated email to be one we already have.
@@ -99,6 +99,9 @@ router.put("/:id", async (req, res, next) => {
       address,
       email,
       phoneNumber,
+      firstName,
+      lastName,
+      birthday,
     });
     res.status(201).send("User was updated");
   } catch (err) {
