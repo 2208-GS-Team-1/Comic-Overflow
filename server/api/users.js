@@ -24,7 +24,9 @@ router.get("/email/:email", async (req, res, next) => {
     next(error);
   }
 });
+
 // GET - api/users/:id --> Gets single user from the db
+//
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;
   const regexExp =
