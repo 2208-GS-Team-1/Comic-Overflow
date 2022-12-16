@@ -16,7 +16,8 @@ const AdminUserView = () => {
         try {
             const user = await axios.get(`/api/users/${id}`) 
             dispatch(setUser(user.data));
-            console.log(user);
+            setLoading(true);
+            console.log(user.data);
             
         } catch (error) {
             console.log(error)
@@ -28,9 +29,11 @@ const AdminUserView = () => {
         userHandler();
     }, )
 
+    if(!loading){ return (<div>Oops! Something went wrong!</div>)}
+
     return (
         <div>
-            <h1>TEST</h1>
+            <h1>{user.firstName}</h1>
         </div>
     );
 };
