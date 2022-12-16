@@ -1,14 +1,10 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 const { Order, User, CartItem } = require("../db");
 
-/* TODO: 
-  Put authenticateUserthis back in routes 
-  (Currently it only works for get("/user/:userId") can't figure out why)
-*/
-// authenticateUser is a middleware used to check the JWT
-// Used in all singular-order routes
 const authenticateUser = (req, res, next) => {
+  console.log("hit authenticateUser");
   const header = req.headers.authorization;
   //separate the token from the word "Bearer"
   const token = header && header.split(" ")[1];
@@ -26,8 +22,11 @@ const authenticateUser = (req, res, next) => {
 
 // GET /api/orders
 // may be used by admin
-router.get("/", async (req, res, next) => {
+router.get("/", authenticateUser, async (req, res, next) => {
   try {
+    // If user is not an admin, reject!
+    if (!req.user.isAdmin) return res.sendStatus(401);
+
     const allOrders = await Order.findAll({ include: [CartItem] });
     res.send(allOrders);
   } catch (error) {
@@ -37,28 +36,42 @@ router.get("/", async (req, res, next) => {
 
 // GET /api/orders/:orderId
 // Get a specific order's information, give an orderId
-router.get("/:orderId", async (req, res, next) => {
-  const orderId = req.params.orderId;
+router.get("/:orderId", authenticateUser, async (req, res, next) => {
   try {
+    const { orderId } = req.params;
     const order = await Order.findByPk(orderId, {
       include: [User, CartItem],
     });
-    res.send(order);
+
+    // If the user with this token is an admin, let them see this.
+    // Or, if the user with this token is the one on this order, let them see it.
+    if (req.user.isAdmin || req.user === order.user) return res.send(order);
+    else return res.sendStatus(404);
   } catch (error) {
     next(error);
   }
 });
 
-// GET /api/orders/users/:users
+// GET /api/orders/users/:userId
 // Get a specific user's order history, including all cart items
-router.get("/users/:userId", async (req, res, next) => {
-  const { userId } = req.params;
+router.get("/users/:userId", authenticateUser, async (req, res, next) => {
   try {
+    const { userId } = req.params;
+    const associatedUser = await User.findByPk(userId);
+
     const orders = await Order.findAll({
       where: { userId: userId },
-      include: [CartItem],
+      include: [CartItem, User],
     });
-    res.send(orders);
+
+    // if user has no orders, orders === []
+    // if user has one order, orders === [ {, user: {userobj} }]
+
+    // if jwtUser is admin, ok.
+    // if jwtUser is the user via the req.params , ok
+    if (req.user.isAdmin || req.user === associatedUser)
+      return res.send(orders);
+    else return res.send(401);
   } catch (err) {
     next(err);
   }

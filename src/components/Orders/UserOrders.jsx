@@ -13,15 +13,23 @@ import UserOrdersDetails from "./UserOrdersDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const UserOrders = () => {
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector(state => state.user.user);
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState([]);
 
   const fetchOrders = async () => {
     setLoading(true);
+
     try {
+      //token for authentication
+      const token = window.localStorage.getItem("token");
+
       //GET all orders associated with user
-      const ordersData = await axios.get(`/api/orders/users/${user.id}`);
+      const ordersData = await axios.get(`/api/orders/users/${user.id}`, {
+        headers: {
+          authorization: "Bearer " + token,
+        },
+      });
       setOrders(ordersData.data);
     } catch (err) {
       console.error(err);
@@ -36,11 +44,12 @@ const UserOrders = () => {
   return (
     <div>
       <h2>Past Orders</h2>
-      {orders.map((order) => (
+      {orders.map(order => (
         <Card
           key={order.id}
           variant="outlined"
-          style={{ margin: "10px", padding: "10px" }}>
+          style={{ margin: "10px", padding: "10px" }}
+        >
           <Typography variant="h5">Summary for Order #{order.id}</Typography>
           <div>Date Ordered: {order.createdAt.split("T")[0]}</div>
           <div>Total Price: ${(order.price / 100).toFixed(2)}</div>
@@ -51,7 +60,7 @@ const UserOrders = () => {
                 <Typography>Expand Order Details</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                {order.cartItems.map((cartItem) => {
+                {order.cartItems.map(cartItem => {
                   return (
                     <UserOrdersDetails key={cartItem.id} cartItem={cartItem} />
                   );

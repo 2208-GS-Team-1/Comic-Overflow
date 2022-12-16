@@ -5,10 +5,6 @@ const router = express.Router();
 const { User, CartItem, Book, Order } = require("../db");
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
-/* TODO: 
-  Put authenticateUserthis back in routes 
-  (Currently it only works for get("/user/:userId") can't figure out why)
-*/
 // authenticateUser is a middleware used to check the JWT
 // Used in all singular-cart routes
 const authenticateUser = (req, res, next) => {
@@ -164,7 +160,7 @@ router.put("/:cartItemId", async (req, res, next) => {
 // Checks out a given user's active cart
 router.get(
   "/user/:userId/checkOut",
-
+  authenticateUser,
   async (req, res, next) => {
     try {
       // ************************** GETTING USER'S ACTIVE CART **************************** //
@@ -300,7 +296,7 @@ router.post("/checkout", async (req, res, next) => {
       //use preset stripe keys to set payment type, mode, line_items
       payment_method_types: ["card"],
       mode: "payment",
-      line_items: cart.map((cartItem) => {
+      line_items: cart.map(cartItem => {
         return {
           price_data: {
             currency: "usd",
