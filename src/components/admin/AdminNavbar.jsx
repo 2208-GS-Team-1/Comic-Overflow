@@ -24,12 +24,13 @@ function AdminNavbar() {
       <Link to="/admin/books" style={adminLinkStyle}>
         Products
       </Link>
-      <Link to="/admin/reviews" style={adminLinkStyle}>
+      {/* If we have time we can write these routes, but for now, commented out. */}
+      {/* <Link to="/admin/reviews" style={adminLinkStyle}>
         Reviews
       </Link>
       <Link to="/admin/orders" style={adminLinkStyle}>
         Orders
-      </Link>
+      </Link> */}
     </nav>
   );
 }
