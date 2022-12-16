@@ -4,6 +4,7 @@ import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllUsers } from "../../store/userSlice";
 import "./admin.css";
+import { Link } from "react-router-dom";
 
 function AdminUsersPage() {
   // If they're not an admin don't let them see this component.
@@ -60,13 +61,10 @@ const pageCount = Math.ceil(allUsers.length / PER_PAGE);
                       {index + 1}: {user.firstName} {user.lastName}
                     </td>
                     <td className="adminUserButtons">
-                      {/* below buttons should be replaced with components later */}
-                      <div>
-                      <button>View</button>
-                      </div>
-                      <div>
-                      <button>Edit</button>
-                      </div>
+
+                      <Link to={`/admin/users/${user.id}`}>
+                      <button>View/Edit</button>
+                      </Link>
                     </td>
                   </tr>
                 );

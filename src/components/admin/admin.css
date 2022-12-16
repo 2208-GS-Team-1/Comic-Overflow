@@ -40,6 +40,7 @@
 .adminProductButton {
     display: flex;
     flex-direction: row;
+
     gap:10px
 }
 .adminProductTd
@@ -76,3 +77,23 @@
     color: rgb(198, 197, 202);
     border: 1px solid rgb(198, 197, 202);
   }
+
+}
+
+.zEditPage {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.adminEditInput {
+    margin: 10px;
+}
+
+.adminEditP {
+    margin: 5px;
+}
+
+.adminformDetail {
+    outline: none;
+}
