@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import "./books.css";
 import StarRatingAvg from "../Reviews/StarRatingAvg";
 import AllProductsAdd from "../addToCart/AllProductsAdd";
+import FilterBar from "../filterBar/FilterBar";
 
 const AllBooks = () => {
   // useRef allows us to make a reference to a DOM node
@@ -116,6 +117,14 @@ const AllBooks = () => {
   const pageCount = Math.ceil(sortedBooks.length / PER_PAGE);
   //
   return (
+    <div
+    className="filterBarAndBooks"
+    >
+    <div
+    className="filterBar"
+    >
+    <FilterBar/>
+    </div>
     <div className="productsContainer">
       {/* VV this is the node we're referencing */}
       <div ref={wrapperRef}></div>
@@ -125,7 +134,7 @@ const AllBooks = () => {
           variant="filled"
           sx={{ color: "black", m: 1, minWidth: 120 }}
           size="small"
-        >
+          >
           <InputLabel sx={{ color: "black" }}>Sort</InputLabel>
           <Select onChange={handleSortChange} label="Sort" value={selectedSort}>
             <MenuItem value="newest">Newest Arrivals</MenuItem>
@@ -141,10 +150,10 @@ const AllBooks = () => {
           {currentPageData.map(book => {
             return (
               <Card
-                sx={{ boxShadow: 2 }}
-                className="productCard"
-                variant="outlined"
-                key={book.id}
+              sx={{ boxShadow: 2 }}
+              className="productCard"
+              variant="outlined"
+              key={book.id}
               >
                 <div className="productCardImg">
                   <Link to={`/books/${book.id}`}>
@@ -174,9 +183,10 @@ const AllBooks = () => {
           nextLinkClassName={"pagination__link"}
           disabledClassName={"pagination__link--disabled"}
           activeClassName={"pagination__link--active"}
-        />
+          />
       </div>
     </div>
+  </div>
   );
 };
 

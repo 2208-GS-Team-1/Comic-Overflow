@@ -100,3 +100,14 @@
 html {
     scroll-behavior: smooth;
   }
+.filterBarAndBooks{
+  display: flex;
+  justify-content: flex-start;
+}
+.filterBar{
+  display: flex;
+  justify-content: center;
+  margin: 116px 20px 20px;
+  width: 200px;
+  height: 500px;
+}
