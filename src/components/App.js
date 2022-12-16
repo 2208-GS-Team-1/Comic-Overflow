@@ -11,7 +11,7 @@ import Footer from "./footer/Footer.jsx";
 
 const App = () => {
   // eslint-disable-next-line no-unused-vars
-  const { user } = useSelector(state => state.user);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const loginWithToken = async () => {
@@ -31,17 +31,22 @@ const App = () => {
     loginWithToken();
   }, []);
 
+  const footerParentStyle = {
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+  };
   return (
     <div>
       <div className="upperBar">
-        <div className="searchBar">{/* placeholder for search bar */}</div>
+        {/* <div className="searchBar"> search bar placeholder? </div> */}
         <p className="upperBarMessage">FREE SHIPPING on order over $50!</p>
       </div>
       <div className="main_header">
         <h1>Comic Overflow</h1>
       </div>
 
-      <div>
+      <div className="footerParent" style={footerParentStyle}>
         <nav className="navbar">
           <Link to="/">Home</Link>
           <Link to="/books">Books</Link>
@@ -49,9 +54,10 @@ const App = () => {
           {user.id && <Link to="/myAccount">My Account</Link>}
           <CartDrawer />
         </nav>
-        {/* Render admin navbar is user is an admin */}
-        {user.isAdmin && <AdminNavbar />}
 
+        {/* Render admin navbar is user is an admin */}
+
+        {user.isAdmin && <AdminNavbar />}
         <RouteContainer user={user} />
         <Footer />
       </div>

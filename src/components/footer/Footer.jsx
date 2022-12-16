@@ -12,13 +12,13 @@ import { Typography } from "@mui/material";
 
 function Footer() {
   const container = {
+    marginTop: "auto",
     color: "white",
     backgroundColor: "rgb(54, 54, 54)",
     paddingTop: "3em",
     bottom: "0",
     width: "100%",
     padding: 1,
-    marginTop: "25px",
   };
   const footerRowStyle = {
     display: "flex",
