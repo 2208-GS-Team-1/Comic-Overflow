@@ -2,7 +2,6 @@ const { Sequelize } = require("sequelize");
 const db = require("./db");
 
 const Book = db.define("book", {
-  //field
   title: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -26,10 +25,24 @@ const Book = db.define("book", {
   },
   genre: {
     type: Sequelize.STRING,
-    // allowNull: false,
-    // validate: {
-    // 	notEmpty: true,
-    // }
+    get() {
+      // GETTER - capitalize the first letter
+      const rawValue = this.getDataValue("genre");
+
+      //if this field is null, just return null
+      if (!rawValue) return null;
+
+      // if the genre is only one chr, return that capitalized.
+      if (rawValue.length < 1) return rawValue.toUpperCase();
+      const firstLetterCapitalized = rawValue[0].toUpperCase();
+      const restOfLetters = rawValue.slice(1);
+      return firstLetterCapitalized + restOfLetters;
+    },
+    set(value) {
+      // SETTER - store as all lowercase
+      const sanitized = value.toLowerCase();
+      this.setDataValue("genre", sanitized);
+    },
   },
   volume: {
     type: Sequelize.INTEGER,
