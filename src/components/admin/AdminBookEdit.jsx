@@ -9,8 +9,10 @@ const AdminBookEdit = () => {
   const navigate = useNavigate();
 
   const { id } = useParams();
-  const [loading, setLoading] = useState(false);
   const selectedBook = useSelector(state => state.book.selectedBook);
+
+  // State used for input:
+  const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState(selectedBook.title);
   const [author, setAuthor] = useState(selectedBook.author);
   const [description, setdescription] = useState(selectedBook.description);
@@ -68,22 +70,30 @@ const AdminBookEdit = () => {
   };
 
   const bookUpdater = async event => {
-    event.preventDefault();
-    const updatedBook = {
-      title,
-      author,
-      description,
-      genre,
-      volume,
-      yearOfPublish,
-      isbn,
-      edition,
-      price,
-      stock,
-      isDeactivated,
-    };
     try {
-      await axios.put(`/api/books/${id}`, updatedBook);
+      event.preventDefault();
+      const updatedBook = {
+        title,
+        author,
+        description,
+        genre,
+        volume,
+        yearOfPublish,
+        isbn,
+        edition,
+        price,
+        stock,
+        isDeactivated,
+      };
+
+      console.log("sending up this body:");
+      console.log(updatedBook);
+
+      // Update book in DB
+      const { data } = await axios.put(`/api/books/${id}`, updatedBook);
+
+      // update setSelected book to have what's in DB
+      dispatch(setSelectedBook(data));
 
       // navigate admin back to the list of all books
       navigate(`/admin/books`);
@@ -161,7 +171,7 @@ const AdminBookEdit = () => {
               id="edition"
               className="editInput"
               placeholder={
-                selectedBook.edition.length === 0
+                selectedBook.edition === null
                   ? "no edition info"
                   : selectedBook.edition
               }

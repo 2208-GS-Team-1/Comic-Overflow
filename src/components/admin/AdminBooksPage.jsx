@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBooks } from "../../store/bookSlice";
-import AdminNavbar from "./adminNavbar";
 import { Link } from "react-router-dom";
 import AdminBookDelete from "./AdminBookDelete";
 
