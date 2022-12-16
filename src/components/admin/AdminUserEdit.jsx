@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
+import axios from 'axios';
 import React, { useState } from 'react';
 
-const AdminUserEdit = ({fetchedUser}) => {
+const AdminUserEdit = ({fetchedUser, userHandler }) => {
 
     const [firstName , setFirstname] = useState(`${fetchedUser.firstName}`)
     const [lastName, setLastName] = useState(`${fetchedUser.lastName}`)
@@ -29,31 +30,44 @@ const AdminUserEdit = ({fetchedUser}) => {
         setPhoneNumber(event.target.value)
     }
 
+    const updateHandler = async (event) =>{
+        event.preventDefault();
+        const updatedData = {address, email, phoneNumber, firstName, lastName, birthday}
+        await axios.put(`/api/users/${fetchedUser.id}`, updatedData)
+        userHandler();
+    }
+
     return (
         <div className='formBase'>
-            <div className='formDetail'>
-                <form>
+            <div className='adminformDetail'>
+                <form onSubmit={updateHandler}>
                     <h1>EDIT</h1>
                     <div className='formInput'>
-                        <p>First Name:</p>
-                        <input className='editInput'
+                        <p className='adminEditP'>First Name:</p>
+                        <input className='adminEditInput'
                         value={firstName}
                         onChange={firstNameHandler} />
-                        <p>Last Name:</p>
-                        <input className='editInput'
-                        value={fetchedUser.lastName} />
-                        <p>Address:</p>
-                        <input className='editInput'
-                        value={fetchedUser.address} />
-                        <p>Birthday:</p>
-                        <input className='editInput'
-                        value={fetchedUser.birthday} />
-                        <p>Email:</p>
-                        <input className='editInput'
-                        value={fetchedUser.email} />
-                        <p>Phone Number:</p>
-                        <input className='editInput'
-                        value={fetchedUser.phoneNumber} />
+                        <p className='adminEditP'>Last Name:</p>
+                        <input className='adminEditInput'
+                        value={lastName}
+                        onChange={lastNameHandler} />
+                        <p className='adminEditP'>Address:</p>
+                        <input className='adminEditInput'
+                        value={address}
+                        onChange={addressHandler} />
+                        <p className='adminEditP'>Birthday:</p>
+                        <input className='adminEditInput'
+                        value={birthday}
+                        onChange={birthdayHandler} />
+                        <p className='adminEditP'>Email:</p>
+                        <input className='adminEditInput'
+                        value={email} 
+                        onChange={emailHandler}/>
+                        <p className='adminEditP'>Phone Number:</p>
+                        <input className='adminEditInput'
+                        value={phoneNumber}
+                        onChange={phoneNumberHandler} />
+                        <button type='submit'>Submit</button>
                     </div>
                 </form>
             </div>
