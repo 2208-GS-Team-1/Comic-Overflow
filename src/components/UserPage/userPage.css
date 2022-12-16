@@ -13,6 +13,7 @@
   outline-color: rgb(148, 148, 148);
   padding: 50px;
   margin: 50px;
+  background-color: white;
 }
 
 .imageWrapper {
@@ -42,6 +43,7 @@
   outline: 4px solid;
   outline-color: rgb(148, 148, 148);
   padding: 50px;
+  background-color: white;
 }
 
 .formInput {

@@ -55,6 +55,10 @@ const SingleProduct = () => {
   const bookPrice = (selectedBook.price / 100).toFixed(2);
   return (
     <div className="singleProductPage">
+      <Card 
+      className="cardForAllProducts"
+      sx={{ boxShadow: 2 }}
+      >
       <div className="singleProduct_container">
         <div className="productimage_left">
           <Card
@@ -129,6 +133,7 @@ const SingleProduct = () => {
           </div>
         </div>
       </div>
+      </Card>
       <div
       className="singleBookReivews"
       >
