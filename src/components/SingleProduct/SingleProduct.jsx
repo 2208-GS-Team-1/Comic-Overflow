@@ -8,6 +8,8 @@ import ReviewsSingleBook from "../Reviews/ReviewsSingleBook";
 import StarRatingAvg from "../Reviews/StarRatingAvg";
 import "./singleProduct.css";
 import MuiLoader from "../MuiLoader";
+import { Card } from "@mui/material";
+import ReactPaginate from "react-paginate";
 
 const SingleProduct = () => {
   // when item is clicked from all product page, it's automatically directed to this page.
@@ -55,12 +57,16 @@ const SingleProduct = () => {
     <div className="singleProductPage">
       <div className="singleProduct_container">
         <div className="productimage_left">
+          <Card
+          sx={{ boxShadow: 5}}
+          >
           <img
             className="singleProductImg"
             src={selectedBook.imageURL}
             width="200px"
             height="auto"
           />
+          </Card>
         </div>
         <div className="productDescrib_right">
           <h1 className="selectedTitle">{selectedBook.title}</h1>
@@ -123,7 +129,10 @@ const SingleProduct = () => {
           </div>
         </div>
       </div>
-      <div>
+      <div
+      className="singleBookReivews"
+      >
+        <h1>Reviews</h1>
         <ReviewsSingleBook key={selectedBook.id} book={selectedBook} />
       </div>
     </div>
