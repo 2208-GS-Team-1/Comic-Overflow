@@ -128,10 +128,10 @@ const SingleProduct = () => {
           </div>
         </div>
       </div>
+      </Card>
       <div>
         <ReviewsSingleBook key={selectedBook.id} book={selectedBook} />
       </div>
-      </Card>
     </div>
   );
 };
