@@ -31,6 +31,11 @@ const App = () => {
     loginWithToken();
   }, []);
 
+  const footerParentStyle = {
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+  };
   return (
     <div>
       <div className="upperBar">
@@ -41,7 +46,7 @@ const App = () => {
         <h1>Comic Overflow</h1>
       </div>
 
-      <div>
+      <div className="footerParent" style={footerParentStyle}>
         <nav className="navbar">
           <Link to="/">Home</Link>
           <Link to="/books">Books</Link>
@@ -49,10 +54,10 @@ const App = () => {
           {user.id && <Link to="/myAccount">My Account</Link>}
           <CartDrawer />
         </nav>
+
         {/* Render admin navbar is user is an admin */}
 
         {user.isAdmin && <AdminNavbar />}
-
         <RouteContainer user={user} />
         <Footer />
       </div>
