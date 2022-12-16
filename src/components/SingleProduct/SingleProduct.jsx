@@ -8,6 +8,7 @@ import ReviewsSingleBook from "../Reviews/ReviewsSingleBook";
 import StarRatingAvg from "../Reviews/StarRatingAvg";
 import "./singleProduct.css";
 import MuiLoader from "../MuiLoader";
+import { Card } from "@mui/material";
 
 const SingleProduct = () => {
   // when item is clicked from all product page, it's automatically directed to this page.
@@ -53,6 +54,10 @@ const SingleProduct = () => {
   const bookPrice = (selectedBook.price / 100).toFixed(2);
   return (
     <div className="singleProductPage">
+      <Card 
+      className="cardForAllProducts"
+      sx={{ boxShadow: 2 }}
+      >
       <div className="singleProduct_container">
         <div className="productimage_left">
           <img
@@ -123,6 +128,7 @@ const SingleProduct = () => {
           </div>
         </div>
       </div>
+      </Card>
       <div>
         <ReviewsSingleBook key={selectedBook.id} book={selectedBook} />
       </div>
