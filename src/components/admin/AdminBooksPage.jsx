@@ -37,6 +37,13 @@ function AdminBooksPage() {
     );
   }
 
+  // Pre-sort the books by their ID in the database
+  const sortedBooks = [...books];
+  const sortBooksById = () => {
+    sortedBooks.sort((a, b) => (a.id > b.id ? 1 : -1));
+  };
+  sortBooksById();
+
   return (
     <div>
       <div className="adminProductPage">
@@ -46,17 +53,21 @@ function AdminBooksPage() {
         <div className="adminProductContainer">
           <table className="adminProductTable">
             <tbody>
-              {books.map((book, index) => {
+              {sortedBooks.map(book => {
                 return (
                   <tr className="adminProducttr" key={book.id}>
                     <td className="adminProducttd">
-                      {index}: {book.title} {book.volume} {book.edition}
+                      {book.id}: {book.title} {book.volume} {book.edition}
                     </td>
                     <td className="adminProductButton">
                       <Link to={`/admin/books/${book.id}`}>
                         <button>Edit</button>
                       </Link>
-                      <AdminBookDelete bookId = {book.id} deactivated ={book.isDeactivated} bookHandler={bookHandler} />
+                      <AdminBookDelete
+                        bookId={book.id}
+                        deactivated={book.isDeactivated}
+                        bookHandler={bookHandler}
+                      />
                     </td>
                   </tr>
                 );
