@@ -13,8 +13,9 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
-//GET - /api/books/active
-router.get("/active", async (req, res, next) => {
+//GET - /api/books/all/active
+//Gets book from db that are "active" so that we aren't displaying books that are inactive
+router.get("/all/active", async (req, res, next) => {
   try {
     const allBooks = await Book.findAll({
       where: {
@@ -33,13 +34,13 @@ router.get("/:id", async (req, res, next) => {
     const singleBook = await Book.findByPk(id, {
       include: [Review],
     });
-    singleBook ? res.send(singleBook) : res.send("Book not found").status(404);
+    singleBook ? res.send(singleBook) : res.status(404).send("Book not found");
   } catch (err) {
     next(err);
   }
 });
 
-//POST -api/books -> Updates book with given id
+//PUT -api/books -> Updates book with given id
 router.put("/:id", async (req, res, next) => {
   try {
     const {
@@ -73,7 +74,7 @@ router.put("/:id", async (req, res, next) => {
       stock,
       isDeactivated,
     });
-    res.send("Book was updated").status(201);
+    res.status(201).send("Book was updated");
   } catch (error) {
     next(error);
   }

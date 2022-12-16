@@ -11,7 +11,7 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
-router.get("/:email", async (req, res, next) => {
+router.get("/email/:email", async (req, res, next) => {
   const usersEmail = req.params.email;
   try {
     const user = await User.findOne({
@@ -42,7 +42,7 @@ router.get("/:id", async (req, res, next) => {
       next(err);
     }
   } else {
-    res.send("ID is not a UUID").status(404);
+    res.status(404).send("ID is not a UUID");
   }
 });
 
@@ -67,26 +67,38 @@ router.post("/", async (req, res, next) => {
       res.status(400).send("An account with that e-mail already exists");
     } else {
       await User.create(req.body);
-      res.send("User has been successfully created").status(201);
+      res.status(201).send("User has been successfully created");
     }
   } catch (err) {
     next(err);
   }
 });
 
-// POST - api/users --> Updates user with given id
+// PUT - /api/users/:id --> Updates user with given id
 router.put("/:id", async (req, res, next) => {
   try {
     const { address, email, phoneNumber } = req.body;
-
     const id = req.params.id;
+
+    // email field must be unique, dont allow this updated email to be one we already have.
+    const userWithSameEmail = await User.findOne({
+      where: {
+        email: email,
+      },
+    });
+
+    // If the user with this email is NOT this user (identified by id)
+    // 400 it.
+    if (userWithSameEmail && userWithSameEmail.id !== id)
+      return res.status(400).send("An account with that e-mail already exists");
+
     const updatedUser = await User.findByPk(id);
     await updatedUser.update({
       address,
       email,
       phoneNumber,
     });
-    res.send("User was updated").status(201);
+    res.status(201).send("User was updated");
   } catch (err) {
     next(err);
   }
@@ -105,14 +117,14 @@ router.delete("/:id", async (req, res, next) => {
         },
       });
       !userToDelete
-        ? res.send("User does not exist").status(400)
+        ? res.status(400).send("User does not exist")
         : await userToDelete.destroy(),
-        res.send("User deleted").status(200);
+        res.status(200).send("User deleted");
     } catch (err) {
       next(err);
     }
   } else {
-    res.send("Not a UUID").status(404);
+    res.status(404).send("Not a UUID");
   }
 });
 

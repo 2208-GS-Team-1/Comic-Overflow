@@ -1,7 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const { User, CartItem, Book, Order } = require("../db");
+const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
 /* TODO: 
   Put authenticateUserthis back in routes 
@@ -10,7 +12,6 @@ const { User, CartItem, Book, Order } = require("../db");
 // authenticateUser is a middleware used to check the JWT
 // Used in all singular-cart routes
 const authenticateUser = (req, res, next) => {
-  console.log(req.headers.authorization);
   const header = req.headers.authorization;
   //separate the token from the word "Bearer"
   const token = header && header.split(" ")[1];
@@ -92,13 +93,11 @@ router.post("/", async (req, res, next) => {
 
     // Make sure user exists
     const user = await User.findByPk(userId);
-    console.log(`user: ${user}`);
     if (!user) return res.status(404).send("User not found");
 
     //********************** CHECKING BOOK *******************************/
     // Before creating a new cartitem, make sure the book is not sold out.
     const book = await Book.findByPk(bookId);
-    console.log(book);
     // Make sure book exists
     if (!book) return res.status(404).send("Book not found");
 
@@ -115,7 +114,6 @@ router.post("/", async (req, res, next) => {
         bookId: bookId,
         userId: userId,
       });
-      console.log("Add to cart successful!");
       res.status(201).send(createdCartItem);
     }
   } catch (err) {
@@ -264,13 +262,11 @@ router.post("/quantity", async (req, res, next) => {
 
     // Make sure user exists
     const user = await User.findByPk(userId);
-    console.log(`user: ${user}`);
     if (!user) return res.status(404).send("User not found");
 
     //********************** CHECKING BOOK *******************************/
     // Before creating a new cartitem, make sure the book is not sold out.
     const book = await Book.findByPk(bookId);
-    console.log(book);
     // Make sure book exists
     if (!book) return res.status(404).send("Book not found");
 
@@ -288,9 +284,42 @@ router.post("/quantity", async (req, res, next) => {
         userId: userId,
         quantity: quantityToAdd,
       });
-      console.log("Add to cart successful!");
       res.status(201).send(createdCartItem);
     }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/checkout", async (req, res, next) => {
+  //grab order details from req.body
+  const cart = req.body;
+  try {
+    //create stripe session
+    const session = await stripe.checkout.sessions.create({
+      //use preset stripe keys to set payment type, mode, line_items
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: cart.map((cartItem) => {
+        return {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: cartItem.book.title,
+              images: [cartItem.book.image],
+            },
+            unit_amount: cartItem.book.price,
+          },
+          quantity: cartItem.quantity,
+        };
+      }),
+      //set url that page goes to after success
+      success_url: `${process.env.SERVER_URL}/completedOrder?success=true`,
+      //set url that page goes to after failure (required)
+      cancel_url: `${process.env.SERVER_URL}/Books`,
+    });
+    //send Stripe url back to the user
+    res.json({ url: session.url });
   } catch (err) {
     next(err);
   }
