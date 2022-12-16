@@ -1,6 +1,6 @@
 import React from "react";
 import CreateAccountForm from "./CreateAccountForm.jsx";
-import { Box, Typography } from "@mui/material";
+import { Box, Card, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 
 function CreateAccountContainer() {
@@ -14,7 +14,6 @@ function CreateAccountContainer() {
         alignItems: "center",
       }}
     >
-      <h2>Create an Account</h2>
 
       {/* If redux user exists (aka NOT an empty object), 
       tell them they can't make an account while logged in. */}
@@ -27,7 +26,12 @@ function CreateAccountContainer() {
         </>
       ) : (
         // If not logged in, display form
-        <CreateAccountForm />
+        <Card
+        sx={{ display: "flex", flexDirection:"column",alignItems:"center",boxShadow: 4, margin:"24px" }}
+        >
+          <h2>Create an Account</h2>
+          <CreateAccountForm />
+        </Card>
       )}
     </Box>
   );
