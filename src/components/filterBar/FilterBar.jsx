@@ -3,6 +3,7 @@ import React from 'react';
 import AuthorFilter from './AuthorFilter';
 import GenreFilter from './GenreFilter';
 import './filterBarStyles.css'
+import PriceFilter from './PriceFilter';
 
 const FilterBar = () => {
 
@@ -16,6 +17,7 @@ const FilterBar = () => {
             <h2>
                 Fitler by...
             </h2>
+            <Divider/>
             <div
             className='filterOptions'
             >
@@ -25,6 +27,10 @@ const FilterBar = () => {
             <Divider/>
             <div>
             <GenreFilter/>
+            </div>
+            <Divider/>
+            <div>
+                <PriceFilter/>
             </div>
             </div>
             </Card>
