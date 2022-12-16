@@ -17,7 +17,6 @@ const AdminUserview = () => {
             const user = await axios.get(`/api/users/${id}`) 
             setFetchedUser(user.data);
             setLoading(true);
-            console.log(user.data);
         } catch (error) {
             console.log(error)
         }
@@ -31,7 +30,7 @@ const AdminUserview = () => {
     if(!loading){ return (<div>Oops! Something went wrong!</div>)}
 
     return (
-        <div className='adminsUserPage'>
+        <div className='adminsUserEditPage'>
       <div className="userAccount">
         <div className="accountDetail">
           <h1>Account Detail</h1>
@@ -55,7 +54,7 @@ const AdminUserview = () => {
           <p>Phone Number: {fetchedUser.phoneNumber}</p>
         </div>
       </div>
-      <AdminUserEdit fetchedUser={fetchedUser} />
+      <AdminUserEdit fetchedUser={fetchedUser} userHandler ={userHandler } />
         </div>
     );
 };
