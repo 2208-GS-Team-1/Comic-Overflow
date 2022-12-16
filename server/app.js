@@ -3,6 +3,8 @@ const app = express();
 const path = require("path");
 const volleyball = require("volleyball");
 
+require("dotenv").config();
+
 // Set up middleware
 app.use(volleyball);
 app.use(express.json());

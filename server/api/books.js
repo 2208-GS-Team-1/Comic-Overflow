@@ -13,8 +13,9 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
-//GET - /api/books/active
-router.get("/active", async (req, res, next) => {
+//GET - /api/books/all/active
+//Gets book from db that are "active" so that we aren't displaying books that are inactive
+router.get("/all/active", async (req, res, next) => {
   try {
     const allBooks = await Book.findAll({
       where: {
@@ -74,7 +75,6 @@ router.put("/:id", async (req, res, next) => {
       isDeactivated,
     });
     res.status(201).send("Book was updated");
-
   } catch (error) {
     next(error);
   }
