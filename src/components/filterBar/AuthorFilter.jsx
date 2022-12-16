@@ -21,7 +21,7 @@ const AuthorFilter = () => {
     const [thirdIsSelected, setThirdIsSelected] = useState(false)
     const [allBooksBackup, setAllBooksBackUp] = useState([])
     const getAllBooks = async() => {
-       const getAllBooks = await axios.get('/api/books')
+       const getAllBooks = await axios.get('/api/books/all/active')
        setAllBooksBackUp(getAllBooks.data)
     }
     //This function handles the filtering of authors by the first letter of their first name
@@ -79,10 +79,6 @@ const AuthorFilter = () => {
         getAllBooks();
     }, [])
     return (
-        <div>
-            <div
-            className='filterOptions'
-            >
                 <div
                 className='filterByAuthor'
                 >
@@ -121,8 +117,6 @@ const AuthorFilter = () => {
                 }
                 />
                 </div>
-            </div>
-        </div>
     );
 };
 

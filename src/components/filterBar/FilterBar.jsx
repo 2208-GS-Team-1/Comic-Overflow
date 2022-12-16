@@ -1,7 +1,7 @@
-import { Card } from '@mui/material';
+import { Card, Divider } from '@mui/material';
 import React from 'react';
 import AuthorFilter from './AuthorFilter';
-
+import GenreFilter from './GenreFilter';
 import './filterBarStyles.css'
 
 const FilterBar = () => {
@@ -16,7 +16,17 @@ const FilterBar = () => {
             <h2>
                 Fitler by...
             </h2>
+            <div
+            className='filterOptions'
+            >
+            <div>
             <AuthorFilter/>
+            </div>
+            <Divider/>
+            <div>
+            <GenreFilter/>
+            </div>
+            </div>
             </Card>
         </div>
     );
