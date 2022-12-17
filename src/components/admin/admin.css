@@ -11,6 +11,7 @@
     padding: 50px;
     display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 /* Below is for Admin Product page */
@@ -28,11 +29,28 @@
     padding: 50px;
     display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 .adminProductButton {
     display: flex;
     flex-direction: row;
+}
+
+.adminUserContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.adminUserButtons {
+    display: flex;
+    flex-direction: row;
+}
+
+.adminH2 {
+    font-size: 28pt;
 }
 
 .adminsUserEditPage {
@@ -47,6 +65,10 @@
 
 .adminEditP {
     margin: 5px;
+}
+
+.adminEditSmallP {
+    margin: 2px;
 }
 
 .adminformDetail {
