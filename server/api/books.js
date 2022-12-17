@@ -116,6 +116,7 @@ router.put("/:id", authenticateUser, async (req, res, next) => {
 // ONLY ADMINS are allowed to do this!
 router.post("/", authenticateUser, async (req, res, next) => {
   try {
+    // If logged in user is not an admin, kick them
     if (!req.user.isAdmin) return res.sendStatus(401);
 
     const {
