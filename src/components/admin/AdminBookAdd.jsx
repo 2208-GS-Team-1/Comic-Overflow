@@ -77,7 +77,7 @@ const AdminBookAdd = () => {
       //dispatch newBooks to redux
       dispatch(setBooks(newBooks.data));
       // navigate admin back to the list of all books
-      navigate(`/admin/books`);
+      navigate("/admin/books/");
     } catch (error) {
       console.log(error);
     }
@@ -96,6 +96,7 @@ const AdminBookAdd = () => {
               placeholder="Title"
               onChange={titleHandler}
             />
+            {!title && <p style={{ color: "red" }}>This field is required</p>}
             <label htmlFor="author">Author</label>
             <input
               id="author"
@@ -103,6 +104,7 @@ const AdminBookAdd = () => {
               placeholder="Author"
               onChange={authorHandler}
             />
+            {!author && <p style={{ color: "red" }}>This field is required</p>}
             <label htmlFor="description">Description</label>
             <textarea
               rows="10"
@@ -111,6 +113,9 @@ const AdminBookAdd = () => {
               placeholder="Enter description here"
               onChange={descriptionHandler}
             />
+            {!description && (
+              <p style={{ color: "red" }}>This field is required</p>
+            )}
             <label htmlFor="genre">Genre</label>
             <input
               id="genre"
@@ -146,13 +151,14 @@ const AdminBookAdd = () => {
               placeholder="Edition"
               onChange={editionHandler}
             />
-            <label htmlFor="price">Price in cents</label>
+            <label htmlFor="price">Price in Cents</label>
             <input
               id="price"
               className="editInput"
-              placeholder="$0.00"
+              placeholder="Price in Cents"
               onChange={priceHandler}
             />
+            {!price && <p style={{ color: "red" }}>This field is required</p>}
             <label htmlFor="stock">Stock</label>
             <input
               id="stock"
@@ -160,14 +166,21 @@ const AdminBookAdd = () => {
               placeholder="Stock"
               onChange={stockHandler}
             />
+            {!stock && <p style={{ color: "red" }}>This field is required</p>}
             <label htmlFor="status">Deactivation status</label>
-            <input
+            <select
               id="status"
               className="editInput"
               placeholder="true"
-              onChange={statusHandler}
-            />
-            <button type="submit">Submit</button>
+              onChange={statusHandler}>
+              <option value="true">True</option>
+              <option value="false">False</option>
+            </select>
+            <button
+              type="submit"
+              disabled={!title || !author || !price || !stock || !description}>
+              Submit
+            </button>
           </div>
         </form>
       </div>

@@ -44,7 +44,7 @@ function AdminBooksPage() {
           <h1>Product List</h1>
         </div>
         <Link to={"/admin/books/add"}>
-          <button>Add Product</button>
+          <button style={{ marginBottom: "10px" }}>Add Product</button>
         </Link>
         <div className="adminProductContainer">
           <table className="adminProductTable">
