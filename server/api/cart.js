@@ -231,7 +231,7 @@ router.get(
       // Now that we are checking out,
       // cartItem's priceTimesQuantityAtCheckOut needs to be set.
       // This will be a historically-accurate 'what the user paid for this cartitem x quantity'
-      usersActiveCart.map(async cartItem => {
+      usersActiveCart.map(async (cartItem) => {
         // Calculate what to update the cart item with
         const priceTimesQuantityAtCheckOut =
           cartItem.book.price * cartItem.quantity;
@@ -247,7 +247,7 @@ router.get(
       // THE BOOK'S STOCK MUST BE SUFFICIENT FOR  ACTIVE CART'S QUANTITY
       // This is give 500 server error if not!!
       // We need to update our book stock
-      usersActiveCart.map(async cartItem => {
+      usersActiveCart.map(async (cartItem) => {
         // Calculate what the book's stock will now be, now that the order has gone through.
         const updatedStockAmount = cartItem.book.stock - cartItem.quantity;
 
@@ -314,13 +314,14 @@ router.post("/quantity", authenticateUser, async (req, res, next) => {
 });
 
 //************//****************//******************** TODO!!!!!!! //****************//*****************/
-// POST /api/cart/checkout
+// POST /api/cart/stripeCheckout
 // Used for stripe API payment
-router.post("/checkout", authenticateUser, async (req, res, next) => {
+router.post("/stripeCheckout", authenticateUser, async (req, res, next) => {
   try {
     //grab order details from req.body
     const cart = req.body;
 
+    // TO DO!!!!!!
     //if ( !== req.user.id) return res.sendStatus(401); // Kick them if they're not logged in as this userId
 
     //create stripe session
@@ -328,7 +329,7 @@ router.post("/checkout", authenticateUser, async (req, res, next) => {
       //use preset stripe keys to set payment type, mode, line_items
       payment_method_types: ["card"],
       mode: "payment",
-      line_items: cart.map(cartItem => {
+      line_items: cart.map((cartItem) => {
         return {
           price_data: {
             currency: "usd",

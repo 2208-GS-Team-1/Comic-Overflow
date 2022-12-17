@@ -111,4 +111,42 @@ router.put("/:id", authenticateUser, async (req, res, next) => {
   }
 });
 
+// POST - add new book given body
+router.post("/", async (req, res, next) => {
+  try {
+    const {
+      title,
+      author,
+      description,
+      imageURL,
+      genre,
+      volume,
+      yearOfPublish,
+      isbn,
+      edition,
+      price,
+      stock,
+      isDeactivated,
+    } = req.body;
+
+    await Book.create({
+      title,
+      author,
+      description,
+      imageURL,
+      genre,
+      volume,
+      yearOfPublish,
+      isbn,
+      edition,
+      price,
+      stock,
+      isDeactivated,
+    });
+    res.sendStatus(200);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
