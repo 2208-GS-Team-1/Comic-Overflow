@@ -2,22 +2,15 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBooks } from "../../store/bookSlice";
-import AdminNavbar from "./adminNavbar";
 import { Link } from "react-router-dom";
 import AdminBookDelete from "./AdminBookDelete";
 import MuiLoader from "../MuiLoader";
+import ReactPaginate from "react-paginate";
 
 function AdminBooksPage() {
   // If they're not an admin don't let them see this component.
   const { user } = useSelector((state) => state.user);
   const books = useSelector((state) => state.book.books);
-
-import ReactPaginate from "react-paginate";
-
-function AdminBooksPage() {
-  // If they're not an admin don't let them see this component.
-  const { user } = useSelector(state => state.user);
-  const books = useSelector(state => state.book.books);
   const [currentPage, setCurrentPage] = useState(0);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -37,14 +30,13 @@ function AdminBooksPage() {
   function handlePageClick({ selected: selectedPage }) {
     setCurrentPage(selectedPage);
   }
-  const sortedBooks = [...books]
-   sortedBooks.sort((a,b)=>(a.id > b.id) ? 1 : -1)
-   console.log(sortedBooks)
+  const sortedBooks = [...books];
+  sortedBooks.sort((a, b) => (a.id > b.id ? 1 : -1));
+  console.log(sortedBooks);
   const PER_PAGE = 15;
-const offset = currentPage * PER_PAGE;
-const currentPageData = sortedBooks
-.slice(offset, offset + PER_PAGE)
-const pageCount = Math.ceil(books.length / PER_PAGE);
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = sortedBooks.slice(offset, offset + PER_PAGE);
+  const pageCount = Math.ceil(books.length / PER_PAGE);
   //
   useEffect(() => {
     bookHandler();
@@ -93,16 +85,16 @@ const pageCount = Math.ceil(books.length / PER_PAGE);
           </table>
         </div>
         <ReactPaginate
-      previousLabel={"← Previous"}
-      nextLabel={"Next →"}
-      pageCount={pageCount}
-      onPageChange={handlePageClick}
-      containerClassName={"pagination"}
-      previousLinkClassName={"pagination__link"}
-      nextLinkClassName={"pagination__link"}
-      disabledClassName={"pagination__link--disabled"}
-      activeClassName={"pagination__link--active"}
-    />
+          previousLabel={"← Previous"}
+          nextLabel={"Next →"}
+          pageCount={pageCount}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination"}
+          previousLinkClassName={"pagination__link"}
+          nextLinkClassName={"pagination__link"}
+          disabledClassName={"pagination__link--disabled"}
+          activeClassName={"pagination__link--active"}
+        />
       </div>
     </div>
   );
