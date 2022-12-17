@@ -49,9 +49,7 @@ router.get("/", authenticateUser, async (req, res, next) => {
 router.get("/user/:userId", authenticateUser, async (req, res, next) => {
   try {
     const { userId } = req.params;
-    console.log("req.user.id: ");
-    console.log(req.user.id);
-    console.log("userId from params: ", userId);
+
     // Error check userId
     const regexExpforUUID =
       /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
@@ -130,7 +128,9 @@ router.post("/", authenticateUser, async (req, res, next) => {
 router.delete("/:cartItemId", authenticateUser, async (req, res, next) => {
   try {
     const { cartItemId } = req.params;
-    const cartItemToDelete = await CartItem.findByPk(cartItemId);
+    const cartItemToDelete = await CartItem.findByPk(cartItemId, {
+      include: [User],
+    });
 
     // if logged-in user is admin, OK! continue logic.
     // if logged-in user's id is the one via the req.params, ok! continue logic.
