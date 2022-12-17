@@ -70,6 +70,9 @@ const CompletedOrder = () => {
     }
   }, [user]);
 
+  //if user id is not equal to the user id of the completed order. (e.g. different logins on the same computer)
+  if (user.id !== newOrder.userId) return <p>Not allowed to see this!</p>;
+
   if (!user.id)
     return (
       <div className="productsContainer">
