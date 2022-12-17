@@ -11,6 +11,14 @@ function AdminBooksPage() {
   // If they're not an admin don't let them see this component.
   const { user } = useSelector((state) => state.user);
   const books = useSelector((state) => state.book.books);
+
+import ReactPaginate from "react-paginate";
+
+function AdminBooksPage() {
+  // If they're not an admin don't let them see this component.
+  const { user } = useSelector(state => state.user);
+  const books = useSelector(state => state.book.books);
+  const [currentPage, setCurrentPage] = useState(0);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +33,19 @@ function AdminBooksPage() {
       console.log(error);
     }
   };
-
+  // PAGINATE LOGIC
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+  const sortedBooks = [...books]
+   sortedBooks.sort((a,b)=>(a.id > b.id) ? 1 : -1)
+   console.log(sortedBooks)
+  const PER_PAGE = 15;
+const offset = currentPage * PER_PAGE;
+const currentPageData = sortedBooks
+.slice(offset, offset + PER_PAGE)
+const pageCount = Math.ceil(books.length / PER_PAGE);
+  //
   useEffect(() => {
     bookHandler();
   }, []);
@@ -50,11 +70,11 @@ function AdminBooksPage() {
         <div className="adminProductContainer">
           <table className="adminProductTable">
             <tbody>
-              {books.map((book, index) => {
+              {currentPageData.map((book) => {
                 return (
                   <tr className="adminProducttr" key={book.id}>
                     <td className="adminProducttd">
-                      {index}: {book.title} {book.volume} {book.edition}
+                      {book.id}: {book.title} {book.volume} {book.edition}
                     </td>
                     <td className="adminProductButton">
                       <Link to={`/admin/books/${book.id}`}>
@@ -72,6 +92,17 @@ function AdminBooksPage() {
             </tbody>
           </table>
         </div>
+        <ReactPaginate
+      previousLabel={"← Previous"}
+      nextLabel={"Next →"}
+      pageCount={pageCount}
+      onPageChange={handlePageClick}
+      containerClassName={"pagination"}
+      previousLinkClassName={"pagination__link"}
+      nextLinkClassName={"pagination__link"}
+      disabledClassName={"pagination__link--disabled"}
+      activeClassName={"pagination__link--active"}
+    />
       </div>
     </div>
   );
