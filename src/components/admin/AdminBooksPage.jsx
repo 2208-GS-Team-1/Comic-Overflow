@@ -32,7 +32,6 @@ function AdminBooksPage() {
   }
   const sortedBooks = [...books];
   sortedBooks.sort((a, b) => (a.id > b.id ? 1 : -1));
-  console.log(sortedBooks);
   const PER_PAGE = 15;
   const offset = currentPage * PER_PAGE;
   const currentPageData = sortedBooks.slice(offset, offset + PER_PAGE);
