@@ -1,10 +1,12 @@
+
 .loginForm {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 8px;
+  margin: 4px 0 18px 0;
   min-height: 70vh;
+
 }
 .loginCard {
   display: flex;

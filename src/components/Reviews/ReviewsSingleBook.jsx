@@ -8,12 +8,13 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 import "./reviewsSingleBook.css";
 
 const ReviewsSingleBook = ({ book }) => {
   const navigate = useNavigate;
-
+  const [currentPage, setCurrentPage] = useState(0);
   const [allReviews, setAllReviews] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -31,15 +32,25 @@ const ReviewsSingleBook = ({ book }) => {
       navigate("/404");
     }
   };
-
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+    // so when we scroll to the current wrapper ref, right now we scroll to the top of the page`
+  }
   useEffect(() => {
     handleAllReviews();
   }, []);
-
+ // PAGINATION
+  // Hardcoded # of books per page, if in the future we wanted the user to be able to change the # of items per page
+  // we would then could have state determine this.
+  const PER_PAGE = 3;
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = allReviews.slice(offset, offset + PER_PAGE);
+  const pageCount = Math.ceil(allReviews.length / PER_PAGE);
+  //
   if (loading) return <h1>Loading...</h1>;
   return (
     <div className="allReviews">
-      {allReviews.map(review => {
+      {currentPageData.map(review => {
         let shortName = `${review.user.firstName} ${review.user.lastName[0]}.`;
         return (
           <Card
@@ -70,6 +81,17 @@ const ReviewsSingleBook = ({ book }) => {
           </Card>
         );
       })}
+        <ReactPaginate
+          previousLabel={"← Previous"}
+          nextLabel={"Next →"}
+          pageCount={pageCount}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination"}
+          previousLinkClassName={"pagination__link"}
+          nextLinkClassName={"pagination__link"}
+          disabledClassName={"pagination__link--disabled"}
+          activeClassName={"pagination__link--active"}
+        />
     </div>
   );
 };

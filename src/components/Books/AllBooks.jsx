@@ -123,7 +123,7 @@ const AllBooks = () => {
       <div className="sortBar">
         <FormControl
           variant="filled"
-          sx={{ color: "black", m: 1, minWidth: 120 }}
+          sx={{ backgroundColor:"white",color: "black", m: 1, minWidth: 120, border: '1px solid rgba(0,0,0, .2)' }}
           size="small"
         >
           <InputLabel sx={{ color: "black" }}>Sort</InputLabel>
@@ -136,7 +136,7 @@ const AllBooks = () => {
           </Select>
         </FormControl>
       </div>
-      <Card className="cardForAllProducts" sx={{ boxShadow: 2 }}>
+      <Card className="cardForAllProducts" sx={{ boxShadow: 9 }}>
         <div className="allBooks">
           {currentPageData.map(book => {
             return (

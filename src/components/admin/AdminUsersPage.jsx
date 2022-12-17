@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllUsers } from "../../store/userSlice";
 import "./admin.css";
+import { Link } from "react-router-dom";
 
 function AdminUsersPage() {
   // If they're not an admin don't let them see this component.
@@ -47,9 +48,9 @@ function AdminUsersPage() {
                       {index}: {user.firstName} {user.lastName}
                     </td>
                     <td className="adminUserButtons">
-                      {/* below buttons should be replaced with components later */}
-                      <button>View</button>
-                      <button>Edit</button>
+                      <Link to={`/admin/users/${user.id}`}>
+                      <button>View/Edit</button>
+                      </Link>
                     </td>
                   </tr>
                 );

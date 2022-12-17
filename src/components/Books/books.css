@@ -15,6 +15,10 @@
     column-gap: 24px;
     row-gap: 24px;
 }
+.productsContainer h1{
+  letter-spacing: 4px;
+  font-size: 48px;
+}
 .productCard {
     display: flex;
     flex-direction: column;
@@ -74,10 +78,12 @@
     margin: 4px;
     font-family: 'Dogfish', sans-serif;
     color: black;
+    background-color: white;
   }
   
   .pagination__link {
     font-weight: bold;
+    background-color: white;
   }
   
   .pagination__link--active a {
