@@ -46,7 +46,7 @@ function AdminUsersPage() {
                 return (
                   <tr className="adminUsertr" key={user.id}>
                     <td className="adminUsertd">
-                      {index}: {user.firstName} {user.lastName} {!user.isDeactivated ? "(Active)" : "(Deactivated)"}
+                      {index + 1}: {user.firstName} {user.lastName} {!user.isDeactivated ? "(Active)" : "(Deactivated)"}
                     </td>
                     <td className="adminUserButtons">
                       <Link to={`/admin/users/${user.id}`}>
