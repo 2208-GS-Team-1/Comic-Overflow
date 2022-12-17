@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllUsers } from "../../store/userSlice";
 import "./admin.css";
@@ -11,6 +12,7 @@ function AdminUsersPage() {
   const [loading, setLoading] = useState(false);
   const { user } = useSelector(state => state.user);
   const allUsers = useSelector(state => state.user.allUsers);
+  const [currentPage, setCurrentPage] = useState(0);
   const dispatch = useDispatch();
 
   if (!user.isAdmin) return <h2>You are not an admin, permission denied</h2>;
@@ -25,6 +27,17 @@ function AdminUsersPage() {
     }
   };
 
+  // PAGINATE LOGIC
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+
+  const PER_PAGE = 15;
+const offset = currentPage * PER_PAGE;
+const currentPageData = allUsers
+.slice(offset, offset + PER_PAGE)
+const pageCount = Math.ceil(allUsers.length / PER_PAGE);
+  //
   useEffect(() => {
     allUserHandler();
   }, []);
@@ -42,13 +55,18 @@ function AdminUsersPage() {
         <div className="adminUserContainer">
           <table className="adminUserTable">
             <tbody>
-              {allUsers.map((user, index) => {
+              {currentPageData.map((user, index) => {
                 return (
                   <tr className="adminUsertr" key={user.id}>
                     <td className="adminUsertd">
+<<<<<<< HEAD
                       {index + 1}: {user.firstName} {user.lastName} {!user.isDeactivated ? "(Active)" : "(Deactivated)"}
+=======
+                      {index + 1}: {user.firstName} {user.lastName}
+>>>>>>> 2fe97fd1bb830c7cf975429b71b1666e0de6fe38
                     </td>
                     <td className="adminUserButtons">
+
                       <Link to={`/admin/users/${user.id}`}>
                       <button>View/Edit</button>
                       </Link>
@@ -59,6 +77,17 @@ function AdminUsersPage() {
             </tbody>
           </table>
         </div>
+      <ReactPaginate
+      previousLabel={"← Previous"}
+      nextLabel={"Next →"}
+      pageCount={pageCount}
+      onPageChange={handlePageClick}
+      containerClassName={"pagination"}
+      previousLinkClassName={"pagination__link"}
+      nextLinkClassName={"pagination__link"}
+      disabledClassName={"pagination__link--disabled"}
+      activeClassName={"pagination__link--active"}
+    />
       </div>
     </div>
   );
