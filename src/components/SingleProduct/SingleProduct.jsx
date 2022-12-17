@@ -10,6 +10,7 @@ import "./singleProduct.css";
 import MuiLoader from "../MuiLoader";
 import { Card } from "@mui/material";
 import ReactPaginate from "react-paginate";
+import UserReview from "../Reviews/UserReview";
 
 const SingleProduct = () => {
   // when item is clicked from all product page, it's automatically directed to this page.
@@ -18,6 +19,7 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const selectedBook = useSelector(state => state.book.selectedBook);
+  const user = useSelector(state => state.user.user);
   const [loading, setLoading] = useState(false);
   const [quantityChange, setQuantityChange] = useState(1);
   const { id } = useParams();
@@ -123,8 +125,9 @@ const SingleProduct = () => {
               )}
             </form>
           </div>
-          <div>
+          <div className="starReviewContainer">
             <StarRatingAvg key={selectedBook.id} book={selectedBook} />
+            <div className="reviewLink"><a href="#reviewContainer"><p>Leave a Review</p></a></div>
           </div>
           <div className="descrb_box">
             <h2>Description</h2>
@@ -139,6 +142,9 @@ const SingleProduct = () => {
       >
         <h1>Reviews</h1>
         <ReviewsSingleBook key={selectedBook.id} book={selectedBook} />
+        <div id="reviewContainer">
+          <UserReview selectedBook = {selectedBook} user={user} />
+        </div>
       </div>
     </div>
   );
