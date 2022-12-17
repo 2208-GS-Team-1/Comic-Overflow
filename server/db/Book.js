@@ -26,10 +26,7 @@ const Book = db.define("book", {
   },
   genre: {
     type: Sequelize.STRING,
-    // allowNull: false,
-    // validate: {
-    // 	notEmpty: true,
-    // }
+    allowNull: true,
   },
   volume: {
     type: Sequelize.INTEGER,
@@ -37,10 +34,12 @@ const Book = db.define("book", {
   },
   yearOfPublish: {
     type: Sequelize.DATEONLY,
+    allowNull: true,
   },
   isbn: {
     type: Sequelize.STRING,
-    unique: true, // can this be unique if we allow null?
+    allowNull: true,
+    // unique: true, // can this be unique if we allow null?
   },
 
   // EG) Standard, Limited, Deluxe
@@ -54,7 +53,7 @@ const Book = db.define("book", {
   },
   imageURL: {
     type: Sequelize.STRING,
-    // defaultValue: "http://dummyimage.com/400x400.png/dddddd/000000",
+    defaultValue: "http://dummyimage.com/400x400.png/dddddd/000000",
   },
 
   // Stored as INT for accurate addition (math gets weird with decimals)

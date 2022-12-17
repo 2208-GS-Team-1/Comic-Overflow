@@ -82,32 +82,32 @@ router.put("/:id", async (req, res, next) => {
 
 // POST - add new book given body
 router.post("/", async (req, res, next) => {
-  let isDeactivated = false;
   try {
     const {
       title,
       author,
       description,
+      imageURL,
       genre,
       volume,
       yearOfPublish,
       isbn,
       edition,
-      imageURL,
       price,
       stock,
+      isDeactivated,
     } = req.body;
 
     await Book.create({
       title,
       author,
       description,
+      imageURL,
       genre,
       volume,
       yearOfPublish,
       isbn,
       edition,
-      imageURL,
       price,
       stock,
       isDeactivated,

@@ -5,6 +5,7 @@ import { setBooks } from "../../store/bookSlice";
 import AdminNavbar from "./adminNavbar";
 import { Link } from "react-router-dom";
 import AdminBookDelete from "./AdminBookDelete";
+import MuiLoader from "../MuiLoader";
 
 function AdminBooksPage() {
   // If they're not an admin don't let them see this component.
@@ -31,8 +32,8 @@ function AdminBooksPage() {
 
   if (!loading) {
     return (
-      <div>
-        <h1>Oops! Something went wrong!</h1>
+      <div className="loadingContainer">
+        <MuiLoader />
       </div>
     );
   }

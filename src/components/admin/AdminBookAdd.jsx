@@ -10,14 +10,18 @@ const AdminBookAdd = () => {
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-  const [description, setdescription] = useState("");
-  const [genre, setGenre] = useState("");
-  const [volume, setVolume] = useState("");
-  const [yearOfPublish, setYOP] = useState("");
-  const [isbn, setIsbn] = useState("");
+  const [description, setDescription] = useState("");
+  const [imageURL, setImageURL] = useState(
+    "http://dummyimage.com/400x400.png/dddddd/000000"
+  );
+  const [genre, setGenre] = useState(null);
+  const [volume, setVolume] = useState(null);
+  const [yearOfPublish, setYOP] = useState(null);
+  const [isbn, setIsbn] = useState(null);
   const [edition, setEdition] = useState("");
   const [price, setPrice] = useState(0);
   const [stock, setStock] = useState(0);
+  const [isDeactivated, setIsDeactivated] = useState(false);
 
   const titleHandler = (event) => {
     setTitle(event.target.value);
@@ -26,7 +30,10 @@ const AdminBookAdd = () => {
     setAuthor(event.target.value);
   };
   const descriptionHandler = (event) => {
-    setdescription(event.target.value);
+    setDescription(event.target.value);
+  };
+  const imageHandler = (event) => {
+    setImageURL(event.target.value);
   };
   const genreHandler = (event) => {
     setGenre(event.target.value);
@@ -49,6 +56,9 @@ const AdminBookAdd = () => {
   const stockHandler = (event) => {
     setStock(event.target.value);
   };
+  const deactivatedHandler = (event) => {
+    setIsDeactivated(event.target.value);
+  };
 
   const bookAdd = async (event) => {
     event.preventDefault();
@@ -56,6 +66,7 @@ const AdminBookAdd = () => {
       title,
       author,
       description,
+      imageURL,
       genre,
       volume,
       yearOfPublish,
@@ -63,6 +74,7 @@ const AdminBookAdd = () => {
       edition,
       price,
       stock,
+      isDeactivated,
     };
     console.log("this is the new book object", addBook);
     try {
@@ -112,6 +124,13 @@ const AdminBookAdd = () => {
             {!description && (
               <p style={{ color: "red" }}>This field is required</p>
             )}
+            <label htmlFor="image">Description</label>
+            <input
+              id="imageURL"
+              className="editInput"
+              placeholder="Image"
+              onChange={imageHandler}
+            />
             <label htmlFor="genre">Genre</label>
             <input
               id="genre"
@@ -155,6 +174,7 @@ const AdminBookAdd = () => {
               className="editInput"
               placeholder="Price in Cents"
               onChange={priceHandler}
+              min="1"
             />
             {!price && <p style={{ color: "red" }}>This field is required</p>}
             <label htmlFor="stock">Stock</label>
@@ -164,8 +184,18 @@ const AdminBookAdd = () => {
               className="editInput"
               placeholder="Stock"
               onChange={stockHandler}
+              min="1"
             />
             {!stock && <p style={{ color: "red" }}>This field is required</p>}
+            <label htmlFor="isDeactivated">Is Deactivated</label>
+            <select
+              type="boolean"
+              id="isDeactivated"
+              className="editInput"
+              onChange={deactivatedHandler}>
+              <option value="false">False</option>
+              <option value="true">True</option>
+            </select>
 
             <button
               type="submit"
