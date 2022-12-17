@@ -51,10 +51,12 @@ const AdminBookAdd = () => {
     setEdition(event.target.value);
   };
   const priceHandler = (event) => {
-    setPrice(event.target.value);
+    const val = Math.max(0, Number(event.target.value));
+    setPrice(val);
   };
   const stockHandler = (event) => {
-    setStock(event.target.value);
+    const val = Math.max(0, Number(event.target.value));
+    setStock(val);
   };
   const deactivatedHandler = (event) => {
     setIsDeactivated(event.target.value);
@@ -97,38 +99,36 @@ const AdminBookAdd = () => {
         <form onSubmit={bookAdd}>
           <h1>Add Product</h1>
           <div className="formInput">
-            <label htmlFor="title">Title</label>
+            <label htmlFor="title">Title*</label>
             <input
+              required
               id="title"
               className="editInput"
               placeholder="Title"
               onChange={titleHandler}
             />
-            {!title && <p style={{ color: "red" }}>This field is required</p>}
-            <label htmlFor="author">Author</label>
+            <label htmlFor="author">Author*</label>
             <input
+              required
               id="author"
               className="editInput"
               placeholder="Author"
               onChange={authorHandler}
             />
-            {!author && <p style={{ color: "red" }}>This field is required</p>}
-            <label htmlFor="description">Description</label>
+            <label htmlFor="description">Description*</label>
             <textarea
+              required
               rows="10"
               id="description"
               className="editInput"
               placeholder="Enter description here"
               onChange={descriptionHandler}
             />
-            {!description && (
-              <p style={{ color: "red" }}>This field is required</p>
-            )}
-            <label htmlFor="image">Description</label>
+            <label htmlFor="image">URL</label>
             <input
               id="imageURL"
               className="editInput"
-              placeholder="Image"
+              placeholder="Image URL"
               onChange={imageHandler}
             />
             <label htmlFor="genre">Genre</label>
@@ -167,26 +167,26 @@ const AdminBookAdd = () => {
               placeholder="Edition"
               onChange={editionHandler}
             />
-            <label htmlFor="price">Price in Cents</label>
+            <label htmlFor="price">Price in Cents*</label>
             <input
+              required
               type="number"
               id="price"
               className="editInput"
               placeholder="Price in Cents"
+              value={price}
               onChange={priceHandler}
-              min="1"
             />
-            {!price && <p style={{ color: "red" }}>This field is required</p>}
-            <label htmlFor="stock">Stock</label>
+            <label htmlFor="stock">Stock*</label>
             <input
+              required
+              value={stock}
               type="number"
               id="stock"
               className="editInput"
               placeholder="Stock"
               onChange={stockHandler}
-              min="1"
             />
-            {!stock && <p style={{ color: "red" }}>This field is required</p>}
             <label htmlFor="isDeactivated">Is Deactivated</label>
             <select
               type="boolean"
@@ -196,7 +196,6 @@ const AdminBookAdd = () => {
               <option value="false">False</option>
               <option value="true">True</option>
             </select>
-
             <button
               type="submit"
               disabled={!title || !author || !price || !stock || !description}>
