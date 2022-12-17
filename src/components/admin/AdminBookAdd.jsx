@@ -19,8 +19,8 @@ const AdminBookAdd = () => {
   const [yearOfPublish, setYOP] = useState(null);
   const [isbn, setIsbn] = useState(null);
   const [edition, setEdition] = useState("");
-  const [price, setPrice] = useState(0);
-  const [stock, setStock] = useState(0);
+  const [price, setPrice] = useState("");
+  const [stock, setStock] = useState("");
   const [isDeactivated, setIsDeactivated] = useState(false);
 
   const titleHandler = (event) => {
@@ -51,12 +51,17 @@ const AdminBookAdd = () => {
     setEdition(event.target.value);
   };
   const priceHandler = (event) => {
-    const val = Math.max(0, Number(event.target.value));
-    setPrice(val);
+    if (event.target.value) {
+      const val = Math.max(0, Number(event.target.value));
+      setPrice(val);
+    } else setPrice("");
   };
+
   const stockHandler = (event) => {
-    const val = Math.max(0, Number(event.target.value));
-    setStock(val);
+    if (event.target.value) {
+      const val = Math.max(0, Number(event.target.value));
+      setStock(val);
+    } else setStock("");
   };
   const deactivatedHandler = (event) => {
     setIsDeactivated(event.target.value);
@@ -196,11 +201,7 @@ const AdminBookAdd = () => {
               <option value="false">False</option>
               <option value="true">True</option>
             </select>
-            <button
-              type="submit"
-              disabled={!title || !author || !price || !stock || !description}>
-              Submit
-            </button>
+            <button type="submit">Submit</button>
           </div>
         </form>
       </div>
