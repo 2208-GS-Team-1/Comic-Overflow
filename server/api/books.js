@@ -80,7 +80,9 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
+// POST - add new book given body
 router.post("/", async (req, res, next) => {
+  let isDeactivated = false;
   try {
     const {
       title,
@@ -94,7 +96,6 @@ router.post("/", async (req, res, next) => {
       imageURL,
       price,
       stock,
-      isDeactivated,
     } = req.body;
 
     await Book.create({

@@ -54,6 +54,7 @@ const Book = db.define("book", {
   },
   imageURL: {
     type: Sequelize.STRING,
+    // defaultValue: "http://dummyimage.com/400x400.png/dddddd/000000",
   },
 
   // Stored as INT for accurate addition (math gets weird with decimals)

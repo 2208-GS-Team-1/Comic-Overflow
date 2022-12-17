@@ -18,7 +18,6 @@ const AdminBookAdd = () => {
   const [edition, setEdition] = useState("");
   const [price, setPrice] = useState(0);
   const [stock, setStock] = useState(0);
-  const [isDeactivated, setStatus] = useState("");
 
   const titleHandler = (event) => {
     setTitle(event.target.value);
@@ -50,9 +49,6 @@ const AdminBookAdd = () => {
   const stockHandler = (event) => {
     setStock(event.target.value);
   };
-  const statusHandler = (event) => {
-    setStatus(event.target.value);
-  };
 
   const bookAdd = async (event) => {
     event.preventDefault();
@@ -67,17 +63,17 @@ const AdminBookAdd = () => {
       edition,
       price,
       stock,
-      isDeactivated,
     };
+    console.log("this is the new book object", addBook);
     try {
       //create new book
-      await axios.post("/api/books/", addBook);
+      await axios.post("/api/books", addBook);
       //get all books from db
-      const newBooks = await axios.get("/api/books/");
+      const newBooks = await axios.get("/api/books");
       //dispatch newBooks to redux
       dispatch(setBooks(newBooks.data));
       // navigate admin back to the list of all books
-      navigate("/admin/books/");
+      navigate("/admin/books");
     } catch (error) {
       console.log(error);
     }
@@ -132,6 +128,7 @@ const AdminBookAdd = () => {
             />
             <label htmlFor="yop">Year of Publishing</label>
             <input
+              type="number"
               id="yop"
               className="editInput"
               placeholder="Year of Publish"
@@ -153,6 +150,7 @@ const AdminBookAdd = () => {
             />
             <label htmlFor="price">Price in Cents</label>
             <input
+              type="number"
               id="price"
               className="editInput"
               placeholder="Price in Cents"
@@ -161,21 +159,14 @@ const AdminBookAdd = () => {
             {!price && <p style={{ color: "red" }}>This field is required</p>}
             <label htmlFor="stock">Stock</label>
             <input
+              type="number"
               id="stock"
               className="editInput"
               placeholder="Stock"
               onChange={stockHandler}
             />
             {!stock && <p style={{ color: "red" }}>This field is required</p>}
-            <label htmlFor="status">Deactivation status</label>
-            <select
-              id="status"
-              className="editInput"
-              placeholder="true"
-              onChange={statusHandler}>
-              <option value="true">True</option>
-              <option value="false">False</option>
-            </select>
+
             <button
               type="submit"
               disabled={!title || !author || !price || !stock || !description}>
