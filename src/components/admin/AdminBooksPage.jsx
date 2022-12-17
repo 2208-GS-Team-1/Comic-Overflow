@@ -2,14 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBooks } from "../../store/bookSlice";
-import AdminNavbar from "./adminNavbar";
 import { Link } from "react-router-dom";
 import AdminBookDelete from "./AdminBookDelete";
 
 function AdminBooksPage() {
   // If they're not an admin don't let them see this component.
-  const { user } = useSelector(state => state.user);
-  const books = useSelector(state => state.book.books);
+  const { user } = useSelector((state) => state.user);
+  const books = useSelector((state) => state.book.books);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -56,7 +55,11 @@ function AdminBooksPage() {
                       <Link to={`/admin/books/${book.id}`}>
                         <button>Edit</button>
                       </Link>
-                      <AdminBookDelete bookId = {book.id} deactivated ={book.isDeactivated} bookHandler={bookHandler} />
+                      <AdminBookDelete
+                        bookId={book.id}
+                        deactivated={book.isDeactivated}
+                        bookHandler={bookHandler}
+                      />
                     </td>
                   </tr>
                 );
