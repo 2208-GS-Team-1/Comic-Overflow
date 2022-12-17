@@ -11,3 +11,4 @@ const token = window.localStorage.getItem("token");
 const config = { headers: { authorization: "Bearer " + token } };
 
 // WHEN THERE'S A BODY...
+axios.post("url", bodyToPostWith, config);

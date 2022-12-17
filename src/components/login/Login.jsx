@@ -30,8 +30,13 @@ const Login = () => {
   };
 
   const combineCarts = async (userId, bookId, quantity) => {
+    // JWT & authorization header to give for authorization check in the API
+    const token = window.localStorage.getItem("token");
+    const config = { headers: { authorization: "Bearer " + token } };
+    console.log(config);
+
     //Get users cart
-    const existingCart = await axios.get(`/api/cart/user/${userId}`);
+    const existingCart = await axios.get(`/api/cart/user/${userId}`, config);
     // Pulling data out of existingCart
     const usersExistingCart = existingCart.data;
     //Check if user already has this book in their cart
@@ -41,22 +46,30 @@ const Login = () => {
     if (!existingItem) {
       const quantityToAdd = quantity;
       const body = { userId, bookId, quantityToAdd };
-      await axios.post("/api/cart/quantity", body);
+      await axios.post("/api/cart/quantity", body, config);
     } else {
       const enoughStock = existingItem.quantity + quantity;
       if (existingItem && existingItem.book.stock >= enoughStock) {
         const quantityToAdd = enoughStock;
-        await axios.put(`/api/cart/${existingItem.id}`, {
-          quantity: quantityToAdd,
-        });
+        await axios.put(
+          `/api/cart/${existingItem.id}`,
+          {
+            quantity: quantityToAdd,
+          },
+          config
+        );
       } else if (existingItem && existingItem.book.stock < enoughStock) {
         const quantityToAdd = existingItem.book.stock;
-        await axios.put(`/api/cart/${existingItem.id}`, {
-          quantity: quantityToAdd,
-        });
+        await axios.put(
+          `/api/cart/${existingItem.id}`,
+          {
+            quantity: quantityToAdd,
+          },
+          config
+        );
       }
     }
-    const combinedCart = await axios.get(`/api/cart/user/${userId}`);
+    const combinedCart = await axios.get(`/api/cart/user/${userId}`, config);
     dispatch(setCart(combinedCart.data));
     localStorage.setItem("cart", JSON.stringify(combinedCart.data));
   };
@@ -70,8 +83,15 @@ const Login = () => {
         },
       });
 
+      // Create header to give for authorization check in the API
+      const config = { headers: { authorization: "Bearer " + token } };
+      console.log(config);
+
       dispatch(setUser(response.data));
-      const usersCart = await axios.get(`/api/cart/user/${response.data.id}`);
+      const usersCart = await axios.get(
+        `/api/cart/user/${response.data.id}`,
+        config
+      );
       const localStorageCart = localStorage.getItem("cart");
       const cart = JSON.parse(localStorageCart);
       if (cart.length > 0) {

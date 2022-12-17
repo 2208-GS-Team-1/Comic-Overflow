@@ -7,7 +7,9 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
 // Authenticator that sets req.user to whoever is logged in with this JWT
 const authenticateUser = (req, res, next) => {
+  console.log("inside /api/cart authenticateUser");
   const header = req.headers.authorization;
+  console.log(header);
   //separate the token from the word "Bearer"
   const token = header && header.split(" ")[1];
   jwt.verify(token, process.env.JWT, async (err, user) => {
@@ -47,7 +49,9 @@ router.get("/", authenticateUser, async (req, res, next) => {
 router.get("/user/:userId", authenticateUser, async (req, res, next) => {
   try {
     const { userId } = req.params;
-
+    console.log("req.user.id: ");
+    console.log(req.user.id);
+    console.log("userId from params: ", userId);
     // Error check userId
     const regexExpforUUID =
       /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
@@ -314,7 +318,7 @@ router.post("/checkout", authenticateUser, async (req, res, next) => {
     //grab order details from req.body
     const cart = req.body;
 
-    if ( !== req.user.id) return res.sendStatus(401); // Kick them if they're not logged in as this userId
+    //if ( !== req.user.id) return res.sendStatus(401); // Kick them if they're not logged in as this userId
 
     //create stripe session
     const session = await stripe.checkout.sessions.create({
