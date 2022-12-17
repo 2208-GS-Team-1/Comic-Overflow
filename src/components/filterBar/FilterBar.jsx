@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Card, Divider } from '@mui/material';
 import React from 'react';
 import AuthorFilter from './AuthorFilter';
@@ -5,14 +6,14 @@ import GenreFilter from './GenreFilter';
 import './filterBarStyles.css'
 import PriceFilter from './PriceFilter';
 
-const FilterBar = () => {
+const FilterBar = ({ setAuthorFilter, setGenreFilter, setPriceFilter  }) => {
 
     return (
         <div
         className='filterContainer'
         >
             <Card
-            sx={{ boxShadow: 5, width: '200px', padding:"15px" }}
+            sx={{ boxShadow: 5, width: '175px', padding:"15px" }}
             >
             <h2>
                 Fitler by...
@@ -22,15 +23,15 @@ const FilterBar = () => {
             className='filterOptions'
             >
             <div>
-            <AuthorFilter/>
+            <AuthorFilter setAuthorFilter={setAuthorFilter}/>
             </div>
             <Divider/>
             <div>
-            <GenreFilter/>
+            <GenreFilter setGenreFilter={setGenreFilter} />
             </div>
             <Divider/>
             <div>
-                <PriceFilter/>
+                <PriceFilter setPriceFilter={setPriceFilter}/>
             </div>
             </div>
             </Card>

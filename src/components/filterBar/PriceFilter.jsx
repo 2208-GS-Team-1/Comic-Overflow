@@ -1,47 +1,64 @@
+/* eslint-disable react/prop-types */
 import { Checkbox, FormControlLabel } from '@mui/material';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setBooks } from '../../store/bookSlice';
+import React, { useState } from 'react';
 
-const PriceFilter = () => {
-    const dispatch = useDispatch();
-    const books = useSelector(state => state.book.books);
+const formControlLabelStyle = {
+    "& .MuiFormControlLabel-label": {
+      fontFamily: "'Dogfish', sans-serif",
+      letterSpacing: "2px"
+    }
+  }
+const PriceFilter = ({ setPriceFilter }) => {
     const [lessThanTenDisabled, setLessThanTenDisabled] = useState(false);
     const [lessThanTenIsSelected, setLessThanTenIsSelected] = useState(false)
     const [betweenTenAndTwentyDisabled, setBetweenTenAndTwentyDisabled] = useState(false);
     const [betweenTenAndTwentyIsSelected, setBetweenTenAndTwentyIsSelected] = useState(false)
     const [moreThanTwentyDisabled, setMoreThanTwentyDisabled] = useState(false);
     const [moreThanTwentyIsSelected, setMoreThanTwentyIsSelected] = useState(false)
-    const [allBooksBackup, setAllBooksBackUp] = useState([])
-    const getAllBooks = async() => {
-       const getAllBooks = await axios.get('/api/books/all/active')
-       setAllBooksBackUp(getAllBooks.data)
-    }
 
     const handlePriceFilter = (event) => {
         if(event.target.value === 'lessThanTen'){
+            console.log('we should be here')
             //If the option is not selected, it filters
             if(!lessThanTenIsSelected){
-                const filteredBooks = books.filter((book)=> book.price < 1000)
-                console.log(filteredBooks)
-                dispatch(setBooks(filteredBooks))
+                setPriceFilter('lessThanTen')
                 setBetweenTenAndTwentyDisabled(true)
                 setMoreThanTwentyDisabled(true)
                 setLessThanTenIsSelected(true)
             } 
             // if the option has been selected it "defilters"
             else {
+                setPriceFilter('none')
                 setLessThanTenIsSelected(false)
                 setBetweenTenAndTwentyDisabled(false)
                 setBetweenTenAndTwentyDisabled(false)
-                dispatch(setBooks(allBooksBackup))
             }
+    }else if (event.target.value === 'betweenTenAndTwenty'){
+        if(!betweenTenAndTwentyIsSelected){
+            setPriceFilter('betweenTenAndTwenty')
+            setLessThanTenDisabled(true)
+            setMoreThanTwentyDisabled(true)
+            setBetweenTenAndTwentyIsSelected(true)
+        } else {
+            setPriceFilter('none')
+            setLessThanTenDisabled(false)
+            setMoreThanTwentyDisabled(false)
+            setBetweenTenAndTwentyIsSelected(false)
+        }
+    } else if (event.target.value === 'moreThanTwenty'){
+        if(!moreThanTwentyIsSelected){
+            setPriceFilter('moreThanTwenty')
+            setLessThanTenDisabled(true)
+            setMoreThanTwentyDisabled(true)
+            setMoreThanTwentyIsSelected(true)
+        } else {
+            setPriceFilter('none')
+            setLessThanTenDisabled(false)
+            setMoreThanTwentyDisabled(false)
+            setMoreThanTwentyIsSelected(false)
+        }
     }
 }
-    useEffect(()=> {
-        getAllBooks();
-    }, [])
     return (
         <div
         className='filterByPrice'
@@ -49,6 +66,7 @@ const PriceFilter = () => {
             Price
             <FormControlLabel
                 label="< $10"
+                sx={{...formControlLabelStyle}}
                 control={
                 <Checkbox
                 size="medium" 
@@ -59,9 +77,10 @@ const PriceFilter = () => {
                 }
                 />
                 <FormControlLabel
-                label="$10 < x < $20"
+                sx={{...formControlLabelStyle}}
+                label="$10< <$20"
                 control={
-                <Checkbox 
+                <Checkbox
                 size="medium" 
                 value={'betweenTenAndTwenty'}
                 disabled={betweenTenAndTwentyDisabled}
@@ -70,6 +89,7 @@ const PriceFilter = () => {
                 }
                 />
                 <FormControlLabel
+                sx={{...formControlLabelStyle}}
                 label="> $20"
                 control={
                 <Checkbox 

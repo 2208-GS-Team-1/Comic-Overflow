@@ -27,6 +27,9 @@ const AllBooks = () => {
   const books = useSelector(state => state.book.books);
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedSort, setSelectedSort] = useState("newest");
+  const [authorFilter, setAuthorFilter] = useState('none')
+  const [genreFilter, setGenreFilter] = useState('none')
+  const [priceFilter, setPriceFilter] = useState('none')
   const fetchBooks = async () => {
     setLoading(true);
     try {
@@ -52,6 +55,7 @@ const AllBooks = () => {
   const handleSortChange = event => {
     setSelectedSort(event.target.value);
   };
+
   // handle the react page # state
   function handlePageClick({ selected: selectedPage }) {
     setCurrentPage(selectedPage);
@@ -61,7 +65,10 @@ const AllBooks = () => {
   // 'sortedBooks' is the sorted array that we loop over to allow the user to sort by what they want
   let sortedBooks = [...books];
   // switch case that sorts the array based on the selected sort
-  const sortBooks = () => {
+  const sortAndFilterBooks = () => {
+    const firstThird = ['a', 'b', 'c', 'd', 'e', 'f', 'g','h'];
+    const secondThird = ['i', 'j', 'k', 'l', 'm', 'n','o', 'p', ];
+    const thirdThird = ['q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
     switch (selectedSort) {
       case "ascending":
         sortedBooks.sort((a, b) => (a.price > b.price ? 1 : -1));
@@ -106,8 +113,47 @@ const AllBooks = () => {
         });
         break;
     }
+    switch(authorFilter){
+      case "firstThird":
+        sortedBooks = sortedBooks.filter((book)=>
+        firstThird.includes(book.author[0].toLowerCase())
+        )
+        break;
+      case "secondThird":
+        sortedBooks = sortedBooks.filter((book)=> 
+        secondThird.includes(book.author[0].toLowerCase()))
+      break;
+      case "thirdThird":
+      sortedBooks = sortedBooks.filter((book)=> 
+      thirdThird.includes(book.author[0].toLowerCase()))
+      break;
+    }
+    switch(genreFilter){
+      case "action":
+        sortedBooks = sortedBooks.filter((book)=> 
+        book.genre.toLowerCase() === 'action')
+        break;
+      case "adventure":
+        sortedBooks = sortedBooks.filter((book)=> 
+        book.genre.toLowerCase() === 'adventure')
+        break;
+      case "horror":
+        sortedBooks = sortedBooks.filter((book)=> 
+        book.genre.toLowerCase() === 'horror')
+        break;
+    }
+    switch(priceFilter){
+      case "lessThanTen":
+      sortedBooks = sortedBooks.filter((book)=> book.price < 1000)
+      break;
+      case "betweenTenAndTwenty":
+      sortedBooks = sortedBooks.filter((book)=> book.price >= 1000 && book.price < 2000)
+      break;
+      case "moreThanTwenty":
+      sortedBooks = sortedBooks.filter((book)=> book.price > 2000)
+    }
   };
-  sortBooks();
+  sortAndFilterBooks();
   // PAGINATION
   // Hardcoded # of books per page, if in the future we wanted the user to be able to change the # of items per page
   // we would then could have state determine this.
@@ -123,7 +169,11 @@ const AllBooks = () => {
     <div
     className="filterBar"
     >
-    <FilterBar/>
+    <FilterBar 
+    setAuthorFilter={setAuthorFilter} 
+    setGenreFilter={setGenreFilter}
+    setPriceFilter={setPriceFilter}
+    />
     </div>
     <div className="productsContainer">
       {/* VV this is the node we're referencing */}
