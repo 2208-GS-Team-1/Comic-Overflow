@@ -33,7 +33,6 @@ const Login = () => {
     // JWT & authorization header to give for authorization check in the API
     const token = window.localStorage.getItem("token");
     const config = { headers: { authorization: "Bearer " + token } };
-    console.log(config);
 
     //Get users cart
     const existingCart = await axios.get(`/api/cart/user/${userId}`, config);
@@ -85,7 +84,6 @@ const Login = () => {
 
       // Create header to give for authorization check in the API
       const config = { headers: { authorization: "Bearer " + token } };
-      console.log(config);
 
       dispatch(setUser(response.data));
       const usersCart = await axios.get(

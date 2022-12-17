@@ -149,12 +149,15 @@ router.delete("/:cartItemId", authenticateUser, async (req, res, next) => {
 // PUT api/cart/:cartItemId
 // update an item.
 // admins and the user who is on this cart item can do this.
-router.put("/:cartItemId", async (req, res, next) => {
+router.put("/:cartItemId", authenticateUser, async (req, res, next) => {
   try {
     const { cartItemId } = req.params;
     const body = req.body;
-    const cartItem = await CartItem.findByPk(cartItemId);
+    const cartItem = await CartItem.findByPk(cartItemId, {
+      include: [User],
+    });
 
+    console.log(cartItem.user.id);
     // if logged-in user is admin, OK! continue logic.
     // if logged-in user's id is the one via the req.params, ok! continue logic.
     if (req.user.isAdmin || req.user.id === cartItem.user.id) {
