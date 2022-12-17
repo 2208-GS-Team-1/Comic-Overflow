@@ -10,6 +10,7 @@ const AdminUserEdit = ({fetchedUser, userHandler }) => {
     const [birthday, setBirthday] = useState(`${fetchedUser.birthday}`)
     const [email, setEmail] = useState(`${fetchedUser.email}`)
     const [phoneNumber, setPhoneNumber] = useState(`${fetchedUser.phoneNumber}`)
+   const [isDeactivated, setDeactivated] = useState(fetchedUser.isDeactivated);
 
     const firstNameHandler = (event) => {
         setFirstname(event.target.value)
@@ -29,19 +30,23 @@ const AdminUserEdit = ({fetchedUser, userHandler }) => {
     const phoneNumberHandler = (event) => {
         setPhoneNumber(event.target.value)
     }
+    const deactivateHandler = (event) => {
+        setDeactivated(event.target.value)
+    }
 
     const updateHandler = async (event) =>{
         event.preventDefault();
-        const updatedData = {address, email, phoneNumber, firstName, lastName, birthday}
+        const updatedData = {address, email, phoneNumber, firstName, lastName, birthday, isDeactivated}
         await axios.put(`/api/users/${fetchedUser.id}`, updatedData)
         userHandler();
+        console.log(fetchedUser)
     }
 
     return (
         <div className='formBase'>
             <div className='adminformDetail'>
                 <form onSubmit={updateHandler}>
-                    <h1>EDIT</h1>
+                    <h1>EDIT INFO</h1>
                     <div className='formInput'>
                         <p className='adminEditP'>First Name:</p>
                         <input className='adminEditInput'
@@ -67,6 +72,11 @@ const AdminUserEdit = ({fetchedUser, userHandler }) => {
                         <input className='adminEditInput'
                         value={phoneNumber}
                         onChange={phoneNumberHandler} />
+                        <p className='adminEditP'>Deactivation Status</p>
+                        <p className='adminEditSmallP'><small>Enter True or False</small></p>
+                        <input className='adminEditInput'
+                        value={isDeactivated}
+                        onChange={deactivateHandler}></input>
                         <button type='submit'>Submit</button>
                     </div>
                 </form>
