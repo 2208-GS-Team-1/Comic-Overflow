@@ -197,7 +197,7 @@ const CartDrawer = () => {
 
   const handleCheckOut = async () => {
     if (user.id) {
-      const res = await axios.post(`/api/cart/checkout`, cart);
+      const res = await axios.post(`/api/cart/stripeCheckout`, cart);
       let url = res.data.url;
       //take user to the Stripe checkout site
       window.location = url;

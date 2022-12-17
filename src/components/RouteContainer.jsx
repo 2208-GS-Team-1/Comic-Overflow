@@ -44,7 +44,6 @@ function RouteContainer({ user }) {
 
         {user.id && <Route path="/edit" element={<EditUser />} />}
 
-
         {user.isAdmin && (
           <>
             <Route path="/admin" element={<AdminHomepage />} />
