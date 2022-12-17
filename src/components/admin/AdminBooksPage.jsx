@@ -8,8 +8,8 @@ import AdminBookDelete from "./AdminBookDelete";
 
 function AdminBooksPage() {
   // If they're not an admin don't let them see this component.
-  const { user } = useSelector(state => state.user);
-  const books = useSelector(state => state.book.books);
+  const { user } = useSelector((state) => state.user);
+  const books = useSelector((state) => state.book.books);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -43,6 +43,9 @@ function AdminBooksPage() {
         <div>
           <h1>Product List</h1>
         </div>
+        <Link to={"/admin/books/add"}>
+          <button>Add Product</button>
+        </Link>
         <div className="adminProductContainer">
           <table className="adminProductTable">
             <tbody>
@@ -56,7 +59,11 @@ function AdminBooksPage() {
                       <Link to={`/admin/books/${book.id}`}>
                         <button>Edit</button>
                       </Link>
-                      <AdminBookDelete bookId = {book.id} deactivated ={book.isDeactivated} bookHandler={bookHandler} />
+                      <AdminBookDelete
+                        bookId={book.id}
+                        deactivated={book.isDeactivated}
+                        bookHandler={bookHandler}
+                      />
                     </td>
                   </tr>
                 );
