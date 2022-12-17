@@ -112,8 +112,12 @@ router.put("/:id", authenticateUser, async (req, res, next) => {
 });
 
 // POST - add new book given body
-router.post("/", async (req, res, next) => {
+// Adds a new book to the db
+// ONLY ADMINS are allowed to do this!
+router.post("/", authenticateUser, async (req, res, next) => {
   try {
+    if (!req.user.isAdmin) return res.sendStatus(401);
+
     const {
       title,
       author,

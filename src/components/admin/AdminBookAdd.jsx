@@ -83,10 +83,14 @@ const AdminBookAdd = () => {
       stock,
       isDeactivated,
     };
-    console.log("this is the new book object", addBook);
+
     try {
+      // JWT & authorization header to give for authorization check in the API
+      const token = window.localStorage.getItem("token");
+      const config = { headers: { authorization: "Bearer " + token } };
+
       //create new book
-      await axios.post("/api/books", addBook);
+      await axios.post("/api/books", addBook, config);
       //get all books from db
       const newBooks = await axios.get("/api/books");
       //dispatch newBooks to redux
@@ -197,7 +201,8 @@ const AdminBookAdd = () => {
               type="boolean"
               id="isDeactivated"
               className="editInput"
-              onChange={deactivatedHandler}>
+              onChange={deactivatedHandler}
+            >
               <option value="false">False</option>
               <option value="true">True</option>
             </select>
