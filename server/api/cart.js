@@ -5,8 +5,7 @@ const router = express.Router();
 const { User, CartItem, Book, Order } = require("../db");
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
-// authenticateUser is a middleware used to check the JWT
-// Used in all singular-cart routes
+// Authenticator that sets req.user to whoever is logged in with this JWT
 const authenticateUser = (req, res, next) => {
   const header = req.headers.authorization;
   //separate the token from the word "Bearer"
@@ -23,13 +22,14 @@ const authenticateUser = (req, res, next) => {
   });
 };
 
-/* Should we end up deleting this route?
- We want only admins to have access to it - not just any logged in user.
-Not sure how to do that. */
 // GET api/cart/
 // Returns all cart items - Probably just for internal use.
-router.get("/", async (req, res, next) => {
+// ONLY ADMINS are allowed to see this!
+router.get("/", authenticateUser, async (req, res, next) => {
   try {
+    // If user is not an admin, kick them out!
+    if (!req.user.isAdmin) return res.sendStatus(401);
+
     const allCartItems = await CartItem.findAll({
       include: [Book, User],
     });
@@ -43,7 +43,8 @@ router.get("/", async (req, res, next) => {
 // GET api/cart/user/:userId
 // Returns a users 'active cart' - aka,
 // All of a given user's cartItems that have not been checked out
-router.get("/user/:userId", async (req, res, next) => {
+// An admin - or the user who these items belong to - is allowed to see it
+router.get("/user/:userId", authenticateUser, async (req, res, next) => {
   try {
     const { userId } = req.params;
 
@@ -63,8 +64,10 @@ router.get("/user/:userId", async (req, res, next) => {
     });
 
     // If user does not have an active cart (AKA The findAll has a length of 0)
-
-    res.send(activeCart);
+    // If the user with this token is an admin, let them see this.
+    // Or, if the user with this token is the one on this userId, let them see it.
+    if (req.user.isAdmin || req.user.id === userId) res.send(activeCart);
+    else return res.sendStatus(401);
   } catch (err) {
     console.log(err);
     next(err);
@@ -73,7 +76,7 @@ router.get("/user/:userId", async (req, res, next) => {
 
 // POST api/cart/user/:userId
 // adds an item to given user's cart. (Needs bookId and userId via POST body)
-router.post("/", async (req, res, next) => {
+router.post("/", authenticateUser, async (req, res, next) => {
   try {
     // Needs userId and bookId from POST body and params
     const { bookId, userId } = req.body;
@@ -119,18 +122,21 @@ router.post("/", async (req, res, next) => {
 
 // DELETE api/cart/:cartItemId
 // deletes an item from given user's cart.
-router.delete("/:cartItemId", async (req, res, next) => {
+// admins and the user who is on this cart item can do this.
+router.delete("/:cartItemId", authenticateUser, async (req, res, next) => {
   try {
     const { cartItemId } = req.params;
     const cartItemToDelete = await CartItem.findByPk(cartItemId);
 
-    // If not found, send back a 404
-    if (!cartItemToDelete) res.send(404);
-    // If found, destroy it.
-    else {
-      await cartItemToDelete.destroy();
-      res.sendStatus(200);
+    // if logged-in user is admin, OK! continue logic.
+    // if logged-in user's id is the one via the req.params, ok! continue logic.
+    if (req.user.isAdmin || req.user.id === cartItemToDelete.user.id) {
+      if (!cartItemToDelete) return res.sendStatus(404); // If not found, send back a 404
+      await cartItemToDelete.destroy(); // If found, destroy it
+      return res.sendStatus(200);
     }
+    // If they aren't allowed to delete this, 401 it.
+    else return res.sendStatus(401);
   } catch (err) {
     next(err);
   }
@@ -138,34 +144,43 @@ router.delete("/:cartItemId", async (req, res, next) => {
 
 // PUT api/cart/:cartItemId
 // update an item.
+// admins and the user who is on this cart item can do this.
 router.put("/:cartItemId", async (req, res, next) => {
   try {
     const { cartItemId } = req.params;
     const body = req.body;
     const cartItem = await CartItem.findByPk(cartItemId);
 
-    // If not found, send back a 404
-    if (!cartItem) res.send(404);
-    else {
-      // If found, update it.
-      await cartItem.update(body);
-      res.sendStatus(200);
+    // if logged-in user is admin, OK! continue logic.
+    // if logged-in user's id is the one via the req.params, ok! continue logic.
+    if (req.user.isAdmin || req.user.id === cartItem.user.id) {
+      if (!cartItem)
+        return res.sendStatus(404); // If not found, send back a 404
+      else {
+        await cartItem.update(body); // If found, update it.
+        res.sendStatus(200);
+      }
     }
+    // If they aren't allowed to update this, 401 it.
+    else return res.sendStatus(401);
   } catch (err) {
     next(err);
   }
 });
 
-// GET api/cart/user/:userId/checkOut
+// GET /api/cart/user/:userId/checkOut
 // Checks out a given user's active cart
+// ONLY a user with this userID can do this. admins not included.
 router.get(
   "/user/:userId/checkOut",
   authenticateUser,
   async (req, res, next) => {
     try {
-      // ************************** GETTING USER'S ACTIVE CART **************************** //
-
+      // ************************** AUTHENTICATION**************************** //
       const { userId } = req.params; // Get the user id
+      if (req.user.id !== userId) return res.sendStatus(401); // If they aren't this user, unauthorized
+
+      // ************************** GETTING USER'S ACTIVE CART **************************** //
 
       // Check that userId is a valid UUID format BEFORE we use it for query (can cause error)
       const regexExpforUUID =
@@ -242,11 +257,15 @@ router.get(
     }
   }
 );
-router.post("/quantity", async (req, res, next) => {
+
+// POST /api/cart/quantity - creates a cartitem with a given given quantity number
+// Only the user who is logged in for the POST'S body's userId can do this.
+router.post("/quantity", authenticateUser, async (req, res, next) => {
   try {
     // Needs userId and bookId from POST body and params
     const { bookId, userId, quantityToAdd } = req.body;
 
+    if (userId !== req.user.id) return res.sendStatus(401); // Kick them if they're not logged in as this userId
     //********************** CHECKING USER *******************************/
 
     // Check that userId is a valid UUID format BEFORE we use it for query (can cause error)
@@ -287,10 +306,16 @@ router.post("/quantity", async (req, res, next) => {
   }
 });
 
-router.post("/checkout", async (req, res, next) => {
-  //grab order details from req.body
-  const cart = req.body;
+//************//****************//******************** TODO!!!!!!! //****************//*****************/
+// POST /api/cart/checkout
+// Used for stripe API payment
+router.post("/checkout", authenticateUser, async (req, res, next) => {
   try {
+    //grab order details from req.body
+    const cart = req.body;
+
+    if ( !== req.user.id) return res.sendStatus(401); // Kick them if they're not logged in as this userId
+
     //create stripe session
     const session = await stripe.checkout.sessions.create({
       //use preset stripe keys to set payment type, mode, line_items

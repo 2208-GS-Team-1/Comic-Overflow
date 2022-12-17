@@ -21,15 +21,15 @@ const UserOrders = () => {
     setLoading(true);
 
     try {
-      //token for authentication
+      // JWT & authorization header to give for authorization check in the API
       const token = window.localStorage.getItem("token");
+      const config = { headers: { authorization: "Bearer " + token } };
 
       //GET all orders associated with user
-      const ordersData = await axios.get(`/api/orders/users/${user.id}`, {
-        headers: {
-          authorization: "Bearer " + token,
-        },
-      });
+      const ordersData = await axios.get(
+        `/api/orders/users/${user.id}`,
+        config
+      );
       setOrders(ordersData.data);
     } catch (err) {
       console.error(err);

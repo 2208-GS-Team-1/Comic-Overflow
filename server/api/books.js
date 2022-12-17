@@ -1,7 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
-const { Book, Review } = require("../db");
+const { Book, Review, User } = require("../db");
 
 // Authenticator that sets req.user to whoever is logged in with this JWT
 const authenticateUser = (req, res, next) => {

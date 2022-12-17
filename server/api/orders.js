@@ -47,8 +47,9 @@ router.get("/:orderId", authenticateUser, async (req, res, next) => {
 
     // If the user with this token is an admin, let them see this.
     // Or, if the user with this token is the one on this order, let them see it.
-    if (req.user.isAdmin || req.user === order.user) return res.send(order);
-    else return res.sendStatus(404);
+    if (req.user.isAdmin || req.user.id === order.user.id)
+      return res.send(order);
+    else return res.sendStatus(401);
   } catch (error) {
     next(error);
   }
