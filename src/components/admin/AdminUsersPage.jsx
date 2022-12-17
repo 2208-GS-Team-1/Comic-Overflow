@@ -59,11 +59,7 @@ const pageCount = Math.ceil(allUsers.length / PER_PAGE);
                 return (
                   <tr className="adminUsertr" key={user.id}>
                     <td className="adminUsertd">
-<<<<<<< HEAD
                       {index + 1}: {user.firstName} {user.lastName} {!user.isDeactivated ? "(Active)" : "(Deactivated)"}
-=======
-                      {index + 1}: {user.firstName} {user.lastName}
->>>>>>> 2fe97fd1bb830c7cf975429b71b1666e0de6fe38
                     </td>
                     <td className="adminUserButtons">
 
