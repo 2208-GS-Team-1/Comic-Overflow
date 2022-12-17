@@ -22,4 +22,22 @@ router.get("/:bookId", async (req, res, next) => {
   }
 });
 
+// POST - api/reviews/--> Adds review to db
+router.post("/", async (req,res,next)=>{
+  try {
+    const { subject, content, rating, userId, bookId } = req.body;
+    const postedReview = await Review.create({
+      subject: subject,
+      content: content,
+      rating: rating,
+      userId: userId,
+      bookId: bookId,
+    });
+
+    res.status(201).send(postedReview)
+  } catch (err) {
+    next(err)
+  }
+})
+
 module.exports = router;
