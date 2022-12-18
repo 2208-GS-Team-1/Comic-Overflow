@@ -31,7 +31,7 @@ const Book = db.define("book", {
       const words = rawValue.split(" ");
 
       // map through words and capitalize each word's first letter only
-      words.map(word => {
+      words.map((word) => {
         const firstLetterCapitalized = word[0].toUpperCase();
         const restOfLetters = word.slice(1);
         return firstLetterCapitalized + restOfLetters;
@@ -74,6 +74,7 @@ const Book = db.define("book", {
       const sanitized = value.toLowerCase();
       this.setDataValue("genre", sanitized);
     },
+    allowNull: true,
   },
   volume: {
     type: Sequelize.INTEGER,
@@ -81,10 +82,12 @@ const Book = db.define("book", {
   },
   yearOfPublish: {
     type: Sequelize.DATEONLY,
+    allowNull: true,
   },
   isbn: {
     type: Sequelize.STRING,
-    unique: true, // can this be unique if we allow null?
+    allowNull: true,
+    // unique: true, // can this be unique if we allow null?
   },
 
   // EG) Standard, Limited, Deluxe, First Press...
@@ -113,6 +116,7 @@ const Book = db.define("book", {
   },
   imageURL: {
     type: Sequelize.STRING,
+    defaultValue: "http://dummyimage.com/400x400.png/dddddd/000000",
   },
 
   // Stored as INT for accurate addition (math gets weird with decimals)
