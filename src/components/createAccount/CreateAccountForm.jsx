@@ -64,7 +64,7 @@ function CreateAccountForm() {
     // Give it our yup validationSchema
     validationSchema: validationSchema,
 
-    onSubmit: async values => {
+    onSubmit: async (values) => {
       // Update Backend: axios post req to User
       try {
         // On backend, the req.body cannot contain confirmPassword because it breaks sequelize.
@@ -77,17 +77,18 @@ function CreateAccountForm() {
           lastName: values.lastName,
         };
 
-        await axios.post("/api/users", bodyToSubmit);
-        setErrorMessage(errorMessage); // This is the message from the api's res.send
+        const createdUser = await axios.post("/api/users", bodyToSubmit);
+
+        // the below line commented out because i dont think it does anything
+        // setErrorMessage(errorMessage); // This is the message from the api's res.send
+
         const cartString = localStorage.getItem("cart");
         const guestCart = JSON.parse(cartString);
         // When a guest makes a cart, and wants to transfer it to their account we find them by their email and transwer›
         if (guestCart.length > 0) {
-          const usersEmail = bodyToSubmit.email;
-          const newUser = await axios.get(`/api/users/email/${usersEmail}`);
-          const userId = newUser.data.id;
+          const userId = createdUser.data.id;
           await Promise.all(
-            guestCart.map(async cartItem => {
+            guestCart.map(async (cartItem) => {
               let bookId = cartItem.book.id;
               let quantityToAdd = cartItem.quantity;
               let body = { userId, bookId, quantityToAdd };

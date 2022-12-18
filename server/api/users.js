@@ -1,10 +1,35 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 const { User } = require("../db");
 
-// GET - api/users --> Gets all users from the db
-router.get("/", async (req, res, next) => {
+// Authenticator that sets req.user to whoever is logged in with this JWT
+const authenticateUser = (req, res, next) => {
+  console.log("inside /api/cart authenticateUser");
+  const header = req.headers.authorization;
+  console.log(header);
+  //separate the token from the word "Bearer"
+  const token = header && header.split(" ")[1];
+  jwt.verify(token, process.env.JWT, async (err, user) => {
+    //if no token or invalid token, return 401 error
+    if (!token) return res.sendStatus(401);
+    //Do stuff with user
+    const userInfo = await User.findByPk(user.id);
+    if (!userInfo) return res.sendStatus(404);
+    //set req.user to userInfo
+    req.user = userInfo;
+    next();
+  });
+};
+
+// GET - api/users
+// Returns all users from the db
+// ONLY ADMINS are allowed to see this!
+router.get("/", authenticateUser, async (req, res, next) => {
   try {
+    // If user is not an admin, kick them out!
+    if (!req.user.isAdmin) return res.sendStatus(404);
+
     const allUsers = await User.findAll();
     res.send(allUsers);
   } catch (err) {
@@ -12,6 +37,9 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+// GET - api/users/email/:email
+// Returns the user with a specified email
+// ONLY ADMINS are allowed to see this!
 router.get("/email/:email", async (req, res, next) => {
   const usersEmail = req.params.email;
   try {
@@ -27,9 +55,9 @@ router.get("/email/:email", async (req, res, next) => {
 });
 
 // GET - api/users/:id --> Gets single user from the db
-//
+// Only admins and the logged in user with this ID can see this
 router.get("/:id", async (req, res, next) => {
-  console.log("TEST")
+  console.log("TEST");
   const id = req.params.id;
   const regexExp =
     /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
@@ -50,7 +78,8 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-// POST - api/users --> Adds user to db
+// POST - /api/users --> Adds user to db
+// Anyone can make a new user!
 router.post("/", async (req, res, next) => {
   try {
     const userWithSameUsername = await User.findOne({
@@ -70,8 +99,8 @@ router.post("/", async (req, res, next) => {
     } else if (userWithSameEmail) {
       res.status(400).send("An account with that e-mail already exists");
     } else {
-      await User.create(req.body);
-      res.status(201).send("User has been successfully created");
+      const createdUser = await User.create(req.body);
+      res.status(201).send(createdUser);
     }
   } catch (err) {
     next(err);
@@ -81,7 +110,8 @@ router.post("/", async (req, res, next) => {
 // PUT - /api/users/:id --> Updates user with given id
 router.put("/:id", async (req, res, next) => {
   try {
-    const { address, email, phoneNumber, firstName, lastName, birthday } = req.body;
+    const { address, email, phoneNumber, firstName, lastName, birthday } =
+      req.body;
     const id = req.params.id;
 
     // email field must be unique, dont allow this updated email to be one we already have.
