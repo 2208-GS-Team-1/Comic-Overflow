@@ -12,6 +12,7 @@ const AdminUserEdit = ({fetchedUser, userHandler }) => {
     const [phoneNumber, setPhoneNumber] = useState(`${fetchedUser.phoneNumber}`)
    const [isDeactivated, setDeactivated] = useState(fetchedUser.isDeactivated);
 
+
     const firstNameHandler = (event) => {
         setFirstname(event.target.value)
     }
@@ -39,7 +40,6 @@ const AdminUserEdit = ({fetchedUser, userHandler }) => {
         const updatedData = {address, email, phoneNumber, firstName, lastName, birthday, isDeactivated}
         await axios.put(`/api/users/${fetchedUser.id}`, updatedData)
         userHandler();
-        console.log(fetchedUser)
     }
 
     return (
@@ -48,28 +48,35 @@ const AdminUserEdit = ({fetchedUser, userHandler }) => {
                 <form onSubmit={updateHandler}>
                     <h1>EDIT INFO</h1>
                     <div className='formInput'>
-                        <p className='adminEditP'>First Name:</p>
+                        <p className='adminEditP'>First Name:  
+                        {firstName.length < 1 ? " This is a required field" : ""}</p>
                         <input className='adminEditInput'
                         value={firstName}
                         onChange={firstNameHandler} />
-                        <p className='adminEditP'>Last Name:</p>
+                        <p className='adminEditP'>Last Name: 
+                        {lastName.length < 1 ? "this is a required field" : ""}</p>
                         <input className='adminEditInput'
                         value={lastName}
                         onChange={lastNameHandler} />
                         <p className='adminEditP'>Address:</p>
                         <input className='adminEditInput'
-                        value={address}
+                        type="text"
+                        value={fetchedUser.address ? address : ""}
                         onChange={addressHandler} />
                         <p className='adminEditP'>Birthday:</p>
+                        <p className='adminEditP'>
+                            <small>Please follow the format xxxx-xx-xx</small>
+                        </p>
                         <input className='adminEditInput'
-                        value={birthday}
+                        value={(birthday.length <= 4)? '0000-00-00': birthday}
                         onChange={birthdayHandler} />
                         <p className='adminEditP'>Email:</p>
                         <input className='adminEditInput'
                         value={email} 
                         onChange={emailHandler}/>
-                        <p className='adminEditP'>Phone Number:</p>
+                        <p className='adminEditP'>Phone Number: <small>{(phoneNumber.length > 10 || phoneNumber.length < 10)? "Please enter 10 digit numbers": ""}</small></p>
                         <input className='adminEditInput'
+                        type="number"
                         value={phoneNumber}
                         onChange={phoneNumberHandler} />
                         <p className='adminEditP'>Deactivation Status</p>
