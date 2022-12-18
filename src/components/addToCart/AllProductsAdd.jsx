@@ -1,12 +1,17 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from "react";
-import { Button } from "@mui/material";
+import { Alert, Button, Snackbar } from "@mui/material";
 import { AddShoppingCart } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setCart, addBookToCart } from "../../store/cartSlice";
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import { useState } from "react";
+import { minWidth } from "@mui/system";
 const AllProductsAdd = ({ book }) => {
+  const [open, setOpen] = useState(false)
+  const [alertType, setAlertType] = useState('')
+  const [alertMessage, setAlertMessage] = useState('')
   const { user } = useSelector(state => state.user);
   const dispatch = useDispatch()
   const { cart } = useSelector(state => state.cart)
@@ -35,6 +40,12 @@ const AllProductsAdd = ({ book }) => {
     // Now we can save the stringified cart to local storage
     localStorage.setItem('cart', cartString);
   };
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  }
 
   useEffect(()=> {
     loadCartFromLocalStorage()
@@ -56,23 +67,35 @@ const AllProductsAdd = ({ book }) => {
                 });
                 dispatch(setCart(newCart))
                 saveCartToLocalStorage(newCart)
+                setAlertType('success')
+                setAlertMessage('Added to cart!')
+                setOpen(true)
             }else 
             if(!existingItem) {
                 const { data }= await axios.get(`/api/books/${book.id}`)
                 const bookAndQuantity = {quantity: 1, book:data}
                 dispatch(addBookToCart(bookAndQuantity))
                 saveCartToLocalStorage([...cart, bookAndQuantity])
+                setAlertType('success')
+                setAlertMessage('Added to cart!')
+                setOpen(true)
+            } else {
+              setAlertType('warning')
+              setAlertMessage('Not enough stock!')
+              setOpen(true)
             }
         } else {
             const existingItem = cart.find((cartItem) => cartItem.book.id === book.id);
             if(existingItem && existingItem.book.stock >= existingItem.quantity + 1) {
-
                 await axios.put(`/api/cart/${existingItem.id}`, {
                     quantity: existingItem.quantity + 1,
                 });
                 const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
                 dispatch(setCart(updatedCart.data))
                 saveCartToLocalStorage(updatedCart.data)
+                setAlertType('success')
+                setAlertMessage('Added to cart!')
+                setOpen(true)
             } else if (!existingItem){
                 const bookId = book.id
                 const body = { userId, bookId };
@@ -80,6 +103,13 @@ const AllProductsAdd = ({ book }) => {
                 const updatedCart = await axios.get(`/api/cart/user/${user.id}`)
                 dispatch(setCart(updatedCart.data))
                 saveCartToLocalStorage(updatedCart.data)
+                setAlertType('success')
+                setAlertMessage('Added to cart!')
+                setOpen(true)
+            } else {
+              setAlertType('warning')
+              setAlertMessage('Not enough stock!')
+              setOpen(true)
             }
         }
     } catch (error) {
@@ -92,9 +122,20 @@ const AllProductsAdd = ({ book }) => {
       disabled={book.stock === 0 && true}
       size="small" onClick={addToCart}>
         {book.stock !== 0 ? <AddShoppingCart /> : <ProductionQuantityLimitsIcon/> }
-
       </Button>
+      <Snackbar
+              open={open}
+              autoHideDuration={3000}
+              onClose={handleClose}
+              >
+              <Alert sx={{ display: "flex", justifyContent: "center",minWidth:"200px", fontFamily: "'Dogfish', sans-serif"}} 
+              variant="filled" 
+              severity={alertType}>
+                {alertMessage}
+              </Alert>
+          </Snackbar>
     </>
+
   );
 };
 
