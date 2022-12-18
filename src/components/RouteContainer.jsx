@@ -18,6 +18,7 @@ import AdminBooksPage from "./admin/AdminBooksPage";
 import AdminUsersPage from "./admin/AdminUsersPage";
 // import AdminReviewsPage from "./admin/AdminReviewsPage";
 import AdminBookEdit from "./admin/AdminBookEdit.jsx";
+import AdminBookAdd from "./admin/AdminBookAdd.jsx";
 import AdminUserview from "./admin/AdminUserview.jsx";
 
 function RouteContainer({ user }) {
@@ -44,7 +45,6 @@ function RouteContainer({ user }) {
 
         {user.id && <Route path="/edit" element={<EditUser />} />}
 
-
         {user.isAdmin && (
           <>
             <Route path="/admin" element={<AdminHomepage />} />
@@ -52,6 +52,7 @@ function RouteContainer({ user }) {
             <Route path="/admin/users/:id" element={<AdminUserview />} />
             <Route path="/admin/books" element={<AdminBooksPage />} />
             <Route path="/admin/books/:id" element={<AdminBookEdit />} />
+            <Route path="/admin/books/add" element={<AdminBookAdd />} />
             {/* Not implemented yet, so commented out: */}
             {/* <Route path="/admin/reviews" element={<AdminReviewsPage />} />
             <Route path="/admin/orders" element={<AdminOrdersPage />} /> */}

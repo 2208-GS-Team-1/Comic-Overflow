@@ -8,6 +8,7 @@ import CartDrawer from "./cartView/CartDrawer.jsx";
 import RouteContainer from "./RouteContainer.jsx";
 import AdminNavbar from "./admin/adminNavbar.jsx";
 import Footer from "./footer/Footer.jsx";
+import NavbarMyAccountLink from "./NavbarMyAccountLink.jsx";
 
 const App = () => {
   // eslint-disable-next-line no-unused-vars
@@ -50,14 +51,14 @@ const App = () => {
         <nav className="navbar">
           <Link to="/">Home</Link>
           <Link to="/books">Books</Link>
-          {!user.id && <Link to="/login">Login</Link>}
-          {user.id && <Link to="/myAccount">My Account</Link>}
           <CartDrawer />
+          {!user.id && <Link to="/login">Login</Link>}
+          {user.id && <NavbarMyAccountLink user={user} />}
         </nav>
 
-        {/* Render admin navbar is user is an admin */}
-
+        {/* Render admin navbar if user is an admin */}
         {user.isAdmin && <AdminNavbar />}
+
         <RouteContainer user={user} />
         <Footer />
       </div>
