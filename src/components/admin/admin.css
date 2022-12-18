@@ -117,4 +117,8 @@
     border: 1px solid rgb(198, 197, 202);
   }
 
+  .adminEditPWarning {
+      color: red;
+  }
+
 
