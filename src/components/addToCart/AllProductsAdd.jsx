@@ -7,7 +7,6 @@ import axios from "axios";
 import { setCart, addBookToCart } from "../../store/cartSlice";
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
 import { useState } from "react";
-import { minWidth } from "@mui/system";
 const AllProductsAdd = ({ book }) => {
   const [open, setOpen] = useState(false)
   const [alertType, setAlertType] = useState('')

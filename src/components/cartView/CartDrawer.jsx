@@ -174,9 +174,6 @@ const CartDrawer = () => {
 
       // Update the total price state variable
       setTotalPrice(updatedTotalPrice);
-      setOpen(true)
-      setAlertMessage('Quantity updated!')
-      setAlertType('success')
     } else if(cartItem.book.stock < cartItem.quantity + 1){
       setOpen(true)
       setAlertMessage('Not enough stock!')
@@ -221,17 +218,6 @@ const CartDrawer = () => {
       let url = res.data.url;
       //take user to the Stripe checkout site
       window.location = url;
-
-      //       const token = window.localStorage.getItem("token");
-      //       await axios.get(`/api/cart/user/${user.id}/checkOut`, {
-      //         headers: {
-      //           authorization: "Bearer " + token,
-      //         },
-      //       });
-
-      //       setTotalPrice(0);
-      //       dispatch(setCart([]));
-      //       saveCartToLocalStorage([]);
     } else {
       alert("please sign in to checkout!");
     }
