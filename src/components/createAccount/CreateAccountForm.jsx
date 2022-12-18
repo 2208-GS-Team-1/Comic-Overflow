@@ -92,6 +92,10 @@ function CreateAccountForm() {
               let bookId = cartItem.book.id;
               let quantityToAdd = cartItem.quantity;
               let body = { userId, bookId, quantityToAdd };
+
+              //********************************************************** */
+              //***************** this route is protected, but at this point i don't have a JWT
+              // What can I do? */
               await axios.post("/api/cart/quantity", body);
             })
           );
