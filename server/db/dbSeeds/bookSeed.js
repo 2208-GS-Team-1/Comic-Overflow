@@ -8,7 +8,7 @@ const bookSeed = async () => {
       description:
         "Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.",
       imageURL: "http://dummyimage.com/400x400.png/dddddd/000000",
-      genre: "Drama|Romance",
+      genre: "Drama",
       isbn: "440383141-9",
       edition: "Limited",
       price: 5386,
@@ -33,7 +33,7 @@ const bookSeed = async () => {
       volume: 49,
       description: "Quisque id justo sit amet sapien dignissim vestibulum.",
       imageURL: "http://dummyimage.com/400x400.png/ff4444/ffffff",
-      genre: "Comedy|Musical",
+      genre: "Comedy",
       isbn: "593580065-9",
       edition: "First Edition",
       price: 7693,
@@ -45,7 +45,7 @@ const bookSeed = async () => {
       volume: 24,
       description: "Proin at turpis a pede posuere nonummy.",
       imageURL: "http://dummyimage.com/400x400.png/dddddd/000000",
-      genre: "Comedy|Horror",
+      genre: "Comedy",
       isbn: "927181193-3",
       edition: "Limited",
       price: 2240,
@@ -69,7 +69,7 @@ const bookSeed = async () => {
       volume: 26,
       description: "Duis aliquam convallis nunc.",
       imageURL: "http://dummyimage.com/400x400.png/cc0000/ffffff",
-      genre: "Comedy|Drama",
+      genre: "Comedy",
       isbn: "635532172-1",
       edition: "Limited",
       price: 8450,
@@ -92,7 +92,7 @@ const bookSeed = async () => {
       They are Parasites: alien creatures who must invade and take control of human hosts to survive. Once they have infected their victims, they can twist their hosts's bodies into any abominable shapes they choose: craniums splitting to reveal mouths of sharp teeth, batlike wings erupting from backs, blades tearing through soft hands. But most have chosen to conceal their lethal purposes behind ordinary human faces. No one knows their secret, except an ordinary high school student. Shinichi managed to stop the infestation of his body by an alien parasite, but can he find a way to warn humanity of the horrors to come?
       For more than 30 years, new generations of readers have been riveted to this unlikely buddy story that unfolds amid a world of monstrosities that never stay hidden for long. Since its first release, in 1988, Parasyte has inspired live-action films, spinoffs, and, in 2015, a global hit anime series. The Full Color Collection presents Hitoshi Iwaaki's original manga in hardcover for the first time, with each page carefully colorized and a revised translation for 2022. There's never been a better time to stay up late and get your hand on Parasyte!`,
       imageURL: "/static/bookImages/parasyte-fc-1.jpeg",
-      genre: "seinen",
+      genre: "drama",
       edition: "Full Color Edition",
       price: 2000,
       stock: 100,
@@ -107,7 +107,7 @@ Shinichi Izumi might seem like an ordinary high school boy, but he harbors a dea
 For more than 30 years, new generations of readers have been riveted to this unlikely buddy story that unfolds amid a world of monstrosities that never stay hidden for long. Since its first release, in 1988, Parasyte has inspired live-action films, spinoffs, and, in 2015, a global hit anime series. The Full Color Collection presents Hitoshi Iwaaki's original manga in hardcover for the first time, with each page carefully colorized and a revised translation for 2022. There's never been a better time to stay up late and get your hand on Parasyte!
 `,
       imageURL: "/static/bookImages/parasyte-fc-2.jpg",
-      genre: "seinen",
+      genre: "drama",
       edition: "Full Color Edition",
       price: 2000,
       stock: 100,
@@ -121,7 +121,7 @@ For more than 30 years, new generations of readers have been riveted to this unl
       Once they have infected their victims, they can assume any deadly form they choose: monsters with giant teeth, winged demons, creatures with blades for hands. But most have chosen to conceal their lethal purpose behind ordinary human faces. No one knows their secret - except an ordinary high school student. Shin is battling for control of his own body against an alien parasite, but can he find a way to warn humanity of the horrors to come?
       `,
       imageURL: "/static/bookImages/parasyte-1.jpg",
-      genre: "seinen",
+      genre: "drama",
       price: 1000,
       stock: 100,
     },
@@ -133,7 +133,7 @@ For more than 30 years, new generations of readers have been riveted to this unl
       Shin looks like an ordinary high school boy, but he has a terrible secret: an alien parasite has infected his body. This mysterious creature is ruthless, deadly, and utterly indifferent to human suffering... and it is beginning to assert itself over Shin. As Shin fights for control of his body, can he also hold on to his humanity?
       `,
       imageURL: "/static/bookImages/parasyte-2.jpg",
-      genre: "seinen",
+      genre: "drama",
       price: 1000,
       stock: 100,
     },
@@ -145,7 +145,7 @@ For more than 30 years, new generations of readers have been riveted to this unl
       Shinichi vows to destroy Goto, one of the deadliest of the alien parasites that have invaded Earth - and people's bodies. But at the moment of truth, Shinichi discovers something unexpected in his heart: sympathy for the monster. Soon Shinichi, who harbors his own alien parasite, will come to a stunning realization about the dark side of human nature - and his own soul.
       `,
       imageURL: "/static/bookImages/parasyte-8.jpg",
-      genre: "seinen",
+      genre: "drama",
       price: 1000,
       stock: 100,
     },
@@ -276,25 +276,10 @@ Throughout the backstabbing and assassination attempts, the Buddha remains stead
       `,
       yearOfPublish: 2016,
       imageURL: "/static/bookImages/iamahero1.jpg",
-      genre: "Adventure",
+      genre: "Horror",
       price: 1600,
       stock: 100,
       isDeactivated: true,
-    },
-    {
-      title: "I am a hero",
-      author: "Kengo Hanazawa",
-      volume: 1,
-      edition: "omnibus",
-      description: `
-      A mentally unhinged manga artist witnesses the beginning of a zombie outbreak in Tokyo, and he’s certain of only two things: he's destined to be the city's hero, and he possesses something quite rare in Japan -- an actual firearm! The Shogakukan Manga Award winner comes to Dark Horse!
-      `,
-      yearOfPublish: 2016,
-      imageURL: "/static/bookImages/iamahero1.jpg",
-      price: 1600,
-      stock: 100,
-      isDeactivated: true,
-      genre: "horror",
     },
     {
       title: "I am a hero",
@@ -404,7 +389,8 @@ Throughout the backstabbing and assassination attempts, the Buddha remains stead
     Book.create({
       title: "Wonder Woman",
       author: "Christopher Priest",
-      description: "I couldn't find a description:D",
+      description:
+        "Wonder Woman learns a disturbing truth about her home of Themyscira and the villainess Circe offers the Amazon Warrior a choice: kill an innocent soul or never see home again!",
       genre: "action",
       volume: 89,
       yearOfPublish: 1994,
@@ -437,7 +423,7 @@ Throughout the backstabbing and assassination attempts, the Buddha remains stead
       stock: 5,
     }),
 
-    // Berserks 1 and 2, standard...
+    // Berserks 1 - 5, standard...
     Book.create({
       title: "Berserk",
       volume: 1,
@@ -453,7 +439,6 @@ His name is Guts, the Black Swordsman, a feared warrior spoken of only in whispe
       stock: 1,
     }),
 
-    // Berserks 1 - 5
     Book.create({
       title: "Berserk",
       volume: 2,
