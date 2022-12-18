@@ -9,7 +9,7 @@ const AdminBookEdit = () => {
   const navigate = useNavigate();
 
   const { id } = useParams();
-  const selectedBook = useSelector(state => state.book.selectedBook);
+  const selectedBook = useSelector((state) => state.book.selectedBook);
 
   // State used for input:
   const [loading, setLoading] = useState(false);
@@ -35,41 +35,41 @@ const AdminBookEdit = () => {
     adminBookFetcher();
   }, []);
 
-  const titleHandler = event => {
+  const titleHandler = (event) => {
     setTitle(event.target.value);
   };
-  const authorHandler = event => {
+  const authorHandler = (event) => {
     setAuthor(event.target.value);
   };
-  const descriptionHandler = event => {
+  const descriptionHandler = (event) => {
     setdescription(event.target.value);
   };
-  const genreHandler = event => {
+  const genreHandler = (event) => {
     setGenre(event.target.value);
   };
-  const volumeHandler = event => {
+  const volumeHandler = (event) => {
     setVolume(event.target.value);
   };
-  const yopHandler = event => {
+  const yopHandler = (event) => {
     setYOP(event.target.value);
   };
-  const isbnHandler = event => {
+  const isbnHandler = (event) => {
     setIsbn(event.target.value);
   };
-  const editionHandler = event => {
+  const editionHandler = (event) => {
     setEdition(event.target.value);
   };
-  const priceHandler = event => {
+  const priceHandler = (event) => {
     setPrice(event.target.value);
   };
-  const stockHandler = event => {
+  const stockHandler = (event) => {
     setStock(event.target.value);
   };
-  const statusHandler = event => {
+  const statusHandler = (event) => {
     setStatus(event.target.value);
   };
 
-  const bookUpdater = async event => {
+  const bookUpdater = async (event) => {
     try {
       event.preventDefault();
       const updatedBook = {
@@ -85,9 +85,6 @@ const AdminBookEdit = () => {
         stock,
         isDeactivated,
       };
-
-      console.log("sending up this body:");
-      console.log(updatedBook);
 
       // Update book in DB
       const { data } = await axios.put(`/api/books/${id}`, updatedBook);
