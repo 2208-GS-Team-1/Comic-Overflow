@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAllUsers } from "../../store/userSlice";
 import "./admin.css";
 import { Link } from "react-router-dom";
-import { use } from "chai";
+import MuiLoader from "../MuiLoader";
+
 
 function AdminUsersPage() {
   // If they're not an admin don't let them see this component.
@@ -43,7 +44,11 @@ const pageCount = Math.ceil(allUsers.length / PER_PAGE);
   }, []);
 
   if (!loading) {
-    return <div>Oops! Something went wrong!</div>;
+    return  (
+    <div className="loadingContainer">
+        <MuiLoader />
+      </div>
+    )     
   }
 
   return (
