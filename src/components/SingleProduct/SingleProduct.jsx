@@ -143,7 +143,7 @@ const SingleProduct = () => {
         <h1>Reviews</h1>
         <ReviewsSingleBook key={selectedBook.id} book={selectedBook} />
         <div id="reviewContainer">
-          <UserReview selectedBook = {selectedBook} user={user} />
+          <UserReview selectedBook = {selectedBook} user={user} singleBookHandler={singleBookHandler} />
         </div>
       </div>
     </div>
