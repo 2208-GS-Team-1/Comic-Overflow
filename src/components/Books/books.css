@@ -113,7 +113,7 @@ html {
 .filterBar{
   display: flex;
   justify-content: center;
-  margin: 116px 20px 0 30px;
+  margin: 136px 20px 0 30px;
   width: 200px;
   height: 600px;
 }

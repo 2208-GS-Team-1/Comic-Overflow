@@ -182,16 +182,18 @@ const AllBooks = () => {
       <div className="sortBar">
         <FormControl
           variant="filled"
-          sx={{ backgroundColor:"white",color: "black", m: 1, minWidth: 120, border: '1px solid rgba(0,0,0, .2)' }}
+          sx={{ background:"white",color: "black", m: 1, minWidth: 120, border: '1px solid rgba(0,0,0, .2)', fontFamily:"'Dogfish', sans-serif"}}
           size="small"
           >
-          <InputLabel sx={{ color: "black" }}>Sort</InputLabel>
-          <Select onChange={handleSortChange} label="Sort" value={selectedSort}>
-            <MenuItem value="newest">Newest Arrivals</MenuItem>
-            <MenuItem value="ascending">Price, low to high</MenuItem>
-            <MenuItem value="descending">Price, high to low</MenuItem>
-            <MenuItem value="a-z">Title, A-Z</MenuItem>
-            <MenuItem value="z-a">Title, Z-A</MenuItem>
+          <InputLabel sx={{ color: "black", fontFamily:"'Dogfish', sans-serif" }}>Sort</InputLabel>
+          <Select onChange={handleSortChange} label="Sort" value={selectedSort} 
+          sx={{ color: "black", backgroundColor:"white", fontFamily:"'Dogfish', sans-serif" }}
+          >
+            <MenuItem sx={{ color: "black", fontFamily:"'Dogfish', sans-serif" }}value="newest">Newest Arrivals</MenuItem>
+            <MenuItem sx={{ color: "black", fontFamily:"'Dogfish', sans-serif" }}value="ascending">Price, low to high</MenuItem>
+            <MenuItem sx={{ color: "black", fontFamily:"'Dogfish', sans-serif" }}value="descending">Price, high to low</MenuItem>
+            <MenuItem sx={{ color: "black", fontFamily:"'Dogfish', sans-serif" }}value="a-z">Title, A-Z</MenuItem>
+            <MenuItem sx={{ color: "black", fontFamily:"'Dogfish', sans-serif" }}value="z-a">Title, Z-A</MenuItem>
           </Select>
         </FormControl>
       </div>

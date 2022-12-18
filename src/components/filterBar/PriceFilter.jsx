@@ -18,7 +18,6 @@ const PriceFilter = ({ setPriceFilter }) => {
 
     const handlePriceFilter = (event) => {
         if(event.target.value === 'lessThanTen'){
-            console.log('we should be here')
             //If the option is not selected, it filters
             if(!lessThanTenIsSelected){
                 setPriceFilter('lessThanTen')
@@ -31,7 +30,8 @@ const PriceFilter = ({ setPriceFilter }) => {
                 setPriceFilter('none')
                 setLessThanTenIsSelected(false)
                 setBetweenTenAndTwentyDisabled(false)
-                setBetweenTenAndTwentyDisabled(false)
+                setMoreThanTwentyDisabled(false)
+
             }
     }else if (event.target.value === 'betweenTenAndTwenty'){
         if(!betweenTenAndTwentyIsSelected){
@@ -49,12 +49,12 @@ const PriceFilter = ({ setPriceFilter }) => {
         if(!moreThanTwentyIsSelected){
             setPriceFilter('moreThanTwenty')
             setLessThanTenDisabled(true)
-            setMoreThanTwentyDisabled(true)
+            setBetweenTenAndTwentyDisabled(true)
             setMoreThanTwentyIsSelected(true)
         } else {
             setPriceFilter('none')
             setLessThanTenDisabled(false)
-            setMoreThanTwentyDisabled(false)
+            setBetweenTenAndTwentyDisabled(false)
             setMoreThanTwentyIsSelected(false)
         }
     }
@@ -65,7 +65,7 @@ const PriceFilter = ({ setPriceFilter }) => {
         >
             Price
             <FormControlLabel
-                label="< $10"
+                label="less than $10"
                 sx={{...formControlLabelStyle}}
                 control={
                 <Checkbox
@@ -78,7 +78,7 @@ const PriceFilter = ({ setPriceFilter }) => {
                 />
                 <FormControlLabel
                 sx={{...formControlLabelStyle}}
-                label="$10< <$20"
+                label="$10 to $20"
                 control={
                 <Checkbox
                 size="medium" 
@@ -90,7 +90,7 @@ const PriceFilter = ({ setPriceFilter }) => {
                 />
                 <FormControlLabel
                 sx={{...formControlLabelStyle}}
-                label="> $20"
+                label="$20 & above"
                 control={
                 <Checkbox 
                 size="medium" 
