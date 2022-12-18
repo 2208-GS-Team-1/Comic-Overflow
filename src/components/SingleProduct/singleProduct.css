@@ -16,11 +16,12 @@ p, h2 {
 .singleProduct_container {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     padding-right: 15px;
     padding-left: 15px;
     margin-left: auto;
     margin-right: auto;
+
 }
 
 .productimage_left{
@@ -76,4 +77,14 @@ button {
     font-family: 'Dogfish', sans-serif;
     padding: 10px;
     border-radius: 10px;
+}
+.singleBookReivews{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.singleBookReivews h1{
+    margin: 0;
 }

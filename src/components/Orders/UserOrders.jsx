@@ -34,13 +34,13 @@ const UserOrders = () => {
 
   if (loading) return <div>Loading...</div>;
   return (
-    <div>
+    <div style={{ textAlign: "center" }}>
       <h2>Past Orders</h2>
       {orders.map((order) => (
         <Card
           key={order.id}
           variant="outlined"
-          style={{ margin: "10px", padding: "10px" }}>
+          style={{ margin: "10px", padding: "10px", textAlign: "center" }}>
           <Typography variant="h5">Summary for Order #{order.id}</Typography>
           <div>Date Ordered: {order.createdAt.split("T")[0]}</div>
           <div>Total Price: ${(order.price / 100).toFixed(2)}</div>

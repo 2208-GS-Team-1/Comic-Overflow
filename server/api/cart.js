@@ -213,7 +213,7 @@ router.get(
       // Now that we are checking out,
       // cartItem's priceTimesQuantityAtCheckOut needs to be set.
       // This will be a historically-accurate 'what the user paid for this cartitem x quantity'
-      usersActiveCart.map(async cartItem => {
+      usersActiveCart.map(async (cartItem) => {
         // Calculate what to update the cart item with
         const priceTimesQuantityAtCheckOut =
           cartItem.book.price * cartItem.quantity;
@@ -229,7 +229,7 @@ router.get(
       // THE BOOK'S STOCK MUST BE SUFFICIENT FOR  ACTIVE CART'S QUANTITY
       // This is give 500 server error if not!!
       // We need to update our book stock
-      usersActiveCart.map(async cartItem => {
+      usersActiveCart.map(async (cartItem) => {
         // Calculate what the book's stock will now be, now that the order has gone through.
         const updatedStockAmount = cartItem.book.stock - cartItem.quantity;
 
@@ -291,7 +291,7 @@ router.post("/quantity", async (req, res, next) => {
   }
 });
 
-router.post("/checkout", async (req, res, next) => {
+router.post("/stripeCheckout", async (req, res, next) => {
   //grab order details from req.body
   const cart = req.body;
   try {
