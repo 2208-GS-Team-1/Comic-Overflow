@@ -88,7 +88,8 @@ nav {
   width: 100%;
   max-width: 640px;
   height: 280px;
-  background-color: white;
+  /* background-color: white; */
+  background-image: url(/static/wallpaper/deadpoll_chrsitmas.jpg);
 }
 
 .popup_inner .popup_button {
@@ -101,4 +102,12 @@ nav {
   border-radius: 1px;
   border: none;
   text-decoration: none;
+}
+
+.popupH1 {
+  color: chartreuse;
+}
+
+.popupH2 {
+  color: chartreuse;
 }
