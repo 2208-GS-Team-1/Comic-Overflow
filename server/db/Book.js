@@ -31,14 +31,14 @@ const Book = db.define("book", {
       const words = rawValue.split(" ");
 
       // map through words and capitalize each word's first letter only
-      const capitalizedWords = words.map(word => {
+      words.map(word => {
         const firstLetterCapitalized = word[0].toUpperCase();
         const restOfLetters = word.slice(1);
         return firstLetterCapitalized + restOfLetters;
       });
 
       // join our words back into a string with spaces and we're done.
-      return capitalizedWords.join(" ");
+      return words.join(" ");
     },
     set(value) {
       // SETTER - store as all lowercase
