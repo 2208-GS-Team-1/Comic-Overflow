@@ -361,6 +361,7 @@ Throughout the backstabbing and assassination attempts, the Buddha remains stead
     chainsawMan2,
     chainsawMan3,
     chainsawMan4,
+    odishogun1,
   ] = await Promise.all([
     Book.create({
       title: "Devilman",
@@ -605,6 +606,18 @@ Over 1.5 million copies sold of Dark Horse's Berserk manga! Inspired the hit ani
       price: 999,
       stock: 15,
     }),
+    Book.create({
+      title: "Odishogun, The Merge Conflict Saga",
+      volume: 1,
+      author: "Yifan Chen",
+      description:
+        "The year is 20XX. Code War III has devastated the planet. An ex-bootcamper Benimaru Odishogun arrives in the city of Github, searching for revenge for his fallen comrades. What nobody expected was.. THE MERGE CONFLICT!! Will Odishogun defeat the greatest empire of codes and edge cases that has ever existed?",
+      genre: "action",
+      edition: "deluxe",
+      imageURL: "/static/bookImages/Odishogun_cover-01.jpg",
+      price: 1000000,
+      stock: 15,
+    }),
   ]);
 
   return {
@@ -628,6 +641,7 @@ Over 1.5 million copies sold of Dark Horse's Berserk manga! Inspired the hit ani
       chainsawMan2,
       chainsawMan3,
       chainsawMan4,
+      odishogun1,
     },
     dummySeeds,
   };
