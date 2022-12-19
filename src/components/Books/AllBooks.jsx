@@ -138,9 +138,9 @@ const AllBooks = () => {
         sortedBooks = sortedBooks.filter((book)=> 
         book.genre.toLowerCase() === 'adventure')
         break;
-      case "horror":
+      case "drama":
         sortedBooks = sortedBooks.filter((book)=> 
-        book.genre.toLowerCase() === 'horror')
+        book.genre.toLowerCase() === 'drama')
         break;
     }
     switch(priceFilter){
