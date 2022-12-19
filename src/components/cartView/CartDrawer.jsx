@@ -336,7 +336,7 @@ const CartDrawer = () => {
       </IconButton>
             <Snackbar
             onClose={handleCreateAccountCloseAlert}
-            anchorOrigin={{vertical:'center', horizontal:'center'}}
+            anchorOrigin={{vertical:'bottom', horizontal:'center'}}
             autoHideDuration={8000}
             open={makeAnAccountAlertOpen}
             >
