@@ -108,12 +108,13 @@ html {
   }
 .filterBarAndBooks{
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+  margin-right: 275px;
 }
 .filterBar{
   display: flex;
   justify-content: center;
   margin: 136px 20px 0 30px;
-  width: 200px;
+  min-width: 200px;
   height: 600px;
 }

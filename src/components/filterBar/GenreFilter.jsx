@@ -40,9 +40,9 @@ const GenreFilter = ({ setGenreFilter }) => {
                 setActionDisabled(false)
                 setHorrorDisabled(false)
             }
-        } else if(event.target.value === 'horror'){
+        } else if(event.target.value === 'drama'){
             if(!horrorIsSelected){
-                setGenreFilter('horror')
+                setGenreFilter('drama')
                 setActionDisabled(true)
                 setAdventureDisabled(true)
                 setHorrorIsSelected(true)
@@ -84,12 +84,12 @@ const GenreFilter = ({ setGenreFilter }) => {
                 }
                 />
                 <FormControlLabel
-                label="Horror"
+                label="Drama"
                 sx={{...formControlLabelStyle}}
                 control={
                 <Checkbox 
                 size="medium" 
-                value={'horror'}
+                value={'drama'}
                 disabled={horrorDisabled}
                 onClick={handleGenreFilter}
                 />

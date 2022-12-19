@@ -16,7 +16,7 @@ const FilterBar = ({ setAuthorFilter, setGenreFilter, setPriceFilter  }) => {
             sx={{ boxShadow: 5, width: '200px', padding:"15px" }}
             >
             <h2>
-                Fitler by...
+                Filter by...
             </h2>
             <Divider/>
             <div
