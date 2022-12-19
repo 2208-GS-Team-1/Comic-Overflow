@@ -17,6 +17,7 @@ import { setCart } from "../../store/cartSlice";
 import axios from "axios";
 import "./CartDrawerStyles.css";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const StyledBadge = styled(Badge)(() => ({
   "& .MuiBadge-badge": {
@@ -37,7 +38,7 @@ const CartDrawer = () => {
   const { user } = useSelector((state) => state.user);
   const [totalPrice, setTotalPrice] = useState(0);
   const { cart } = useSelector((state) => state.cart);
-
+  const [makeAnAccountAlertOpen, setMakeAnAccountOpen] = useState(false)
   const dispatch = useDispatch();
   // First, define a function that loads the cart from local storage
   const loadCartFromLocalStorage = () => {
@@ -72,6 +73,10 @@ const CartDrawer = () => {
   const handleClose = () => {
     setIsOpen(false);
   };
+  const handleCreateClose = () => {
+    setIsOpen(false);
+    setMakeAnAccountOpen(false);
+  }
 
   const saveCartToLocalStorage = (cart) => {
     // Local storage can only store strings, so we need to convert the cart object to a string
@@ -212,6 +217,12 @@ const CartDrawer = () => {
     }
     setOpen(false);
   }
+  const handleCreateAccountCloseAlert = (event , reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setMakeAnAccountOpen(false);
+  }
   const handleCheckOut = async () => {
     if (user.id) {
       const res = await axios.post(`/api/cart/stripeCheckout`, cart);
@@ -219,7 +230,8 @@ const CartDrawer = () => {
       //take user to the Stripe checkout site
       window.location = url;
     } else {
-      alert("please sign in to checkout!");
+      // alert("please sign in to checkout!");
+      setMakeAnAccountOpen(true)
     }
   };
   useEffect(() => {
@@ -271,7 +283,7 @@ const CartDrawer = () => {
               );
             })}
         </div>
-      <Snackbar
+          <Snackbar
               open={open}
               autoHideDuration={3000}
               onClose={handleCloseAlert}
@@ -297,8 +309,24 @@ const CartDrawer = () => {
           <ShoppingCartIcon />
         </StyledBadge>
       </IconButton>
+            <Snackbar
+            onClose={handleCreateAccountCloseAlert}
+            anchorOrigin={{vertical:'bottom', horizontal:'center'}}
+            autoHideDuration={8000}
+            open={makeAnAccountAlertOpen}
+            >
+              <Alert
+              variant="filled"
+              severity="warning"
+              sx={{ display: "flex", justifyContent: "center",minWidth:"200px",fontFamily: "'Dogfish', sans-serif"}} 
+              >Sign in or&nbsp;
+              <Link 
+              onClick={handleCreateClose}
+              style={{ textDecoration: 'underline', color:'white'}} to={'/createaccount'}>
+                click here to create an account</Link>
+                </Alert>
+            </Snackbar>
     </Box>
-    
   );
 };
 export default CartDrawer;
