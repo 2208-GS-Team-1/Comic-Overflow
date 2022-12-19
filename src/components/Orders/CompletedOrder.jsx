@@ -52,7 +52,10 @@ const CompletedOrder = () => {
     }
 
     //grab order again because this api call has all the associations
-    const fetchOrderAssociations = await axios.get(`/api/orders/${orderId}`);
+    const fetchOrderAssociations = await axios.get(
+      `/api/orders/${orderId}`,
+      config
+    );
     //set localStorage cart number
     localStorage.setItem("checkedOutCartId", orderId);
     //store new order in local state
