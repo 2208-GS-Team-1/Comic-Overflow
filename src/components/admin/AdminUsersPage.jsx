@@ -9,8 +9,8 @@ import { Link } from "react-router-dom";
 function AdminUsersPage() {
   // If they're not an admin don't let them see this component.
   const [loading, setLoading] = useState(false);
-  const { user } = useSelector(state => state.user);
-  const allUsers = useSelector(state => state.user.allUsers);
+  const { user } = useSelector((state) => state.user);
+  const allUsers = useSelector((state) => state.user.allUsers);
   const [currentPage, setCurrentPage] = useState(0);
   const dispatch = useDispatch();
 
@@ -18,7 +18,10 @@ function AdminUsersPage() {
 
   const allUserHandler = async () => {
     try {
-      const { data } = await axios.get("/api/users");
+      // JWT & authorization header to give for authorization check in the API
+      const token = window.localStorage.getItem("token");
+      const config = { headers: { authorization: "Bearer " + token } };
+      const { data } = await axios.get("/api/users", config);
       dispatch(setAllUsers(data));
       setLoading(true);
     } catch (err) {
@@ -32,10 +35,9 @@ function AdminUsersPage() {
   }
 
   const PER_PAGE = 15;
-const offset = currentPage * PER_PAGE;
-const currentPageData = allUsers
-.slice(offset, offset + PER_PAGE)
-const pageCount = Math.ceil(allUsers.length / PER_PAGE);
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = allUsers.slice(offset, offset + PER_PAGE);
+  const pageCount = Math.ceil(allUsers.length / PER_PAGE);
   //
   useEffect(() => {
     allUserHandler();
@@ -61,9 +63,8 @@ const pageCount = Math.ceil(allUsers.length / PER_PAGE);
                       {index + 1}: {user.firstName} {user.lastName}
                     </td>
                     <td className="adminUserButtons">
-
                       <Link to={`/admin/users/${user.id}`}>
-                      <button>View/Edit</button>
+                        <button>View/Edit</button>
                       </Link>
                     </td>
                   </tr>
@@ -72,17 +73,17 @@ const pageCount = Math.ceil(allUsers.length / PER_PAGE);
             </tbody>
           </table>
         </div>
-      <ReactPaginate
-      previousLabel={"← Previous"}
-      nextLabel={"Next →"}
-      pageCount={pageCount}
-      onPageChange={handlePageClick}
-      containerClassName={"pagination"}
-      previousLinkClassName={"pagination__link"}
-      nextLinkClassName={"pagination__link"}
-      disabledClassName={"pagination__link--disabled"}
-      activeClassName={"pagination__link--active"}
-    />
+        <ReactPaginate
+          previousLabel={"← Previous"}
+          nextLabel={"Next →"}
+          pageCount={pageCount}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination"}
+          previousLinkClassName={"pagination__link"}
+          nextLinkClassName={"pagination__link"}
+          disabledClassName={"pagination__link--disabled"}
+          activeClassName={"pagination__link--active"}
+        />
       </div>
     </div>
   );

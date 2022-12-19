@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 const AdminBookDelete = ({ bookId, deactivated, bookHandler }) => {
   const [buttonText, setButtonText] = useState("");
 
+  // This needs to be in a use effect because conditially deicidng what to set useState as caused infinite rerenders.
   useEffect(() => {
     // if the book.isDeactivated === false, we want the button to say 'reactivate'
     if (deactivated) {
@@ -22,19 +23,10 @@ const AdminBookDelete = ({ bookId, deactivated, bookHandler }) => {
       if (deactivated) {
         const isDeactivated = false;
         const update = { isDeactivated };
-        setButtonText("Re-activate"); // Have button text reflect change
-        console.log("button now changed to ->");
-        console.log(buttonText);
-
         await axios.put(`/api/books/${bookId}`, update, config);
       } else {
         const isDeactivated = true;
         const update = { isDeactivated };
-        setButtonText("Deactivate"); // Have button text reflect changes
-
-        console.log("button now changed to ->");
-        console.log(buttonText);
-
         await axios.put(`/api/books/${bookId}`, update, config);
       }
       // Couldn't figure out how to change the button text - so we are just refetching all books ????

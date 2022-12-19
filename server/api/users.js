@@ -37,39 +37,45 @@ router.get("/", authenticateUser, async (req, res, next) => {
   }
 });
 
+//********* Commented out this route because it is not being used. If you need to use it, you need to use authenticateUser
 // GET - api/users/email/:email
 // Returns the user with a specified email
 // ONLY ADMINS are allowed to see this!
-router.get("/email/:email", async (req, res, next) => {
-  const usersEmail = req.params.email;
-  try {
-    const user = await User.findOne({
-      where: {
-        email: usersEmail,
-      },
-    });
-    res.send(user);
-  } catch (error) {
-    next(error);
-  }
-});
+// router.get("/email/:email", async (req, res, next) => {
+//   const usersEmail = req.params.email;
+//   try {
+//     const user = await User.findOne({
+//       where: {
+//         email: usersEmail,
+//       },
+//     });
+//     res.send(user);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 // GET - api/users/:id --> Gets single user from the db
 // Only admins and the logged in user with this ID can see this
-router.get("/:id", async (req, res, next) => {
-  console.log("TEST");
-  const id = req.params.id;
+router.get("/:id", authenticateUser, async (req, res, next) => {
+  const { id } = req.params;
+
+  // If they are not an admin, or they are not logged in as the user with ID, kick them out.
+
   const regexExp =
     /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
   const isUUID = regexExp.test(id);
   if (isUUID) {
     try {
-      const singleUser = await User.findByPk(id);
-      if (singleUser) {
-        res.send(singleUser);
-      } else {
-        res.sendStatus(404);
+      // First check if they are authorized to query/see this info -
+      if (req.user.isAdmin || req.user.id === id) {
+        const foundUser = await User.findByPk(id);
+        // Now check if we send back a 404 or not
+        if (foundUser) return res.send(foundUser);
+        else res.sendStatus(404);
       }
+      // If they not authorized, send back 401.
+      else return res.sendStatus(401);
     } catch (err) {
       next(err);
     }
@@ -141,6 +147,9 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
+// This route is currently not used - because deleting a user would cause issues such as:
+// Orphaned cart items, orphaned orders... etc.
+// We instead have a 'isDeactivated' field on a user.
 router.delete("/:id", async (req, res, next) => {
   const id = req.params.id;
   const regexExp =
