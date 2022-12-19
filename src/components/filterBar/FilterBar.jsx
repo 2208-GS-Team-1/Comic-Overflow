@@ -13,7 +13,8 @@ const FilterBar = ({ setAuthorFilter, setGenreFilter, setPriceFilter  }) => {
         className='filterContainer'
         >
             <Card
-            sx={{ boxShadow: 5, width: '200px', padding:"15px" }}
+            sx={{ boxShadow: 5, width: '200px', padding:"15px", outline: '1px solid',
+            outlineColor: 'rgb(54, 54, 54)'}}
             >
             <h2>
                 Filter by...

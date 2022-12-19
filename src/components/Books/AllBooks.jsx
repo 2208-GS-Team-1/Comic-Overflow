@@ -202,7 +202,8 @@ const AllBooks = () => {
           </Select>
         </FormControl>
       </div>
-      <Card className="cardForAllProducts" sx={{ boxShadow: 9 }}>
+      <Card className="cardForAllProducts" sx={{ boxShadow: 9, outline: '1px solid',
+    outlineColor: 'rgb(54, 54, 54)'}}>
         <div className="allBooks">
           {currentPageData.map(book => {
             return (
