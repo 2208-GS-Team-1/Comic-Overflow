@@ -30,13 +30,16 @@ function AdminBooksPage() {
   function handlePageClick({ selected: selectedPage }) {
     setCurrentPage(selectedPage);
   }
+
+  // Pre-sort the books by their ID in the database
   const sortedBooks = [...books];
   sortedBooks.sort((a, b) => (a.id > b.id ? 1 : -1));
+
   const PER_PAGE = 15;
   const offset = currentPage * PER_PAGE;
   const currentPageData = sortedBooks.slice(offset, offset + PER_PAGE);
   const pageCount = Math.ceil(books.length / PER_PAGE);
-  //
+
   useEffect(() => {
     bookHandler();
   }, []);
