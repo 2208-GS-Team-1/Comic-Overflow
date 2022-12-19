@@ -109,12 +109,16 @@ html {
 .filterBarAndBooks{
   display: flex;
   justify-content: center;
-  margin-right: 275px;
 }
 .filterBar{
   display: flex;
   justify-content: center;
-  margin: 136px 20px 0 30px;
-  min-width: 200px;
+  margin: 70px 20px 0 30px;
+  width: 200px;
   height: 600px;
+}
+.allProductsTitle{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

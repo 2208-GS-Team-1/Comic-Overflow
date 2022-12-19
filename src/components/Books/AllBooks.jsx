@@ -164,6 +164,10 @@ const AllBooks = () => {
   //
   return (
     <div
+    className="allProductsTitle"
+    >
+      <h1>All Comics</h1>
+    <div
     className="filterBarAndBooks"
     >
     <div
@@ -178,7 +182,7 @@ const AllBooks = () => {
     <div className="productsContainer">
       {/* VV this is the node we're referencing */}
       <div ref={wrapperRef}></div>
-      <h1>All Comics</h1>
+
       <div className="sortBar">
         <FormControl
           variant="filled"
@@ -239,6 +243,7 @@ const AllBooks = () => {
       </div>
     </div>
   </div>
+          </div>
   );
 };
 
