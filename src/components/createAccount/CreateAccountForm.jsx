@@ -47,14 +47,6 @@ function CreateAccountForm() {
   const [creationFailure, setCreationFailure] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const clearCart = async () => {
-    const emptyCart = JSON.stringify([]);
-    localStorage.setItem("cart", emptyCart);
-    const newCart = localStorage.getItem("cart");
-    const freshCart = JSON.parse(newCart);
-    dispatch(setCart(freshCart));
-  };
-
   const formik = useFormik({
     // Initializes our formik.values object to have these key-value pairs.
     initialValues: {
@@ -82,7 +74,8 @@ function CreateAccountForm() {
 
         // createdUser from DB
         const createdUser = await axios.post("/api/users", bodyToSubmit);
-        console.log(createdUser.data);
+        const userId = createdUser.data.id;
+
         //************************* AUTO LOGIN with new account info ********************************* */
 
         // Get/Create token for this login session
@@ -94,60 +87,53 @@ function CreateAccountForm() {
         const token = response.data;
         window.localStorage.setItem("token", token);
 
-        // dispatch user to the one just made
-        dispatch(setUser(createdUser.data));
         //************************* ******************************** ********************************* */
 
-        // the below line commented out because i dont think it does anything
-        // setErrorMessage(errorMessage); // This is the message from the api's res.send
+        //***************** POSTing the guest cart to our DB with this newly created user *******************/
 
+        // Create header config to give for the POST requests to "/api/cart/quantity"
+        const config = { headers: { authorization: "Bearer " + token } };
+
+        // If they had stuff in their cart before creating an account, we need to insert these items into the DB
         const cartString = localStorage.getItem("cart");
         const guestCart = JSON.parse(cartString);
-
         if (guestCart.length > 0) {
-          // Create header config to give for the POST requests to "/api/cart/quantity"
-          const config = { headers: { authorization: "Bearer " + token } };
-          const userId = createdUser.data.id;
-
           // Loop through what was parsed from localStorage cart and submit it to the DB
           await Promise.all(
             guestCart.map(async (cartItem) => {
               let bookId = cartItem.book.id;
               let quantityToAdd = cartItem.quantity;
               let body = { userId, bookId, quantityToAdd };
-
-              //********************************************************** */
-              //***************** this route is protected, but at this point i don't have a JWT
-              // What can I do? */
               await axios.post("/api/cart/quantity", body, config);
             })
           );
         }
 
-        // Clear the local storage cart (now that it has been submitted)
-        await clearCart();
+        // Refetch the newly created user's cart and give it to localstorage - this has fields we need.
+        const fetchedCart = await axios.get(`/api/cart/user/${userId}`, config);
 
-        /* Ideally would like to log the user in here, and THEN redirect to home
-      	But not sure how to generate the JWT and the stuff with authorization.
-				Would also need to dispatch the redux state of user, I think.
-				So for now, just redirect them to the login page so they can log in with new account.
-			  */
+        // Overwrite the localStorage cart to this fetched one, which has stuff like userID on it!
+        localStorage.setItem("cart", JSON.stringify(fetchedCart.data));
+
+        // Give this fetched cart to redux, too
+        dispatch(setCart(fetchedCart.data));
 
         // Update the state that is used to trigger the mui Alert Success component
         setCreationSuccess(true);
         // In case it failed before, set that state too, so the failure message disappears
         setCreationFailure(false);
+
         // Wait 3 seconds before redirecting the user to login page
         setTimeout(() => {
+          // Finally - dispatch user to the one just made
+          // This goes in here to prevent the current URL from prematurely showing '404 you are already logged in!'
+          dispatch(setUser(createdUser.data));
           navigate("/");
-        }, 2000);
+        }, 3000);
       } catch (err) {
-        // This is the message from the api's res.send
-        const errorMessage = err.response.data;
-        setErrorMessage(errorMessage); // Give that error message to our mui alert
-
-        // If account creation failed (eg, an acct with that username already exists)
+        // Change state - If account creation failed (eg, an acct with that username already exists)
         setCreationFailure(true);
+        setErrorMessage(err.response.data); // Give the error message from our api's res.send to our mui alert's text body
       }
     },
   });
