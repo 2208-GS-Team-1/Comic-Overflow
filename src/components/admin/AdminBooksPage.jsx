@@ -19,6 +19,7 @@ function AdminBooksPage() {
 
   const bookHandler = async () => {
     try {
+      console.log("inside bookHandler");
       const { data } = await axios.get("/api/books");
       dispatch(setBooks(data));
       setLoading(true);
