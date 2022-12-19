@@ -247,7 +247,7 @@ function CreateAccountForm() {
 
         {creationSuccess && (
           <Alert sx={{ marginTop: 2 }} severity="success">
-            Account created! Redirecting to login page...
+            Account created! Logging you in now...
           </Alert>
         )}
         {creationFailure && (
