@@ -65,9 +65,6 @@ const AdminBookEdit = () => {
   const stockHandler = (event) => {
     setStock(event.target.value);
   };
-  const statusHandler = (event) => {
-    setStatus(event.target.value);
-  };
 
   const bookUpdater = async (event) => {
     try {
@@ -83,11 +80,16 @@ const AdminBookEdit = () => {
         edition,
         price,
         stock,
-        isDeactivated,
       };
+      console.log("body we are sending up for PUT -> ");
+      console.log(updatedBook);
+
+      // JWT & authorization header to give for authorization check in the API
+      const token = window.localStorage.getItem("token");
+      const config = { headers: { authorization: "Bearer " + token } };
 
       // Update book in DB
-      const { data } = await axios.put(`/api/books/${id}`, updatedBook);
+      const { data } = await axios.put(`/api/books/${id}`, updatedBook, config);
 
       // update setSelected book to have what's in DB
       dispatch(setSelectedBook(data));
@@ -188,15 +190,7 @@ const AdminBookEdit = () => {
               placeholder={selectedBook.stock}
               onChange={stockHandler}
             />
-            <label htmlFor="status">Deactivation status</label>
-            <input
-              id="status"
-              className="editInput"
-              placeholder={
-                selectedBook.isDeactivated === false ? "false" : "true"
-              }
-              onChange={statusHandler}
-            />
+
             <button type="submit">Submit</button>
           </div>
         </form>

@@ -29,12 +29,8 @@ function RouteContainer({ user }) {
         <Route path="/books" element={<AllBooks />} />
         <Route path="/books/:id" element={<SingleProduct />} />
 
-        {/*only non-logged clients can go to login and createaccount route */}
-        {!user.id && (
-          <Route path="/createaccount" element={<CreateAccountContainer />} />
-        )}
-        {/* This route is exposed to all because, if we have it 404 for logged in users, 
-        for a brief second, while login is processing, it shows a 404 */}
+        {/* These routes are exposed to all because, if we hid them, will briefly show 404 */}
+        <Route path="/createaccount" element={<CreateAccountContainer />} />
         <Route path="/login" element={<Login />} />
 
         {/*only logged in user will be able to access my account and account edit page */}
