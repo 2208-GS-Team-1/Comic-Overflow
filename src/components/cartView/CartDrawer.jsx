@@ -30,9 +30,9 @@ const CartDrawer = () => {
   // const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { user } = useSelector(state => state.user);
+  const { user } = useSelector((state) => state.user);
   const [totalPrice, setTotalPrice] = useState(0);
-  const { cart } = useSelector(state => state.cart);
+  const { cart } = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
   // First, define a function that loads the cart from local storage
@@ -69,7 +69,7 @@ const CartDrawer = () => {
     setIsOpen(false);
   };
 
-  const saveCartToLocalStorage = cart => {
+  const saveCartToLocalStorage = (cart) => {
     // Local storage can only store strings, so we need to convert the cart object to a string
     const cartString = JSON.stringify(cart);
 
@@ -79,7 +79,7 @@ const CartDrawer = () => {
 
   //subtracts from quantity
 
-  const subtract = async cartItem => {
+  const subtract = async (cartItem) => {
     // if a user is signed in
     if (user.id) {
       // JWT & authorization header to give for authorization check in the API
@@ -91,7 +91,7 @@ const CartDrawer = () => {
         // Delete in backend
         await axios.delete(`/api/cart/${cartItem.id}`, config);
         // Create a new array of cart items by filtering out the item that was deleted
-        const newCart = cart.filter(item => item.id !== cartItem.id);
+        const newCart = cart.filter((item) => item.id !== cartItem.id);
         // Dispatch the new cart array to the Redux store
         dispatch(setCart(newCart));
         saveCartToLocalStorage(newCart);
@@ -107,7 +107,7 @@ const CartDrawer = () => {
         );
         //This map might seem redundant, but without it each time the cart quantities are decremented the array would come back in a differet order,
         // so all the products would move each decrement or increment. Now with this we're keeping the array in place
-        const newCart = cart.map(item => {
+        const newCart = cart.map((item) => {
           if (item.id === cartItem.id) {
             return {
               ...item,
@@ -126,13 +126,15 @@ const CartDrawer = () => {
     } else {
       //else its a guest cart
       if (cartItem.quantity === 1) {
-        const newCart = cart.filter(item => item.book.id !== cartItem.book.id);
+        const newCart = cart.filter(
+          (item) => item.book.id !== cartItem.book.id
+        );
         dispatch(setCart(newCart));
         saveCartToLocalStorage(newCart);
       } else {
         const updatedQuantity = cartItem.quantity - 1;
 
-        const newCart = cart.map(item => {
+        const newCart = cart.map((item) => {
           if (item.book.id === cartItem.book.id) {
             return {
               ...item,
@@ -149,7 +151,7 @@ const CartDrawer = () => {
     }
   };
 
-  const add = async cartItem => {
+  const add = async (cartItem) => {
     // For logged in user AND store has enough stock to allow this:
     if (user.id && cartItem.book.stock >= cartItem.quantity + 1) {
       // JWT & authorization header to give for authorization check in the API
@@ -168,7 +170,7 @@ const CartDrawer = () => {
 
       //This map might seem redundant, but without it each time the cart quantities are decremented the array would come back in a differet order,
       // so all the products would move each decrement or increment. Now with this we're keeping the array in place
-      const newCart = cart.map(item => {
+      const newCart = cart.map((item) => {
         if (item.id === cartItem.id) {
           return {
             ...item,
@@ -192,7 +194,7 @@ const CartDrawer = () => {
       if (cartItem.book.stock >= cartItem.quantity + 1) {
         const updatedQuantity = cartItem.quantity + 1;
 
-        const newCart = cart.map(item => {
+        const newCart = cart.map((item) => {
           if (item.book.id === cartItem.book.id) {
             return {
               ...item,
@@ -213,7 +215,11 @@ const CartDrawer = () => {
 
   const handleCheckOut = async () => {
     if (user.id) {
-      const res = await axios.post(`/api/cart/stripeCheckout`, cart);
+      // JWT & authorization header to give for authorization check in the API
+      const token = window.localStorage.getItem("token");
+      const config = { headers: { authorization: "Bearer " + token } };
+
+      const res = await axios.post(`/api/cart/stripeCheckout`, cart, config);
       let url = res.data.url;
       //take user to the Stripe checkout site
       window.location = url;
@@ -258,7 +264,7 @@ const CartDrawer = () => {
         <div style={{ overflow: "auto" }}>
           {!cart && <div>your cart is empty!</div>}
           {cart &&
-            cart.map(cartItem => {
+            cart.map((cartItem) => {
               return (
                 <div className="cartItem" key={cartItem.book.id}>
                   <Card sx={{ boxShadow: 6, margin: "8px" }}>
