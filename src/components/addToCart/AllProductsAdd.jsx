@@ -9,7 +9,7 @@ import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantity
 import { useState } from "react";
 const AllProductsAdd = ({ book }) => {
   const [open, setOpen] = useState(false)
-  const [alertType, setAlertType] = useState('')
+  const [alertType, setAlertType] = useState('success')
   const [alertMessage, setAlertMessage] = useState('')
   const { user } = useSelector(state => state.user);
   const dispatch = useDispatch()

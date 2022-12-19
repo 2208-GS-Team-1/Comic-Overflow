@@ -12,7 +12,7 @@ const SingleProductAdd = ({ book, quantity }) => {
   const dispatch = useDispatch()
   const { cart } = useSelector(state => state.cart)
   const [open, setOpen] = useState(false)
-  const [alertType, setAlertType] = useState('')
+  const [alertType, setAlertType] = useState('success')
   const [alertMessage, setAlertMessage] = useState('')
   const userId = user.id;
   const loadCartFromLocalStorage = () => {

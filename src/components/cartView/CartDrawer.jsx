@@ -32,7 +32,7 @@ const CartDrawer = () => {
   // const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false)
-  const [alertType, setAlertType] = useState('')
+  const [alertType, setAlertType] = useState('success')
   const [alertMessage, setAlertMessage] = useState('')
   const { user } = useSelector((state) => state.user);
   const [totalPrice, setTotalPrice] = useState(0);
