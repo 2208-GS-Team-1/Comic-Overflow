@@ -91,7 +91,7 @@ function CreateAccountForm() {
 
         //***************** POSTing the guest cart to our DB with this newly created user *******************/
 
-        // Create header config to give for the POST requests to "/api/cart/quantity"
+        // Create header config to give for the POST requests (and GET later) to cart API
         const config = { headers: { authorization: "Bearer " + token } };
 
         // If they had stuff in their cart before creating an account, we need to insert these items into the DB
