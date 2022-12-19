@@ -71,6 +71,10 @@ const Book = db.define("book", {
     },
     set(value) {
       // SETTER - store as all lowercase
+
+      // don't let .toLowerCase be called on null or undefined or empty string->
+      if (!value) this.setDataValue("edition", "");
+
       const sanitized = value.toLowerCase();
       this.setDataValue("genre", sanitized);
     },
@@ -110,6 +114,10 @@ const Book = db.define("book", {
     },
     set(value) {
       // SETTER - store as all lowercase
+
+      // don't let .toLowerCase be called on null or undefined or empty string->
+      if (!value) this.setDataValue("edition", "");
+
       const sanitized = value.toLowerCase();
       this.setDataValue("edition", sanitized);
     },
