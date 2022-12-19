@@ -7,6 +7,8 @@ import {
   Card,
   Badge,
   styled,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -29,7 +31,9 @@ const StyledBadge = styled(Badge)(() => ({
 const CartDrawer = () => {
   // const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-
+  const [open, setOpen] = useState(false)
+  const [alertType, setAlertType] = useState('success')
+  const [alertMessage, setAlertMessage] = useState('')
   const { user } = useSelector((state) => state.user);
   const [totalPrice, setTotalPrice] = useState(0);
   const { cart } = useSelector((state) => state.cart);
@@ -187,6 +191,10 @@ const CartDrawer = () => {
 
       // Update the total price state variable
       setTotalPrice(updatedTotalPrice);
+    } else if(cartItem.book.stock < cartItem.quantity + 1){
+      setOpen(true)
+      setAlertMessage('Not enough stock!')
+      setAlertType('warning')
     }
 
     // else we edit the guests cart
@@ -209,10 +217,19 @@ const CartDrawer = () => {
 
         // Update the total price state variable
         setTotalPrice(updatedTotalPrice);
+      } else {
+        setOpen(true)
+        setAlertMessage('Not enough stock!')
+        setAlertType('warning')
       }
     }
   };
-
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  }
   const handleCheckOut = async () => {
     if (user.id) {
       // JWT & authorization header to give for authorization check in the API
@@ -223,17 +240,6 @@ const CartDrawer = () => {
       let url = res.data.url;
       //take user to the Stripe checkout site
       window.location = url;
-
-      //       const token = window.localStorage.getItem("token");
-      //       await axios.get(`/api/cart/user/${user.id}/checkOut`, {
-      //         headers: {
-      //           authorization: "Bearer " + token,
-      //         },
-      //       });
-
-      //       setTotalPrice(0);
-      //       dispatch(setCart([]));
-      //       saveCartToLocalStorage([]);
     } else {
       alert("please sign in to checkout!");
     }
@@ -289,6 +295,18 @@ const CartDrawer = () => {
               );
             })}
         </div>
+      <Snackbar
+              open={open}
+              autoHideDuration={3000}
+              onClose={handleCloseAlert}
+              anchorOrigin={{vertical:'bottom', horizontal:'right'}}
+              >
+              <Alert sx={{ display: "flex", justifyContent: "center",minWidth:"200px",marginRight:"60px", marginBottom:'70px', fontFamily: "'Dogfish', sans-serif"}} 
+              variant="filled" 
+              severity={alertType}>
+                {alertMessage}
+              </Alert>
+          </Snackbar>
         <div className="cartTotal">Total: ${(totalPrice / 100).toFixed(2)}</div>
         <div className="checkoutButton">
           <button
@@ -305,6 +323,7 @@ const CartDrawer = () => {
         </StyledBadge>
       </IconButton>
     </Box>
+    
   );
 };
 export default CartDrawer;
