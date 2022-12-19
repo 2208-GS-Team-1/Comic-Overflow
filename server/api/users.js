@@ -114,7 +114,7 @@ router.post("/", async (req, res, next) => {
 });
 
 // PUT - /api/users/:id --> Updates user with given id
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", authenticateUser, async (req, res, next) => {
   try {
     const { address, email, phoneNumber, firstName, lastName, birthday } =
       req.body;
@@ -150,7 +150,9 @@ router.put("/:id", async (req, res, next) => {
 // This route is currently not used - because deleting a user would cause issues such as:
 // Orphaned cart items, orphaned orders... etc.
 // We instead have a 'isDeactivated' field on a user.
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", authenticateUser, async (req, res, next) => {
+  if (!req.user.isAdmin) return res.sendStatus(401); // Kick if not admin
+
   const id = req.params.id;
   const regexExp =
     /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;

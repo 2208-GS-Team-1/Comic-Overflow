@@ -7,9 +7,7 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
 // Authenticator that sets req.user to whoever is logged in with this JWT
 const authenticateUser = (req, res, next) => {
-  console.log("inside /api/cart authenticateUser");
   const header = req.headers.authorization;
-  console.log(header);
   //separate the token from the word "Bearer"
   const token = header && header.split(" ")[1];
   jwt.verify(token, process.env.JWT, async (err, user) => {
