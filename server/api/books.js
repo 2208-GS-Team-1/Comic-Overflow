@@ -1,8 +1,27 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
-const { Book, Review } = require("../db");
+const { Book, Review, User } = require("../db");
 
-// GET - api/books --> Gets all books from the db
+// Authenticator that sets req.user to whoever is logged in with this JWT
+const authenticateUser = (req, res, next) => {
+  const header = req.headers.authorization;
+  //separate the token from the word "Bearer"
+  const token = header && header.split(" ")[1];
+  jwt.verify(token, process.env.JWT, async (err, user) => {
+    //if no token or invalid token, return 401 error
+    if (!token) return res.sendStatus(401);
+    //Do stuff with user
+    const userInfo = await User.findByPk(user.id);
+    if (!userInfo) return res.sendStatus(404);
+    //set req.user to userInfo
+    req.user = userInfo;
+    next();
+  });
+};
+
+// GET - /api/books --> Gets all books from the db
+// No need for authentication - anyone is allowed to see our products!
 router.get("/", async (req, res, next) => {
   try {
     const allBooks = await Book.findAll({
@@ -13,8 +32,10 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
-//GET - /api/books/all/active
-//Gets book from db that are "active" so that we aren't displaying books that are inactive
+
+// GET - /api/books/all/active
+// Gets book from db that are "active" so that we aren't displaying books that are inactive
+// No need for authentication - anyone is allowed to see our products!
 router.get("/all/active", async (req, res, next) => {
   try {
     const allBooks = await Book.findAll({
@@ -28,6 +49,10 @@ router.get("/all/active", async (req, res, next) => {
     next(err);
   }
 });
+
+// GET - /api/books/:id
+// Gets the data on a specific book
+// No need for authentication - anyone is allowed to see our products!
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;
   try {
@@ -40,9 +65,14 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-//PUT -api/books -> Updates book with given id
-router.put("/:id", async (req, res, next) => {
+// PUT - /api/books/:id
+// Updates book with given id
+// ONLY ADMINS are allowed to do this!
+router.put("/:id", authenticateUser, async (req, res, next) => {
   try {
+    // If user is not an admin, kick them out!
+    if (!req.user.isAdmin) return res.sendStatus(401);
+
     const {
       title,
       author,
@@ -57,6 +87,7 @@ router.put("/:id", async (req, res, next) => {
       stock,
       isDeactivated,
     } = req.body;
+
     const id = req.params.id;
     const updateBook = await Book.findByPk(id);
 
@@ -81,8 +112,13 @@ router.put("/:id", async (req, res, next) => {
 });
 
 // POST - add new book given body
-router.post("/", async (req, res, next) => {
+// Adds a new book to the db
+// ONLY ADMINS are allowed to do this!
+router.post("/", authenticateUser, async (req, res, next) => {
   try {
+    // If logged in user is not an admin, kick them
+    if (!req.user.isAdmin) return res.sendStatus(401);
+
     const {
       title,
       author,

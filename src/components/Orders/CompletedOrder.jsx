@@ -31,16 +31,17 @@ const CompletedOrder = () => {
 
   const updateBackend = async () => {
     //token for authentication
+    // JWT & authorization header to give for authorization check in the API
     const token = window.localStorage.getItem("token");
+    const config = { headers: { authorization: "Bearer " + token } };
     const getCart = JSON.parse(localStorage.getItem("cart"));
     // if getCart is not empty, we have to perform the back-end functions to update db
     if (getCart.length > 0) {
       //updates back-end
-      const fetchOrder = await axios.get(`/api/cart/user/${user.id}/checkOut`, {
-        headers: {
-          authorization: "Bearer " + token,
-        },
-      });
+      const fetchOrder = await axios.get(
+        `/api/cart/user/${user.id}/checkOut`,
+        config
+      );
       //gets the order id so we can query the order with all the associations
       orderId = fetchOrder.data.id;
     }
@@ -51,7 +52,10 @@ const CompletedOrder = () => {
     }
 
     //grab order again because this api call has all the associations
-    const fetchOrderAssociations = await axios.get(`/api/orders/${orderId}`);
+    const fetchOrderAssociations = await axios.get(
+      `/api/orders/${orderId}`,
+      config
+    );
     //set localStorage cart number
     localStorage.setItem("checkedOutCartId", orderId);
     //store new order in local state
@@ -95,7 +99,8 @@ const CompletedOrder = () => {
         spacing={0}
         direction="column"
         alignItems="center"
-        justify="center">
+        justify="center"
+      >
         <Grid>
           <Card
             variant="outlined"
@@ -106,7 +111,8 @@ const CompletedOrder = () => {
               textAlign: "center",
               alignItems: "center",
               maxWidth: "400px",
-            }}>
+            }}
+          >
             <Typography variant="h5">
               <div>Order Number: {newOrder.id}</div>
               <div>Date Ordered: {newOrder.createdAt.split("T")[0]}</div>
