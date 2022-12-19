@@ -345,6 +345,7 @@ const CartDrawer = () => {
               severity="error"
               sx={{ display: "flex", justifyContent: "center",minWidth:"200px",fontFamily: "'Dogfish', sans-serif"}} 
               >To checkout, <Link
+              onClick={handleCreateClose}
               to={'/login'}
               style={{ textDecoration: 'underline', color:'white'}} 
               >sign in</Link> or&nbsp;
