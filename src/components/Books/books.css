@@ -4,10 +4,6 @@
     align-items: center;
     justify-content: center;
 }
-.productsContainer h1 {
-    margin: 12px 0 0 0;
-    padding: 0;
-}
 .allBooks{
     display: grid;
     grid-template-columns: repeat(5, auto);
@@ -66,12 +62,15 @@
 .pagination {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     list-style: none;
     cursor: pointer;
     padding: 0;
   }
   
   .pagination a {
+    justify-content:center ;
+    align-items: center;
     padding: 10px;
     border-radius: 5px;
     border: 1px solid black;
@@ -82,11 +81,16 @@
   }
   
   .pagination__link {
+    justify-content:center ;
+    align-items: center;
     font-weight: bold;
     background-color: white;
   }
   
   .pagination__link--active a {
+    justify-content:center ;
+    align-items: center;
+
     color: #fff;
     background-color: rgb(255, 216, 19);
     color: black;
@@ -94,6 +98,8 @@
   }
   
   .pagination__link--disabled a {
+    justify-content:center ;
+
     color: rgb(198, 197, 202);
     border: 1px solid rgb(198, 197, 202);
   }
@@ -121,4 +127,13 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0;
+  margin: 0;
+  letter-spacing: 6px;
+}
+.allProductsTitle h1 {
+  font-size: 56px;
+  font-weight: bolder;
+  padding: 0;
+  margin: 10px 0 40px 0;
 }
