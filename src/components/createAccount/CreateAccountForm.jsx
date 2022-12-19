@@ -8,6 +8,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setCart } from "../../store/cartSlice";
+import { setUser } from "../../store/userSlice";
 
 // Validation schema using yup, to check is text field entries are valid.
 const validationSchema = yup.object({
@@ -45,6 +46,7 @@ function CreateAccountForm() {
   const [creationSuccess, setCreationSuccess] = useState(false);
   const [creationFailure, setCreationFailure] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
   const clearCart = async () => {
     const emptyCart = JSON.stringify([]);
     localStorage.setItem("cart", emptyCart);
@@ -52,6 +54,7 @@ function CreateAccountForm() {
     const freshCart = JSON.parse(newCart);
     dispatch(setCart(freshCart));
   };
+
   const formik = useFormik({
     // Initializes our formik.values object to have these key-value pairs.
     initialValues: {
@@ -77,16 +80,36 @@ function CreateAccountForm() {
           lastName: values.lastName,
         };
 
+        // createdUser from DB
         const createdUser = await axios.post("/api/users", bodyToSubmit);
+        console.log(createdUser.data);
+        //************************* AUTO LOGIN with new account info ********************************* */
+
+        // Get/Create token for this login session
+        const credentials = {
+          username: values.username,
+          password: values.password,
+        };
+        const response = await axios.post("/api/auth", credentials);
+        const token = response.data;
+        window.localStorage.setItem("token", token);
+
+        // dispatch user to the one just made
+        dispatch(setUser(createdUser.data));
+        //************************* ******************************** ********************************* */
 
         // the below line commented out because i dont think it does anything
         // setErrorMessage(errorMessage); // This is the message from the api's res.send
 
         const cartString = localStorage.getItem("cart");
         const guestCart = JSON.parse(cartString);
-        // When a guest makes a cart, and wants to transfer it to their account we find them by their email and transwer›
+
         if (guestCart.length > 0) {
+          // Create header config to give for the POST requests to "/api/cart/quantity"
+          const config = { headers: { authorization: "Bearer " + token } };
           const userId = createdUser.data.id;
+
+          // Loop through what was parsed from localStorage cart and submit it to the DB
           await Promise.all(
             guestCart.map(async (cartItem) => {
               let bookId = cartItem.book.id;
@@ -96,16 +119,17 @@ function CreateAccountForm() {
               //********************************************************** */
               //***************** this route is protected, but at this point i don't have a JWT
               // What can I do? */
-              await axios.post("/api/cart/quantity", body);
+              await axios.post("/api/cart/quantity", body, config);
             })
           );
         }
 
+        // Clear the local storage cart (now that it has been submitted)
         await clearCart();
+
         /* Ideally would like to log the user in here, and THEN redirect to home
       	But not sure how to generate the JWT and the stuff with authorization.
 				Would also need to dispatch the redux state of user, I think.
-				
 				So for now, just redirect them to the login page so they can log in with new account.
 			  */
 
@@ -115,7 +139,7 @@ function CreateAccountForm() {
         setCreationFailure(false);
         // Wait 3 seconds before redirecting the user to login page
         setTimeout(() => {
-          navigate("/login");
+          navigate("/");
         }, 2000);
       } catch (err) {
         // This is the message from the api's res.send

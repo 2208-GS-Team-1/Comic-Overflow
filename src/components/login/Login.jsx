@@ -14,18 +14,21 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { user } = useSelector(state => state.user);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+
   const [showPassword, setShowPassword] = useState(false);
-  const handleCheckboxChange = event => {
+
+  const handleCheckboxChange = (event) => {
     setShowPassword(event.target.checked);
   };
-  const onChange = ev => {
+
+  const onChange = (ev) => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
   };
 
@@ -40,7 +43,7 @@ const Login = () => {
     const usersExistingCart = existingCart.data;
     //Check if user already has this book in their cart
     const existingItem = usersExistingCart.find(
-      cartItem => cartItem.book.id === bookId
+      (cartItem) => cartItem.book.id === bookId
     );
     if (!existingItem) {
       const quantityToAdd = quantity;
@@ -94,7 +97,7 @@ const Login = () => {
       const cart = JSON.parse(localStorageCart);
       if (cart.length > 0) {
         await Promise.all(
-          cart.map(async cartItem => {
+          cart.map(async (cartItem) => {
             await combineCarts(
               response.data.id,
               cartItem.book.id,
@@ -116,7 +119,7 @@ const Login = () => {
     navigate("/");
   };
 
-  const attemptLogin = async event => {
+  const attemptLogin = async (event) => {
     event.preventDefault();
     const response = await axios.post("/api/auth", credentials);
     const token = response.data;
