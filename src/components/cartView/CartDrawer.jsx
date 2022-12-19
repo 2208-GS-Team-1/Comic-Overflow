@@ -311,15 +311,15 @@ const CartDrawer = () => {
       </IconButton>
             <Snackbar
             onClose={handleCreateAccountCloseAlert}
-            anchorOrigin={{vertical:'bottom', horizontal:'center'}}
+            anchorOrigin={{vertical:'center', horizontal:'center'}}
             autoHideDuration={8000}
             open={makeAnAccountAlertOpen}
             >
               <Alert
               variant="filled"
-              severity="warning"
+              severity="error"
               sx={{ display: "flex", justifyContent: "center",minWidth:"200px",fontFamily: "'Dogfish', sans-serif"}} 
-              >Sign in or&nbsp;
+              >To checkout, sign in or&nbsp;
               <Link 
               onClick={handleCreateClose}
               style={{ textDecoration: 'underline', color:'white'}} to={'/createaccount'}>
