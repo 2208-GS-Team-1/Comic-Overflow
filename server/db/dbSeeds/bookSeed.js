@@ -401,9 +401,145 @@ Throughout the backstabbing and assassination attempts, the Buddha remains stead
       yearOfPublish: 2001,
       stock: 20,
     },
+    {
+      title: "Sailor Moon SuperS",
+      author: "Naoko Takeuchi",
+      volume: 1,
+      description: `
+      Bunny, Raye, Mina, Lita and Amy all celebrate their acceptance into High School, while Rini prepares to return back home to the 30th Century as her training as a Sailor Soldier is complete. A mysterious flying ship appear after an eerie solar eclipse, and establishes itself in Crossroads Shopping District, disguising itself as a Circus called the Dead Moon Circus. The following night, Rini has a dream of the Pegasus named Helios, he grants her a magical bell and asks her for her help in finding the golden crystal to save Elysion.     `,
+      imageURL: "/static/bookImages/sailormoon-supers-1.jpg",
+      genre: "action",
+      price: 999,
+      yearOfPublish: 2001,
+      stock: 20,
+    },
   ];
 
   await Promise.all(sailormoons.map((book) => Book.create(book)));
+
+  const bloodborneAndSandman = [
+    {
+      title: "Bloodborne",
+      author: "Ale Kot",
+      volume: 7,
+      description: `
+The Healing Thirst Part 3 of 4:
+The horror and mystery continue in Bloodborne, the comic based on FromSoftware's critically acclaimed video game hit - now an ongoing series by popular demand!
+As the wicked science of the Healing Church is revealed, death spreads across Yharnam... From writer Ale Kot (Zero, Wolf, Generation Gone, Days of Hate) with artist Piotr Kowalski (Dark Tower, Sex, Robocop)!
+Gorgeously ghoulish Nightmare Hunter Cover A by Jeff Stokely (The Spire)!
+`,
+      imageURL: "/static/bookImages/bb7.jpg",
+      genre: "horror",
+      price: 999,
+      yearOfPublish: 2019,
+      stock: 20,
+    },
+    {
+      title: "Bloodborne",
+      author: "Ale Kot",
+      volume: 9,
+      description: `
+      A Song of Crows (1 of 4)!
+      Return to the critically-acclaimed horror mystery series set in the world of Sony and FromSoftware's gothic gaming hit, Bloodborne! Writer Ale Kot delves deeper into Yharnam with artist Piotr Kowalski! The tragic origins of fan-favorite character Eileen the Crow, revealed for the first time! A serial killer stalks Yharnam, drunk on blood - to end their madness, Eileen must become a Hunter of Hunters!`,
+      imageURL: "/static/bookImages/bb12.jpg",
+      genre: "horror",
+      price: 999,
+      yearOfPublish: 2019,
+      stock: 20,
+    },
+    {
+      title: "Bloodborne",
+      author: "Ale Kot",
+      volume: 12,
+      description: `
+      A Song of Crows (4 of 4)! The maddening conclusion to Eileen's story! What awaits the Hunter of Hunters in the latest arc of the official Bloodborne comic, from acclaimed creative team Ales Kot and Piotr Kowalski? Explore the world of Sony Interactive Entertainment and FromSoftware's horror-action gaming smash hit!`,
+      imageURL: "/static/bookImages/bb12.jpg",
+      genre: "horror",
+      price: 999,
+      yearOfPublish: 2019,
+      stock: 20,
+    },
+    {
+      title: "The Sandman",
+      author: "Neil Gaiman",
+      volume: 1,
+      description: `
+      A group of magic-invoking men seeking immortality use a spell to capture Death, but instead they get her younger brother, Dream. This leads to seventy years keeping him entrapped, the world suffers greatly from these years without sleep, or with un-waking sleep but finally after seventy years, Dream escapes, and he's looking for revenge!`,
+      imageURL: "/static/bookImages/sandman1.jpg",
+      genre: "adventure",
+      price: 1999,
+      yearOfPublish: 1988,
+      stock: 20,
+    },
+    {
+      title: "The Sandman",
+      author: "Neil Gaiman",
+      volume: 2,
+      description: `
+      Morpheus, King of Dreams, gets reacquainted with his home realm of The Dreaming and the colorful characters who populate it--including Cain, Abel and Lucien, the librarian. He also discovers how much his absence has affected the universe in the time since he was imprisoned.
+      Dream returns to his realm, The Dreaming, and finds it is in very bad shape after his seven decade long absence and worst of all, he doesn't have the power to restore it as he has lost his three power items: the ruby, the helm and the pouch of sand. He called upon the Furies to tell him their whereabouts and is given a clue to find each one, and so begins his journey to reassert himself as Dream of the Endless.`,
+      imageURL: "/static/bookImages/sandman2.jpg",
+      genre: "adventure",
+      price: 1999,
+      yearOfPublish: 1988,
+      stock: 20,
+    },
+    {
+      title: "The Sandman",
+      author: "Neil Gaiman",
+      volume: 3,
+      description: `
+      John Constantine (HELLBLAZER) guest-stars and helps Morpheus track a pouch of powerful sand that’s found its way into the possession of a drug addict. But what horrific metamorphosis has the sand caused the woman?
+First item on the list, his pouch of sand, Dream goes to London where a man named John Constantine resides, the Furies told him that he was the last one to purchase the pouch. So it is that John first encounters Dream of the Endless, and the two work together to locate the pouch, finding it in the possession of one of John's former lovers. She is but a pale shadow of her former self, withered and dying, and her house is overrun with beasts of the Dreaming, but Dream takes the pouch from her, and puts her into a final, peaceful sleep.
+      `,
+      imageURL: "/static/bookImages/sandman3.jpg",
+      genre: "adventure",
+      price: 1999,
+      yearOfPublish: 1989,
+      stock: 20,
+    },
+    {
+      title: "The Sandman",
+      author: "Neil Gaiman",
+      volume: 4,
+      description: `
+      The first appearance of Lucifer Morningstar! This issue follows Dream of the Endless as he journeys to recover his helm, which was said to be traded to a demon, and where else would a demon be than in Hell? Dream finds many things in Hell have changed, and is led by The Demon (Etrigan) to Lucifer's palace where he discovers Hell is now ruled by a Triumvirate.
+Finally, the three Lords of Hell summon all the demons to a single location where Dream uses his sands to locate the one who has his helm, the two "duel" for it, and Dream is victorious, leaving Hell unstopped, but leaving behind a severely upset Lucifer who swears vengeance.`,
+      imageURL: "/static/bookImages/sandman4.jpg",
+      genre: "adventure",
+      price: 1999,
+      yearOfPublish: 1989,
+      stock: 20,
+    },
+    {
+      title: "The Sandman",
+      author: "Neil Gaiman",
+      volume: 5,
+      description: `
+      Still tracking his objects of power, Morpheus travels to Hell itself in search of his helmet. It seems it’s fallen into the hands of a higher demon, and there’s a realm of devils standing between Morpheus and his property…
+Doctor Destiny escapes from Arkham Asylum forcing a passing motorist to take him to his ruby - Morpheus' Dreamstone - in a storage locker in the nearby town of Mayhew. Meanwhile Morpheus enlists the help of Scott Free (currently with the Justice League International) in his own search for the gem. Who will get to it first? And after so long is the item too powerful for either of them to wield?`,
+      imageURL: "/static/bookImages/sandman5.jpg",
+      genre: "adventure",
+      price: 1999,
+      yearOfPublish: 1989,
+      stock: 20,
+    },
+    {
+      title: "The Sandman",
+      author: "Neil Gaiman",
+      volume: 6,
+      description: `
+      Over the course of 24 horrific hours, Dr. Destiny unleashes impossibly dark terror on six unsuspecting people in a small-town diner. Armed with Morpheus’ Dreamstone, Destiny can rearrange time and space and does so to dreadful ends in this eerie, nearly standalone issue.
+Doctor Destiny, now in possession of Morpheus' Dreamstone uses it to unleash his madness on the world. All thoughts of world conquest go out the window however when he becomes too absorbed with watching TV and playing with a handful of patrons at an all night diner. The story follows his madness hour-by-hour as it progresses over a 24 hour period.
+      `,
+      imageURL: "/static/bookImages/sandman6.jpg",
+      genre: "adventure",
+      price: 1999,
+      yearOfPublish: 1989,
+      stock: 20,
+    },
+  ];
+  await Promise.all(bloodborneAndSandman.map((book) => Book.create(book)));
 
   /***************************************************************/
 
