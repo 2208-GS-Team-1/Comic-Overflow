@@ -40,12 +40,17 @@ const AdminUserEdit = ({ fetchedUser, userHandler }) => {
 
 
     const updateHandler = async (event) =>{
-        event.preventDefault();
-        const token = window.localStorage.getItem("token");
-        const config = { headers: { authorization: "Bearer " + token } };
-        const updatedData = {address, email, phoneNumber, firstName, lastName, birthday, isDeactivated}
-        await axios.put(`/api/users/${fetchedUser.id}`, updatedData, config)
-        userHandler();
+        try {
+            event.preventDefault();
+            const token = window.localStorage.getItem("token");
+            const config = { headers: { authorization: "Bearer " + token } };
+            const updatedData = {address, email, phoneNumber, firstName, lastName, birthday, isDeactivated}
+            await axios.put(`/api/users/${fetchedUser.id}`, updatedData, config)
+            userHandler();
+            
+        } catch (error) {
+            setErrorMessage(true)
+        }
     }
 
     return (
@@ -67,13 +72,13 @@ const AdminUserEdit = ({ fetchedUser, userHandler }) => {
                          placeholder={lastName}
                         onChange={lastNameHandler} />
                         {/*address input */}
-                        <p className='adminEditP'>Address: <small>{ address.length < 1 ? " Address cannot be empty" : ""}</small></p>
+                        <p className='adminEditP'>Address: <small>*Required</small></p>
                         <input className='adminEditInput'
                         type="text"
                          placeholder="Please re-enter your address"
                         onChange={addressHandler} />
                         {/*birthday input */}
-                        <p className='adminEditP'>Birthday:</p>
+                        <p className='adminEditP'>Birthday: <small>*Required</small></p>
                         <p className='adminEditP'>
                             <small>Please follow the format xxxx-xx-xx</small>
                         </p>
@@ -81,12 +86,15 @@ const AdminUserEdit = ({ fetchedUser, userHandler }) => {
                         placeholder ="0000-00-00"
                         onChange={birthdayHandler} />
                         {/*email input */}
-                        <p className='adminEditP'>Email:</p>
+                        <p className='adminEditP'>Email: <small>*Required</small></p>
                         <input className='adminEditInput'
                         placeholder="Please re-enter your email"
                         onChange={emailHandler}/>
                         {/*phone number input */}
                         <p className='adminEditP'>Phone Number: <small>{(phoneNumber.length > 10 || phoneNumber.length < 10)? "Please enter 10 digit numbers": ""}</small></p>
+                        <p className='adminEditP'>
+                            <small>*Required</small>
+                        </p>
                         <input className='adminEditInput'
                         type="number"
                         placeholder={phoneNumber}
@@ -98,6 +106,11 @@ const AdminUserEdit = ({ fetchedUser, userHandler }) => {
                         value={isDeactivated}
                         onChange={deactivateHandler}></input>
                         <button type='submit'>Submit</button>
+                    {errorMessage && (
+                    <Alert severity="error" sx={{ marginTop: "5px" }}>
+                        Please fill out all required fields
+                    </Alert>
+                    )}
                     </div>
                 </form>
             </div>
