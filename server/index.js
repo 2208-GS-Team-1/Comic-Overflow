@@ -5,7 +5,7 @@ const init = async () => {
     const port = process.env.PORT || 3000;
     app.listen(port, () => console.log(`listening on port ${port}`));
   } catch (ex) {
-    console.log(ex);
+    console.log("there was an error starting up!", ex);
   }
 };
 // vv uncomment if you want to see the magic methods in the console on "npm run start:dev"
