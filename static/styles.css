@@ -69,3 +69,45 @@ nav {
   display: flex;
   justify-content: space-around;
 }
+
+.popup {
+  position: fixed;
+  top: 0; /*this makes pop-up overlay the whole screen*/
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup_inner {
+  position: relative;
+  padding: 32px;
+  width: 100%;
+  max-width: 640px;
+  height: 280px;
+  /* background-color: white; */
+  background-image: url(/static/wallpaper/deadpoll_chrsitmas.jpg);
+}
+
+.popup_inner .popup_button {
+  position: absolute;
+  background-color: transparent;
+  color: chartreuse;
+  top: 16px;
+  right: 16px;
+  padding: 1px;
+  border-radius: 1px;
+  border: none;
+  text-decoration: none;
+}
+
+.popupH1 {
+  color: chartreuse;
+}
+
+.popupH2 {
+  color: chartreuse;
+}
