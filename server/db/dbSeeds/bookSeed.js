@@ -1,85 +1,5 @@
 const Book = require("../Book");
 const bookSeed = async () => {
-  const dummyBooks = [
-    {
-      title: "Competition, The",
-      author: "Ber Mathivon",
-      volume: 72,
-      description:
-        "Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.",
-      imageURL: "http://dummyimage.com/400x400.png/dddddd/000000",
-      genre: "Drama",
-      isbn: "440383141-9",
-      edition: "Limited",
-      price: 5386,
-      stock: 24,
-    },
-    {
-      title: "Thirst for Love, The (Ai no kawaki)",
-      author: "Adi Sly",
-      volume: 89,
-      description:
-        "Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus. Curabitur at ipsum ac tellus semper interdum.",
-      imageURL: "http://dummyimage.com/400x400.png/cc0000/ffffff",
-      genre: "Drama",
-      isbn: "481130207-9",
-      edition: "Standard",
-      price: 7183,
-      stock: 55,
-    },
-    {
-      title: "Hollywood or Bust",
-      author: "Nappie Dever",
-      volume: 49,
-      description: "Quisque id justo sit amet sapien dignissim vestibulum.",
-      imageURL: "http://dummyimage.com/400x400.png/ff4444/ffffff",
-      genre: "Comedy",
-      isbn: "593580065-9",
-      edition: "First Edition",
-      price: 7693,
-      stock: 8,
-    },
-    {
-      title: "Leprechaun",
-      author: "Lynde Greenier",
-      volume: 24,
-      description: "Proin at turpis a pede posuere nonummy.",
-      imageURL: "http://dummyimage.com/400x400.png/dddddd/000000",
-      genre: "Comedy",
-      isbn: "927181193-3",
-      edition: "Limited",
-      price: 2240,
-      stock: 62,
-    },
-    {
-      title: "Drive-In Horrorshow",
-      author: "Benjy Wasbey",
-      volume: 78,
-      description: "Nulla ut erat id mauris vulputate elementum.",
-      imageURL: "http://dummyimage.com/400x400.png/dddddd/000000",
-      genre: "Horror",
-      isbn: "462357162-9",
-      edition: "Standard",
-      price: 6683,
-      stock: 35,
-    },
-    {
-      title: "Mr. Nice",
-      author: "Rosa Aleswell",
-      volume: 26,
-      description: "Duis aliquam convallis nunc.",
-      imageURL: "http://dummyimage.com/400x400.png/cc0000/ffffff",
-      genre: "Comedy",
-      isbn: "635532172-1",
-      edition: "Limited",
-      price: 8450,
-      stock: 96,
-    },
-  ];
-  const dummySeeds = await Promise.all(
-    dummyBooks.map(index => Book.create(index))
-  );
-
   /***********************  SEEDING EVENMOREBOOKS BY ROSE *****************/
   const evenMorebooks = [
     {
@@ -339,7 +259,153 @@ Throughout the backstabbing and assassination attempts, the Buddha remains stead
       genre: "slice of life",
     },
   ];
-  await Promise.all(evenMorebooks.map(book => Book.create(book)));
+  await Promise.all(evenMorebooks.map((book) => Book.create(book)));
+
+  /***********************  SEEDING DEC.20 BY ROSE *****************/
+
+  const hellboys = [
+    {
+      title: "Hellboy: Seed of Destruction",
+      author: "Mike Mignola",
+      volume: 1,
+      description: `
+      Hellboy bursts onto the film noir monster detective scene. From his apocalyptic origin in WWII England to the modern-day case of the sole survivor of a doomed Arctic expedition, Hellboy must battle vampire frog creatures and worse in his debut miniseries. Created by Mike Mignola, with script by John Byrne, and colors by Mark Chiarello. Hellboy -- World's Greatest Paranormal Investigator. Also featuring chapter one in the astounding origin of Monkeyman and O'Brien, the most dynamic duo since a talking scientific genius (who also happens to be an ape) and a beautiful, super-strong blonde (who also happens to be a scientist) teamed up to battle extra-dimensional menaces while looking for a way to return Monkeyman to his home dimension!`,
+      imageURL: "/static/bookImages/hellboy-sd-1.jpg",
+      genre: "crime",
+      price: 9999,
+      yearOfPublish: 1994,
+      stock: 100,
+      edition: "first press",
+    },
+    {
+      title: "Hellboy: Seed of Destruction",
+      author: "Mike Mignola",
+      volume: 3,
+      description: `
+      Things get uglier as Hellboy explores the decaying temple beneath the Cavendish mansion and discovers an ancient evil that threatens to unleash upon the world dark, unholy forces from the dawn of time, using Hellboy's companion Liz as its unwitting tool. Earth teeters on the brink of destruction, with only Hellboy, the World's Greatest Paranormal Investigator, there to right the balance. Also featuring chapter three in the incredible origin of Monkeyman and O'Brien, wherein Monkeyman pits himself against the horrors of learning the English language.
+      `,
+      imageURL: "/static/bookImages/hellboy-sd-3.jpg",
+      genre: "crime",
+      edition: "first press",
+      price: 9999,
+      yearOfPublish: 1994,
+      stock: 100,
+    },
+    {
+      title: "Hellboy: The Wild Hunt",
+      author: "Mike Mignola",
+      volume: 1,
+      description: `
+      When ancient giants begin to rise from their graves across England, Hellboy is invited to join a mysterious group called the Wild Hunt and help bring them down. But the hunt leads to betrayal, and Hellboy finds himself up against enemies as angry about what he is as what he's done. "The fading children of the earth" gather in the shadows, waiting for the promised return of the Queen of Blood, and a chance to once again "shake the trees, crack mountains, and make the daytime world weep in fear."`,
+      imageURL: "/static/bookImages/hellboy-wh-1.jpg",
+      genre: "crime",
+      edition: "first press",
+      price: 4999,
+      yearOfPublish: 2008,
+      stock: 49,
+    },
+    {
+      title: "Hellboy: The Wild Hunt",
+      author: "Mike Mignola",
+      volume: 2,
+      description: `
+      Hellboy contends with treacherous huntsmen, mystic visions, newly awakened bands of vicious giants, and a talking bird as he continues his journey across the rolling hills of England. Things far stranger await, should Hellboy's enemies succeed in resurrecting the Queen of Blood . . .
+      `,
+      imageURL: "/static/bookImages/hellboy-wh-2.jpg",
+      genre: "crime",
+      edition: "first press",
+      price: 4999,
+      yearOfPublish: 2009,
+      stock: 49,
+    },
+    {
+      title: "Hellboy: The Wild Hunt",
+      author: "Mike Mignola",
+      volume: 3,
+      description: `
+      Hellboy sets out across the bleak hills of Ireland to find out what the recent omens he’s experienced have been referring to—while the newly resurrected Queen of Blood rises to take control of the witches of England, torturing the ones who betrayed her, and preparing the rest for an even more bloody campaign against the race of man. Hot on the heels of the 2008 summer film release Hellboy II: The Golden Army, Mike Mignola and Duncan Fegredo reunite with Hellboy: The Wild Hunt to follow-up on the events of their best-selling 2007 series Hellboy: Darkness Calls. This issue also includes a back-up story written by Mike Mignola and drawn by B.P.R.D. artist Guy Davis!      `,
+      imageURL: "/static/bookImages/hellboy-wh-3.jpg",
+      genre: "crime",
+      edition: "first press",
+      price: 4999,
+      yearOfPublish: 2009,
+      stock: 49,
+    },
+    {
+      title: "Hellboy: The Wild Hunt",
+      author: "Mike Mignola",
+      volume: 4,
+      description: `
+      The Queen of Blood is rallying her monstrous army and preparing to march against the human race, and humanity's survival depends on Hellboy and Alice finding a supernatural army of their own. But the monsters Hellboy has killed over the years had powerful friends, and a vicious horde out for revenge has lured the pair into a trap. Now Hellboy and Alice's only hope for survival rests with three strange little birds, and their even stranger mistress.`,
+      imageURL: "/static/bookImages/hellboy-wh-4.jpg",
+      genre: "crime",
+      edition: "first press",
+      price: 4999,
+      yearOfPublish: 2009,
+      stock: 49,
+    },
+  ];
+
+  await Promise.all(hellboys.map((book) => Book.create(book)));
+
+  const sailormoons = [
+    {
+      title: "Sailor Moon",
+      author: "Naoko Takeuchi",
+      volume: 1,
+      description: `
+      One of the most-beloved of all Japanese manga titles, Naoko Takeuchi's Sailor Moon has enthralled millions of readers worldwide since its debut in book form in early 1992. When Usagi Tsukino adopts a stray cat, she gets more than she bargains for The talking cat, Luna, informs Usagi that she is actually Sailor Moon, a magical princess from the future and protector of the Solar System. With the help of her new friends, the Sailor Scouts, and the mysterious Tuxedo Mask, Sailor Moon embarks on a quest to save us all from the evil powers of the Negaverse.
+    `,
+      imageURL: "/static/bookImages/sailormoon1.jpg",
+      genre: "action",
+      price: 999,
+      yearOfPublish: 1998,
+      stock: 20,
+    },
+    {
+      title: "Sailor Moon",
+      author: "Naoko Takeuchi",
+      volume: 11,
+      description: `
+      One of the most-beloved of all Japanese manga titles, Naoko Takeuchi's Sailor Moon has enthralled millions of readers worldwide since its debut in book form in early 1992. When Usagi Tsukino adopts a stray cat, she gets more than she bargains for The talking cat, Luna, informs Usagi that she is actually Sailor Moon, a magical princess from the future and protector of the Solar System. With the help of her new friends, the Sailor Scouts, and the mysterious Tuxedo Mask, Sailor Moon embarks on a quest to save us all from the evil powers of the Negaverse.
+    `,
+      imageURL: "/static/bookImages/sailormoon11.jpg",
+      genre: "action",
+      price: 999,
+      yearOfPublish: 1999,
+      stock: 20,
+    },
+    {
+      title: "Sailor Moon",
+      author: "Naoko Takeuchi",
+      volume: 28,
+      description: `
+      One of the most-beloved of all Japanese manga titles, Naoko Takeuchi's Sailor Moon has enthralled millions of readers worldwide since its debut in book form in early 1992. When Usagi Tsukino adopts a stray cat, she gets more than she bargains for The talking cat, Luna, informs Usagi that she is actually Sailor Moon, a magical princess from the future and protector of the Solar System. With the help of her new friends, the Sailor Scouts, and the mysterious Tuxedo Mask, Sailor Moon embarks on a quest to save us all from the evil powers of the Negaverse.
+    `,
+      imageURL: "/static/bookImages/sailormoon28.jpg",
+      genre: "action",
+      price: 999,
+      yearOfPublish: 2001,
+      stock: 20,
+    },
+    {
+      title: "Sailor Moon",
+      author: "Naoko Takeuchi",
+      volume: 35,
+      description: `
+      One of the most-beloved of all Japanese manga titles, Naoko Takeuchi's Sailor Moon has enthralled millions of readers worldwide since its debut in book form in early 1992. When Usagi Tsukino adopts a stray cat, she gets more than she bargains for The talking cat, Luna, informs Usagi that she is actually Sailor Moon, a magical princess from the future and protector of the Solar System. With the help of her new friends, the Sailor Scouts, and the mysterious Tuxedo Mask, Sailor Moon embarks on a quest to save us all from the evil powers of the Negaverse.
+    `,
+      imageURL: "/static/bookImages/sailormoon35.jpg",
+      genre: "action",
+      price: 999,
+      yearOfPublish: 2001,
+      stock: 20,
+    },
+  ];
+
+  await Promise.all(sailormoons.map((book) => Book.create(book)));
+
+  /***************************************************************/
 
   const [
     devilman1,
@@ -643,7 +709,6 @@ Over 1.5 million copies sold of Dark Horse's Berserk manga! Inspired the hit ani
       chainsawMan4,
       odishogun1,
     },
-    dummySeeds,
   };
 };
 
