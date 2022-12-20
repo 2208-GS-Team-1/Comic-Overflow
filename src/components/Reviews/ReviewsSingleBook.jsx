@@ -11,8 +11,9 @@ import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 import "./ReviewsSingleBook.css";
+import UserReview from "./UserReview";
 
-const ReviewsSingleBook = ({ book }) => {
+const ReviewsSingleBook = ({ book, user }) => {
   const navigate = useNavigate;
   const [currentPage, setCurrentPage] = useState(0);
   const [allReviews, setAllReviews] = useState([]);
@@ -92,6 +93,7 @@ const ReviewsSingleBook = ({ book }) => {
           disabledClassName={"pagination__link--disabled"}
           activeClassName={"pagination__link--active"}
         />
+        <UserReview handleAllReviews={handleAllReviews} book={book} user={user} />
     </div>
   );
 };

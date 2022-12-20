@@ -70,6 +70,35 @@ nav {
   justify-content: space-around;
 }
 
+
+.reviewformContainer {
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  background-color: white;
+  padding: 24px;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 /20%),
+    0px 2px 2px 0px rgb(0 0 0 /14%),
+    0px, 1px, 5px, 0px rgb(0 0 0 / 12%);
+}
+
+.reviewformBase {
+  margin-top: 30px;
+}
+
+.innerreviewformBase {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewLabel {
+  font-family: 'Dogfish', sans-serif;
+  margin: 10px;
+}
+
+.reviewbutton {
+  margin-top: 10px;
+}
 .popup {
   position: fixed;
   top: 0; /*this makes pop-up overlay the whole screen*/

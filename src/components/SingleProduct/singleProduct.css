@@ -88,3 +88,18 @@ button {
 .singleBookReivews h1{
     margin: 0;
 }
+
+.starReviewContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.reviewLink {
+    margin-left: 20px;
+}
+
+a {
+    text-decoration: none;
+    font-family: 'Dogfish', sans-serif;
+}
