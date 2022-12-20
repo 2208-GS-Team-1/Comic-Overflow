@@ -8,6 +8,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setCart } from "../../store/cartSlice";
+import { setUser } from "../../store/userSlice";
 
 // Validation schema using yup, to check is text field entries are valid.
 const validationSchema = yup.object({
@@ -45,13 +46,7 @@ function CreateAccountForm() {
   const [creationSuccess, setCreationSuccess] = useState(false);
   const [creationFailure, setCreationFailure] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const clearCart = async () => {
-    const emptyCart = JSON.stringify([]);
-    localStorage.setItem("cart", emptyCart);
-    const newCart = localStorage.getItem("cart");
-    const freshCart = JSON.parse(newCart);
-    dispatch(setCart(freshCart));
-  };
+
   const formik = useFormik({
     // Initializes our formik.values object to have these key-value pairs.
     initialValues: {
@@ -64,7 +59,7 @@ function CreateAccountForm() {
     // Give it our yup validationSchema
     validationSchema: validationSchema,
 
-    onSubmit: async values => {
+    onSubmit: async (values) => {
       // Update Backend: axios post req to User
       try {
         // On backend, the req.body cannot contain confirmPassword because it breaks sequelize.
@@ -77,48 +72,68 @@ function CreateAccountForm() {
           lastName: values.lastName,
         };
 
-        await axios.post("/api/users", bodyToSubmit);
-        setErrorMessage(errorMessage); // This is the message from the api's res.send
+        // createdUser from DB
+        const createdUser = await axios.post("/api/users", bodyToSubmit);
+        const userId = createdUser.data.id;
+
+        //************************* AUTO LOGIN with new account info ********************************* */
+
+        // Get/Create token for this login session
+        const credentials = {
+          username: values.username,
+          password: values.password,
+        };
+        const response = await axios.post("/api/auth", credentials);
+        const token = response.data;
+        window.localStorage.setItem("token", token);
+
+        //************************* ******************************** ********************************* */
+
+        //***************** POSTing the guest cart to our DB with this newly created user *******************/
+
+        // Create header config to give for the POST requests (and GET later) to cart API
+        const config = { headers: { authorization: "Bearer " + token } };
+
+        // If they had stuff in their cart before creating an account, we need to insert these items into the DB
         const cartString = localStorage.getItem("cart");
         const guestCart = JSON.parse(cartString);
-        // When a guest makes a cart, and wants to transfer it to their account we find them by their email and transwer›
         if (guestCart.length > 0) {
-          const usersEmail = bodyToSubmit.email;
-          const newUser = await axios.get(`/api/users/email/${usersEmail}`);
-          const userId = newUser.data.id;
+          // Loop through what was parsed from localStorage cart and submit it to the DB
           await Promise.all(
-            guestCart.map(async cartItem => {
+            guestCart.map(async (cartItem) => {
               let bookId = cartItem.book.id;
               let quantityToAdd = cartItem.quantity;
               let body = { userId, bookId, quantityToAdd };
-              await axios.post("/api/cart/quantity", body);
+              await axios.post("/api/cart/quantity", body, config);
             })
           );
         }
 
-        await clearCart();
-        /* Ideally would like to log the user in here, and THEN redirect to home
-      	But not sure how to generate the JWT and the stuff with authorization.
-				Would also need to dispatch the redux state of user, I think.
-				
-				So for now, just redirect them to the login page so they can log in with new account.
-			  */
+        // Refetch the newly created user's cart and give it to localstorage - this has fields we need.
+        const fetchedCart = await axios.get(`/api/cart/user/${userId}`, config);
+
+        // Overwrite the localStorage cart to this fetched one, which has stuff like userID on it!
+        localStorage.setItem("cart", JSON.stringify(fetchedCart.data));
+
+        // Give this fetched cart to redux, too
+        dispatch(setCart(fetchedCart.data));
 
         // Update the state that is used to trigger the mui Alert Success component
         setCreationSuccess(true);
         // In case it failed before, set that state too, so the failure message disappears
         setCreationFailure(false);
+
         // Wait 3 seconds before redirecting the user to login page
         setTimeout(() => {
-          navigate("/login");
-        }, 2000);
+          // Finally - dispatch user to the one just made
+          // This goes in here to prevent the current URL from prematurely showing '404 you are already logged in!'
+          dispatch(setUser(createdUser.data));
+          navigate("/");
+        }, 3000);
       } catch (err) {
-        // This is the message from the api's res.send
-        const errorMessage = err.response.data;
-        setErrorMessage(errorMessage); // Give that error message to our mui alert
-
-        // If account creation failed (eg, an acct with that username already exists)
+        // Change state - If account creation failed (eg, an acct with that username already exists)
         setCreationFailure(true);
+        setErrorMessage(err.response.data); // Give the error message from our api's res.send to our mui alert's text body
       }
     },
   });
@@ -232,7 +247,7 @@ function CreateAccountForm() {
 
         {creationSuccess && (
           <Alert sx={{ marginTop: 2 }} severity="success">
-            Account created! Redirecting to login page...
+            Account created! Logging you in now...
           </Alert>
         )}
         {creationFailure && (

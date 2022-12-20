@@ -10,29 +10,33 @@ import { Alert } from "@mui/material";
 const EditUser = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector(state => state.user.user);
+  const user = useSelector((state) => state.user.user);
   const id = user.id;
   const [address, setAddress] = useState(user.address);
   const [email, setEmail] = useState(user.email);
   const [phoneNumber, setNumber] = useState(user.phoneNumber);
 
   const [errorMessage, setErrorMessage] = useState(false);
-  const addressHandler = event => {
+  const addressHandler = (event) => {
     setAddress(event.target.value);
   };
-  const emailHandler = event => {
+  const emailHandler = (event) => {
     setEmail(event.target.value);
   };
-  const numberHandler = event => {
+  const numberHandler = (event) => {
     setNumber(event.target.value);
   };
 
-  const updateHandler = async event => {
+  const updateHandler = async (event) => {
     try {
       event.preventDefault();
+      // JWT & authorization header to give for authorization check in the API
+      const token = window.localStorage.getItem("token");
+      const config = { headers: { authorization: "Bearer " + token } };
+
       const updateData = { address, email, phoneNumber }; // this is our body to PUT with
-      await axios.put(`/api/users/${id}`, updateData); // PUT req
-      const userData = await axios.get(`/api/users/${id}`); // Refetch from backend
+      await axios.put(`/api/users/${id}`, updateData, config); // PUT req
+      const userData = await axios.get(`/api/users/${id}`, config); // Refetch from backend
       dispatch(setUser(userData.data)); // dispatch to reflect changes
       navigate("/myAccount");
     } catch (err) {

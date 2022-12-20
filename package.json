@@ -10,13 +10,13 @@
     "test:dev": "DATABASE_URL=postgres://localhost/acme_shopping_test_db npm run test -- --watch",
     "test:dev:quiet": "QUIET=true npm run test:dev",
     "start:dev": "JWT=felix nodemon server/index.js --ignore dist/ --ignore src/ & npm run build:dev",
-    "seed": "node server/db/seed.js"
+    "seed": "node server/db/seed.js",
+    "start": "node server/db/seed.js && node server/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/preset-env": "^7.20.2",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.10.16",
@@ -29,8 +29,8 @@
     "formik": "^2.2.9",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",
-    "react-icons": "^4.7.1",
     "prop-types": "^15.8.1",
+    "react-icons": "^4.7.1",
     "react-paginate": "^8.1.4",
     "sequelize": "^6.25.3",
     "stripe": "^11.3.0",
@@ -39,7 +39,8 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.6",
+    "@babel/core": "^7.20.5",
+    "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
     "axios": "^1.1.3",
     "babel-loader": "^9.0.0",

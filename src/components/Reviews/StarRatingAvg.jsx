@@ -35,11 +35,11 @@ const StarRatingAvg = ({ book }) => {
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       {/* if length of array > 0 then show the average rating, otherwise show no ratings */}
-      <span style={{ maxHeight: "inherit" }}>
+      <span style={{ maxHeight: "inherit",letterSpacing: 0 }}>
         {avgReview > 0 ? (
           <Rating name="read-only" value={avgReview} precision={0.5} readOnly />
         ) : (
-          "No ratings yet!"
+          "No reviews"
         )}
       </span>
       {reviewCount > 0 && (

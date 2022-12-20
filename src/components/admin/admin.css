@@ -11,6 +11,12 @@
     padding: 50px;
     display: flex;
     flex-direction: column;
+    background-color: white;
+}
+.adminUserButtons{
+    display: flex;
+    flex-direction: row;
+    gap:10px
 }
 
 /* Below is for Admin Product page */
@@ -28,11 +34,31 @@
     padding: 50px;
     display: flex;
     flex-direction: column;
+    background-color: white;
+    align-items: center;
+    min-width: 690px;
 }
 
 .adminProductButton {
     display: flex;
     flex-direction: row;
+    gap:10px
+}
+
+.adminUserContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.adminUserButtons {
+    display: flex;
+    flex-direction: row;
+}
+
+.adminH2 {
+    font-size: 28pt;
 }
 
 .adminsUserEditPage {
@@ -49,6 +75,50 @@
     margin: 5px;
 }
 
+.adminEditSmallP {
+    margin: 2px;
+}
+
 .adminformDetail {
     outline: none;
 }
+
+/* PAGINATION STYLES */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  .pagination a {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+    margin: 4px;
+    font-family: 'Dogfish', sans-serif;
+    color: black;
+  }
+  
+  .pagination__link {
+    font-weight: bold;
+  }
+  
+  .pagination__link--active a {
+    color: #fff;
+    background-color: rgb(255, 216, 19);
+    color: black;
+
+  }
+  
+  .pagination__link--disabled a {
+    color: rgb(198, 197, 202);
+    border: 1px solid rgb(198, 197, 202);
+  }
+
+  .adminEditPWarning {
+      color: red;
+  }
+
+

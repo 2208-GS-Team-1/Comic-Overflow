@@ -9,8 +9,10 @@ const AdminBookEdit = () => {
   const navigate = useNavigate();
 
   const { id } = useParams();
+  const selectedBook = useSelector((state) => state.book.selectedBook);
+
+  // State used for input:
   const [loading, setLoading] = useState(false);
-  const selectedBook = useSelector(state => state.book.selectedBook);
   const [title, setTitle] = useState(selectedBook.title);
   const [author, setAuthor] = useState(selectedBook.author);
   const [description, setdescription] = useState(selectedBook.description);
@@ -33,57 +35,64 @@ const AdminBookEdit = () => {
     adminBookFetcher();
   }, []);
 
-  const titleHandler = event => {
+  const titleHandler = (event) => {
     setTitle(event.target.value);
   };
-  const authorHandler = event => {
+  const authorHandler = (event) => {
     setAuthor(event.target.value);
   };
-  const descriptionHandler = event => {
+  const descriptionHandler = (event) => {
     setdescription(event.target.value);
   };
-  const genreHandler = event => {
+  const genreHandler = (event) => {
     setGenre(event.target.value);
   };
-  const volumeHandler = event => {
+  const volumeHandler = (event) => {
     setVolume(event.target.value);
   };
-  const yopHandler = event => {
+  const yopHandler = (event) => {
     setYOP(event.target.value);
   };
-  const isbnHandler = event => {
+  const isbnHandler = (event) => {
     setIsbn(event.target.value);
   };
-  const editionHandler = event => {
+  const editionHandler = (event) => {
     setEdition(event.target.value);
   };
-  const priceHandler = event => {
+  const priceHandler = (event) => {
     setPrice(event.target.value);
   };
-  const stockHandler = event => {
+  const stockHandler = (event) => {
     setStock(event.target.value);
   };
-  const statusHandler = event => {
-    setStatus(event.target.value);
-  };
 
-  const bookUpdater = async event => {
-    event.preventDefault();
-    const updatedBook = {
-      title,
-      author,
-      description,
-      genre,
-      volume,
-      yearOfPublish,
-      isbn,
-      edition,
-      price,
-      stock,
-      isDeactivated,
-    };
+  const bookUpdater = async (event) => {
     try {
-      await axios.put(`/api/books/${id}`, updatedBook);
+      event.preventDefault();
+      const updatedBook = {
+        title,
+        author,
+        description,
+        genre,
+        volume,
+        yearOfPublish,
+        isbn,
+        edition,
+        price,
+        stock,
+      };
+      console.log("body we are sending up for PUT -> ");
+      console.log(updatedBook);
+
+      // JWT & authorization header to give for authorization check in the API
+      const token = window.localStorage.getItem("token");
+      const config = { headers: { authorization: "Bearer " + token } };
+
+      // Update book in DB
+      const { data } = await axios.put(`/api/books/${id}`, updatedBook, config);
+
+      // update setSelected book to have what's in DB
+      dispatch(setSelectedBook(data));
 
       // navigate admin back to the list of all books
       navigate(`/admin/books`);
@@ -161,7 +170,7 @@ const AdminBookEdit = () => {
               id="edition"
               className="editInput"
               placeholder={
-                selectedBook.edition.length === 0
+                selectedBook.edition === null
                   ? "no edition info"
                   : selectedBook.edition
               }
@@ -181,15 +190,7 @@ const AdminBookEdit = () => {
               placeholder={selectedBook.stock}
               onChange={stockHandler}
             />
-            <label htmlFor="status">Deactivation status</label>
-            <input
-              id="status"
-              className="editInput"
-              placeholder={
-                selectedBook.isDeactivated === false ? "false" : "true"
-              }
-              onChange={statusHandler}
-            />
+
             <button type="submit">Submit</button>
           </div>
         </form>

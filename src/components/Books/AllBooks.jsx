@@ -1,5 +1,6 @@
 import {
   Card,
+  Divider,
   FormControl,
   InputLabel,
   MenuItem,
@@ -17,6 +18,7 @@ import { Link } from "react-router-dom";
 import "./books.css";
 import StarRatingAvg from "../Reviews/StarRatingAvg";
 import AllProductsAdd from "../addToCart/AllProductsAdd";
+import FilterBar from "../filterBar/FilterBar";
 
 const AllBooks = () => {
   // useRef allows us to make a reference to a DOM node
@@ -26,6 +28,9 @@ const AllBooks = () => {
   const books = useSelector(state => state.book.books);
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedSort, setSelectedSort] = useState("newest");
+  const [authorFilter, setAuthorFilter] = useState('none')
+  const [genreFilter, setGenreFilter] = useState('none')
+  const [priceFilter, setPriceFilter] = useState('none')
   const fetchBooks = async () => {
     setLoading(true);
     try {
@@ -51,6 +56,7 @@ const AllBooks = () => {
   const handleSortChange = event => {
     setSelectedSort(event.target.value);
   };
+
   // handle the react page # state
   function handlePageClick({ selected: selectedPage }) {
     setCurrentPage(selectedPage);
@@ -60,7 +66,10 @@ const AllBooks = () => {
   // 'sortedBooks' is the sorted array that we loop over to allow the user to sort by what they want
   let sortedBooks = [...books];
   // switch case that sorts the array based on the selected sort
-  const sortBooks = () => {
+  const sortAndFilterBooks = () => {
+    const firstThird = ['a', 'b', 'c', 'd', 'e', 'f', 'g','h'];
+    const secondThird = ['i', 'j', 'k', 'l', 'm', 'n','o', 'p', ];
+    const thirdThird = ['q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
     switch (selectedSort) {
       case "ascending":
         sortedBooks.sort((a, b) => (a.price > b.price ? 1 : -1));
@@ -105,8 +114,47 @@ const AllBooks = () => {
         });
         break;
     }
+    switch(authorFilter){
+      case "firstThird":
+        sortedBooks = sortedBooks.filter((book)=>
+        firstThird.includes(book.author[0].toLowerCase())
+        )
+        break;
+      case "secondThird":
+        sortedBooks = sortedBooks.filter((book)=> 
+        secondThird.includes(book.author[0].toLowerCase()))
+      break;
+      case "thirdThird":
+      sortedBooks = sortedBooks.filter((book)=> 
+      thirdThird.includes(book.author[0].toLowerCase()))
+      break;
+    }
+    switch(genreFilter){
+      case "action":
+        sortedBooks = sortedBooks.filter((book)=> 
+        book.genre.toLowerCase() === 'action')
+        break;
+      case "adventure":
+        sortedBooks = sortedBooks.filter((book)=> 
+        book.genre.toLowerCase() === 'adventure')
+        break;
+      case "drama":
+        sortedBooks = sortedBooks.filter((book)=> 
+        book.genre.toLowerCase() === 'drama')
+        break;
+    }
+    switch(priceFilter){
+      case "lessThanTen":
+      sortedBooks = sortedBooks.filter((book)=> book.price < 1000)
+      break;
+      case "betweenTenAndTwenty":
+      sortedBooks = sortedBooks.filter((book)=> book.price >= 1000 && book.price < 2000)
+      break;
+      case "moreThanTwenty":
+      sortedBooks = sortedBooks.filter((book)=> book.price > 2000)
+    }
   };
-  sortBooks();
+  sortAndFilterBooks();
   // PAGINATION
   // Hardcoded # of books per page, if in the future we wanted the user to be able to change the # of items per page
   // we would then could have state determine this.
@@ -116,35 +164,54 @@ const AllBooks = () => {
   const pageCount = Math.ceil(sortedBooks.length / PER_PAGE);
   //
   return (
+    <div
+    className="allProductsTitle"
+    >
+      <h1>All Comics</h1>
+    <div
+    className="filterBarAndBooks"
+    >
+    <div
+    className="filterBar"
+    >
+    <FilterBar 
+    setAuthorFilter={setAuthorFilter} 
+    setGenreFilter={setGenreFilter}
+    setPriceFilter={setPriceFilter}
+    />
+    </div>
     <div className="productsContainer">
       {/* VV this is the node we're referencing */}
       <div ref={wrapperRef}></div>
-      <h1>All Comics</h1>
+
       <div className="sortBar">
         <FormControl
           variant="filled"
-          sx={{ backgroundColor:"white",color: "black", m: 1, minWidth: 120, border: '1px solid rgba(0,0,0, .2)' }}
+          sx={{ background:"white",color: "black", m: 1, minWidth: 120, border: '1px solid rgba(0,0,0, .2)', fontFamily:"'Dogfish', sans-serif"}}
           size="small"
-        >
-          <InputLabel sx={{ color: "black" }}>Sort</InputLabel>
-          <Select onChange={handleSortChange} label="Sort" value={selectedSort}>
-            <MenuItem value="newest">Newest Arrivals</MenuItem>
-            <MenuItem value="ascending">Price, low to high</MenuItem>
-            <MenuItem value="descending">Price, high to low</MenuItem>
-            <MenuItem value="a-z">Title, A-Z</MenuItem>
-            <MenuItem value="z-a">Title, Z-A</MenuItem>
+          >
+          <InputLabel sx={{ color: "black", fontFamily:"'Dogfish', sans-serif" }}>Sort</InputLabel>
+          <Select onChange={handleSortChange} label="Sort" value={selectedSort} 
+          sx={{ color: "black", backgroundColor:"white", fontFamily:"'Dogfish', sans-serif" }}
+          >
+            <MenuItem sx={{ color: "black", fontFamily:"'Dogfish', sans-serif" }}value="newest">Newest Arrivals</MenuItem>
+            <MenuItem sx={{ color: "black", fontFamily:"'Dogfish', sans-serif" }}value="ascending">Price, low to high</MenuItem>
+            <MenuItem sx={{ color: "black", fontFamily:"'Dogfish', sans-serif" }}value="descending">Price, high to low</MenuItem>
+            <MenuItem sx={{ color: "black", fontFamily:"'Dogfish', sans-serif" }}value="a-z">Title, A-Z</MenuItem>
+            <MenuItem sx={{ color: "black", fontFamily:"'Dogfish', sans-serif" }}value="z-a">Title, Z-A</MenuItem>
           </Select>
         </FormControl>
       </div>
-      <Card className="cardForAllProducts" sx={{ boxShadow: 9 }}>
+      <Card className="cardForAllProducts" sx={{ boxShadow: 9, outline: '1px solid',
+    outlineColor: 'rgb(54, 54, 54)'}}>
         <div className="allBooks">
           {currentPageData.map(book => {
             return (
               <Card
-                sx={{ boxShadow: 2 }}
-                className="productCard"
-                variant="outlined"
-                key={book.id}
+              sx={{ boxShadow: 2 }}
+              className="productCard"
+              variant="outlined"
+              key={book.id}
               >
                 <div className="productCardImg">
                   <Link to={`/books/${book.id}`}>
@@ -174,9 +241,11 @@ const AllBooks = () => {
           nextLinkClassName={"pagination__link"}
           disabledClassName={"pagination__link--disabled"}
           activeClassName={"pagination__link--active"}
-        />
+          />
       </div>
     </div>
+  </div>
+          </div>
   );
 };
 

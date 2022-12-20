@@ -1,16 +1,17 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { Card } from "@mui/material";
 import { Rating } from "@mui/material";
 import axios from 'axios';
+import { Alert } from "@mui/material";
 
-const UserReview = ({selectedBook, user, singleBookHandler}) => {
+const UserReview = ({book, user, handleAllReviews}) => {
 
     const [subject, setSubject] = useState("")
     const [content, setContent] = useState("");
     const [rating, setRating] = useState(1);
+    const [errorMessage, setErrorMessage] = useState(false);
     const userId = user.id;
-    const bookId = selectedBook.id
+    const bookId = book.id
 
     const subjectHandler = (event) => {
         setSubject(event.target.value);
@@ -25,10 +26,14 @@ const UserReview = ({selectedBook, user, singleBookHandler}) => {
     }
 
     const reviewMaker = async (event) => {
-        event.preventDefault();
-        const reviewData = { subject, content, rating, userId, bookId }
-        await axios.post("/api/reviews", reviewData);
-        singleBookHandler();
+        try {
+            event.preventDefault();
+            const reviewData = { subject, content, rating, userId, bookId }
+            await axios.post("/api/reviews", reviewData);
+            handleAllReviews();
+        } catch (error) {
+            setErrorMessage(true);
+        }
     }
 
     return (
@@ -39,7 +44,7 @@ const UserReview = ({selectedBook, user, singleBookHandler}) => {
                     <label className='reviewLabel'>Subject</label>
                     <input onChange={subjectHandler}
                     placeholder='Enter subject' />
-                    <label className='reviewLabel'>Review for {selectedBook.title}</label>
+                    <label className='reviewLabel'>Review for {book.title}</label>
                     <textarea
                     onChange={contentHandler}
                     rows="10"
@@ -47,6 +52,11 @@ const UserReview = ({selectedBook, user, singleBookHandler}) => {
                     <label className='reviewLabel'>Rating</label>
                     <Rating name="no-value" defaultValue={1} onChange={ratingHandler} />
                     <button className='reviewbutton' type='submit'>Submit</button>
+                    {errorMessage && (
+                    <Alert severity="error" sx={{ marginTop: "5px" }}>
+                        Please fill out the review completely!
+                    </Alert>
+                    )}
                 </form>
             </div>
         </div>

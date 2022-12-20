@@ -18,8 +18,9 @@ const SingleProduct = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const selectedBook = useSelector(state => state.book.selectedBook);
   const user = useSelector(state => state.user.user);
+  const selectedBook = useSelector((state) => state.book.selectedBook);
+
   const [loading, setLoading] = useState(false);
   const [quantityChange, setQuantityChange] = useState(1);
   const { id } = useParams();
@@ -37,7 +38,7 @@ const SingleProduct = () => {
     }
   };
 
-  const handleQuantityChange = event => {
+  const handleQuantityChange = (event) => {
     const quantityToAdd = Number(event.target.value);
     setQuantityChange(quantityToAdd);
   };
@@ -57,93 +58,86 @@ const SingleProduct = () => {
   const bookPrice = (selectedBook.price / 100).toFixed(2);
   return (
     <div className="singleProductPage">
-      <Card 
-      className="cardForAllProducts"
-      sx={{ boxShadow: 2 }}
-      >
-      <div className="singleProduct_container">
-        <div className="productimage_left">
-          <Card
-          sx={{ boxShadow: 5}}
-          >
-          <img
-            className="singleProductImg"
-            src={selectedBook.imageURL}
-            width="200px"
-            height="auto"
-          />
-          </Card>
-        </div>
-        <div className="productDescrib_right">
-          <h1 className="selectedTitle">{selectedBook.title}</h1>
-
-          {selectedBook.edition ? (
-            <h3>
-              Volume {selectedBook.volume} - {selectedBook.edition} Edition
-            </h3>
-          ) : (
-            <h3>Volume {selectedBook.volume} </h3>
-          )}
-
-          <div className="isbn">ISBN: {selectedBook.isbn}</div>
-          {/*if the book is out of stock, displayed price & stock status will change */}
-          {selectedBook.stock !== 0 ? (
-            <>
-              <div className="price">${bookPrice}</div>
-              <p className="inStock">In Stock</p>
-            </>
-          ) : (
-            <>
-              <div className="price">$0.00</div>
-              <p className="inStock">Out of Stock</p>
-            </>
-          )}
-
-          <div className="quantity">
-            <form className="singleProductForm">
-              <input
-                className="singleProductInput"
-                name="quantity"
-                min="1"
-                max={selectedBook.stock}
-                type="number"
-                placeholder="1"
-                value={quantityChange.toString()}
-                onChange={handleQuantityChange}
-                // value={quantityToAdd}
+      <Card className="cardForAllProducts" sx={{ boxShadow: 2 }}>
+        <div className="singleProduct_container">
+          <div className="productimage_left">
+            <Card sx={{ boxShadow: 5 }}>
+              <img
+                className="singleProductImg"
+                src={selectedBook.imageURL}
+                width="200px"
+                height="auto"
               />
-              {/*Cart button will be disabled when out of stock */}
-              {selectedBook.stock !== 0 ? (
-                <div className="productCardButtons">
-                  <SingleProductAdd
-                    book={selectedBook}
-                    quantity={quantityChange}
-                  />
-                </div>
-              ) : (
-                <>Out of Stock</>
-              )}
-            </form>
+            </Card>
           </div>
-          <div className="starReviewContainer">
-            <StarRatingAvg key={selectedBook.id} book={selectedBook} />
-            <div className="reviewLink"><a href="#reviewContainer"><p>Leave a Review</p></a></div>
-          </div>
-          <div className="descrb_box">
-            <h2>Description</h2>
-            <div className="author">Written by {selectedBook.author}</div>
-            <div className="product_text">{selectedBook.description}</div>
+          <div className="productDescrib_right">
+            <h1 className="selectedTitle">{selectedBook.title}</h1>
+
+            {selectedBook.edition ? (
+              <h3>
+                Volume {selectedBook.volume} - {selectedBook.edition} Edition
+              </h3>
+            ) : (
+              <h3>Volume {selectedBook.volume} </h3>
+            )}
+
+            {selectedBook.isbn && (
+              <div className="isbn">ISBN: {selectedBook.isbn}</div>
+            )}
+            {/*if the book is out of stock, displayed price & stock status will change */}
+            {selectedBook.stock !== 0 ? (
+              <>
+                <div className="price">${bookPrice}</div>
+                <p className="inStock">In Stock</p>
+              </>
+            ) : (
+              <>
+                <div className="price">$0.00</div>
+                <p className="inStock">Out of Stock</p>
+              </>
+            )}
+            <div className="quantity">
+              <form className="singleProductForm">
+                <input
+                  className="singleProductInput"
+                  name="quantity"
+                  min="1"
+                  max={selectedBook.stock}
+                  type="number"
+                  placeholder="1"
+                  value={quantityChange.toString()}
+                  onChange={handleQuantityChange}
+                  // value={quantityToAdd}
+                />
+                {/*Cart button will be disabled when out of stock */}
+                {selectedBook.stock !== 0 ? (
+                  <div className="productCardButtons">
+                    <SingleProductAdd
+                      book={selectedBook}
+                      quantity={quantityChange}
+                    />
+                  </div>
+                ) : (
+                  <>Out of Stock</>
+                )}
+              </form>
+            </div>
+            <div>
+              <StarRatingAvg key={selectedBook.id} book={selectedBook} />
+            </div>
+            <div className="descrb_box">
+              <h2>Description</h2>
+              <div className="author">Written by {selectedBook.author}</div>
+              <div className="product_text">{selectedBook.description}</div>
+            </div>
+
           </div>
         </div>
-      </div>
       </Card>
-      <div
-      className="singleBookReivews"
-      >
+      <div className="singleBookReivews">
         <h1>Reviews</h1>
-        <ReviewsSingleBook key={selectedBook.id} book={selectedBook} />
+        <ReviewsSingleBook key={selectedBook.id} book={selectedBook} user={user} />
         <div id="reviewContainer">
-          <UserReview selectedBook = {selectedBook} user={user} singleBookHandler={singleBookHandler} />
         </div>
       </div>
     </div>
