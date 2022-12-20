@@ -6,7 +6,7 @@ import { setUser } from "../store/userSlice.js";
 
 import CartDrawer from "./cartView/CartDrawer.jsx";
 import RouteContainer from "./RouteContainer.jsx";
-import AdminNavbar from "./admin/adminNavbar.jsx";
+import AdminNavbar from "./admin/AdminNavbar.jsx";
 import Footer from "./footer/Footer.jsx";
 import NavbarMyAccountLink from "./NavbarMyAccountLink.jsx";
 
