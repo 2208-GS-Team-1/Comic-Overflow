@@ -7,6 +7,8 @@ import {
   Card,
   Badge,
   styled,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -29,7 +31,9 @@ const StyledBadge = styled(Badge)(() => ({
 const CartDrawer = () => {
   // const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-
+  const [open, setOpen] = useState(false)
+  const [alertType, setAlertType] = useState('success')
+  const [alertMessage, setAlertMessage] = useState('')
   const { user } = useSelector((state) => state.user);
   const [totalPrice, setTotalPrice] = useState(0);
   const { cart } = useSelector((state) => state.cart);
@@ -82,10 +86,14 @@ const CartDrawer = () => {
   const subtract = async (cartItem) => {
     // if a user is signed in
     if (user.id) {
-      // If they're deleting their own copy...
+      // JWT & authorization header to give for authorization check in the API
+      const token = window.localStorage.getItem("token");
+      const config = { headers: { authorization: "Bearer " + token } };
+
+      // If they're deleting their last copy from their cart...
       if (cartItem.quantity === 1) {
         // Delete in backend
-        await axios.delete(`/api/cart/${cartItem.id}`);
+        await axios.delete(`/api/cart/${cartItem.id}`, config);
         // Create a new array of cart items by filtering out the item that was deleted
         const newCart = cart.filter((item) => item.id !== cartItem.id);
         // Dispatch the new cart array to the Redux store
@@ -94,9 +102,13 @@ const CartDrawer = () => {
       } else {
         // Else, just subtract one from quantity in backend
         const updatedQuantity = cartItem.quantity - 1;
-        await axios.put(`/api/cart/${cartItem.id}`, {
-          quantity: updatedQuantity,
-        });
+        await axios.put(
+          `/api/cart/${cartItem.id}`,
+          {
+            quantity: updatedQuantity,
+          },
+          config
+        );
         //This map might seem redundant, but without it each time the cart quantities are decremented the array would come back in a differet order,
         // so all the products would move each decrement or increment. Now with this we're keeping the array in place
         const newCart = cart.map((item) => {
@@ -144,15 +156,24 @@ const CartDrawer = () => {
   };
 
   const add = async (cartItem) => {
+    // For logged in user AND store has enough stock to allow this:
     if (user.id && cartItem.book.stock >= cartItem.quantity + 1) {
+      // JWT & authorization header to give for authorization check in the API
+      const token = window.localStorage.getItem("token");
+      const config = { headers: { authorization: "Bearer " + token } };
+
       // To 'add', just +1 its quantity in the db
       const updatedQuantity = cartItem.quantity + 1;
-      await axios.put(`/api/cart/${cartItem.id}`, {
-        quantity: updatedQuantity,
-      });
+      await axios.put(
+        `/api/cart/${cartItem.id}`,
+        {
+          quantity: updatedQuantity,
+        },
+        config
+      );
+
       //This map might seem redundant, but without it each time the cart quantities are decremented the array would come back in a differet order,
       // so all the products would move each decrement or increment. Now with this we're keeping the array in place
-
       const newCart = cart.map((item) => {
         if (item.id === cartItem.id) {
           return {
@@ -170,7 +191,12 @@ const CartDrawer = () => {
 
       // Update the total price state variable
       setTotalPrice(updatedTotalPrice);
+    } else if(cartItem.book.stock < cartItem.quantity + 1){
+      setOpen(true)
+      setAlertMessage('Not enough stock!')
+      setAlertType('warning')
     }
+
     // else we edit the guests cart
     else {
       if (cartItem.book.stock >= cartItem.quantity + 1) {
@@ -191,27 +217,29 @@ const CartDrawer = () => {
 
         // Update the total price state variable
         setTotalPrice(updatedTotalPrice);
+      } else {
+        setOpen(true)
+        setAlertMessage('Not enough stock!')
+        setAlertType('warning')
       }
     }
   };
-
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  }
   const handleCheckOut = async () => {
     if (user.id) {
-      const res = await axios.post(`/api/cart/stripeCheckout`, cart);
+      // JWT & authorization header to give for authorization check in the API
+      const token = window.localStorage.getItem("token");
+      const config = { headers: { authorization: "Bearer " + token } };
+
+      const res = await axios.post(`/api/cart/stripeCheckout`, cart, config);
       let url = res.data.url;
       //take user to the Stripe checkout site
       window.location = url;
-
-      //       const token = window.localStorage.getItem("token");
-      //       await axios.get(`/api/cart/user/${user.id}/checkOut`, {
-      //         headers: {
-      //           authorization: "Bearer " + token,
-      //         },
-      //       });
-
-      //       setTotalPrice(0);
-      //       dispatch(setCart([]));
-      //       saveCartToLocalStorage([]);
     } else {
       alert("please sign in to checkout!");
     }
@@ -221,7 +249,8 @@ const CartDrawer = () => {
   }, []);
   return (
     <Box
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+    >
       <Drawer
         anchor="right"
         open={isOpen}
@@ -231,7 +260,8 @@ const CartDrawer = () => {
             alignItems: "center",
             width: "400px",
           },
-        }}>
+        }}
+      >
         {/* eslint-disable-next-line react/no-unescaped-entities */}
         {user.id ? <h1>{user.firstName}'s Cart</h1> : <h1>Guest Cart</h1>}
         <Divider />
@@ -265,11 +295,24 @@ const CartDrawer = () => {
               );
             })}
         </div>
+      <Snackbar
+              open={open}
+              autoHideDuration={3000}
+              onClose={handleCloseAlert}
+              anchorOrigin={{vertical:'bottom', horizontal:'right'}}
+              >
+              <Alert sx={{ display: "flex", justifyContent: "center",minWidth:"200px",marginRight:"60px", marginBottom:'70px', fontFamily: "'Dogfish', sans-serif"}} 
+              variant="filled" 
+              severity={alertType}>
+                {alertMessage}
+              </Alert>
+          </Snackbar>
         <div className="cartTotal">Total: ${(totalPrice / 100).toFixed(2)}</div>
         <div className="checkoutButton">
           <button
             disabled={!cart || cart.length == 0 ? true : false}
-            onClick={handleCheckOut}>
+            onClick={handleCheckOut}
+          >
             Check Out Now
           </button>
         </div>
@@ -280,6 +323,7 @@ const CartDrawer = () => {
         </StyledBadge>
       </IconButton>
     </Box>
+    
   );
 };
 export default CartDrawer;

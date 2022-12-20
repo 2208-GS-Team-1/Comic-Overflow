@@ -3,7 +3,8 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Alert } from "@mui/material";
 
-const AdminUserEdit = ({fetchedUser, userHandler }) => {
+
+const AdminUserEdit = ({ fetchedUser, userHandler }) => {
 
     const [firstName , setFirstname] = useState(`${fetchedUser.firstName}`)
     const [lastName, setLastName] = useState(`${fetchedUser.lastName}`)

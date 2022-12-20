@@ -19,9 +19,17 @@ const UserOrders = () => {
 
   const fetchOrders = async () => {
     setLoading(true);
+
     try {
+      // JWT & authorization header to give for authorization check in the API
+      const token = window.localStorage.getItem("token");
+      const config = { headers: { authorization: "Bearer " + token } };
+
       //GET all orders associated with user
-      const ordersData = await axios.get(`/api/orders/users/${user.id}`);
+      const ordersData = await axios.get(
+        `/api/orders/users/${user.id}`,
+        config
+      );
       setOrders(ordersData.data);
     } catch (err) {
       console.error(err);
@@ -40,7 +48,8 @@ const UserOrders = () => {
         <Card
           key={order.id}
           variant="outlined"
-          style={{ margin: "10px", padding: "10px", textAlign: "center" }}>
+          style={{ margin: "10px", padding: "10px", textAlign: "center" }}
+        >
           <Typography variant="h5">Summary for Order #{order.id}</Typography>
           <div>Date Ordered: {order.createdAt.split("T")[0]}</div>
           <div>Total Price: ${(order.price / 100).toFixed(2)}</div>
