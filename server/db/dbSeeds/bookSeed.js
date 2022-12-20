@@ -441,7 +441,7 @@ Gorgeously ghoulish Nightmare Hunter Cover A by Jeff Stokely (The Spire)!
       description: `
       A Song of Crows (1 of 4)!
       Return to the critically-acclaimed horror mystery series set in the world of Sony and FromSoftware's gothic gaming hit, Bloodborne! Writer Ale Kot delves deeper into Yharnam with artist Piotr Kowalski! The tragic origins of fan-favorite character Eileen the Crow, revealed for the first time! A serial killer stalks Yharnam, drunk on blood - to end their madness, Eileen must become a Hunter of Hunters!`,
-      imageURL: "/static/bookImages/bb12.jpg",
+      imageURL: "/static/bookImages/bb9.jpg",
       genre: "horror",
       price: 999,
       yearOfPublish: 2019,
