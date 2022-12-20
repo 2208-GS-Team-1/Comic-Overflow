@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import AdminBookDelete from "./AdminBookDelete";
 import MuiLoader from "../MuiLoader";
 import ReactPaginate from "react-paginate";
+import { Card } from "@mui/material";
 
 function AdminBooksPage() {
   // If they're not an admin don't let them see this component.
@@ -62,6 +63,9 @@ function AdminBooksPage() {
           <button style={{ marginBottom: "10px" }}>Add Product</button>
         </Link>
         <div className="adminProductContainer">
+            <Card
+            sx={{ outline:' 4px solid', outlineColor: 'rgb(148, 148, 148)'}}
+            >
           <table className="adminProductTable">
             <tbody>
               {currentPageData.map((book) => {
@@ -78,13 +82,14 @@ function AdminBooksPage() {
                         bookId={book.id}
                         deactivated={book.isDeactivated}
                         bookHandler={bookHandler}
-                      />
+                        />
                     </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
+          </Card>
         </div>
         <ReactPaginate
           previousLabel={"← Previous"}
