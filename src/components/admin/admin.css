@@ -11,6 +11,7 @@
     padding: 50px;
     display: flex;
     flex-direction: column;
+    background-color: white;
 }
 .adminUserButtons{
     display: flex;
@@ -33,6 +34,7 @@
     padding: 50px;
     display: flex;
     flex-direction: column;
+    background-color: white;
     align-items: center;
     min-width: 690px;
 }
@@ -40,8 +42,45 @@
 .adminProductButton {
     display: flex;
     flex-direction: row;
-
     gap:10px
+}
+
+.adminUserContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.adminUserButtons {
+    display: flex;
+    flex-direction: row;
+}
+
+.adminH2 {
+    font-size: 28pt;
+}
+
+.adminsUserEditPage {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.adminEditInput {
+    margin: 10px;
+}
+
+.adminEditP {
+    margin: 5px;
+}
+
+.adminEditSmallP {
+    margin: 2px;
+}
+
+.adminformDetail {
+    outline: none;
 }
 
 /* PAGINATION STYLES */
@@ -78,21 +117,8 @@
     border: 1px solid rgb(198, 197, 202);
   }
 
+  .adminEditPWarning {
+      color: red;
+  }
 
-.zEditPage {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
 
-.adminEditInput {
-    margin: 10px;
-}
-
-.adminEditP {
-    margin: 5px;
-}
-
-.adminformDetail {
-    outline: none;
-}

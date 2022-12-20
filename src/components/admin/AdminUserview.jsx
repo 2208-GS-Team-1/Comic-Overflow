@@ -31,8 +31,10 @@ const AdminUserview = () => {
     return <div>Oops! Something went wrong!</div>;
   }
 
-  return (
-    <div className="adminsUserEditPage">
+    return (
+      <div className='adminUserContainer'>
+        <div className='adminsUserEditPage'>
+
       <div className="userAccount">
         <div className="accountDetail">
           <h1>Account Detail</h1>
@@ -54,11 +56,15 @@ const AdminUserview = () => {
           <p>Birthday: {fetchedUser.birthday}</p>
           <p>Email: {fetchedUser.email}</p>
           <p>Phone Number: {fetchedUser.phoneNumber}</p>
+          <p>Deactivation Status: {!fetchedUser.isDeactivated ? "False" : "True"}</p>
         </div>
       </div>
-      <AdminUserEdit fetchedUser={fetchedUser} userHandler={userHandler} />
-    </div>
-  );
+      <AdminUserEdit fetchedUser={fetchedUser} userHandler ={userHandler } />
+        </div>
+      </div>
+    );
+
+
 };
 
 export default AdminUserview;

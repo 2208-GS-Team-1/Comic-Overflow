@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAllUsers } from "../../store/userSlice";
 import "./admin.css";
 import { Link } from "react-router-dom";
+import MuiLoader from "../MuiLoader";
+
 
 function AdminUsersPage() {
   // If they're not an admin don't let them see this component.
@@ -44,7 +46,11 @@ function AdminUsersPage() {
   }, []);
 
   if (!loading) {
-    return <div>Oops! Something went wrong!</div>;
+    return  (
+    <div className="loadingContainer">
+        <MuiLoader />
+      </div>
+    )     
   }
 
   return (
@@ -60,7 +66,7 @@ function AdminUsersPage() {
                 return (
                   <tr className="adminUsertr" key={user.id}>
                     <td className="adminUsertd">
-                      {index + 1}: {user.firstName} {user.lastName}
+                      {index + 1}: {user.firstName} {user.lastName} {!user.isDeactivated ? "(Active)" : "(Deactivated)"}
                     </td>
                     <td className="adminUserButtons">
                       <Link to={`/admin/users/${user.id}`}>
