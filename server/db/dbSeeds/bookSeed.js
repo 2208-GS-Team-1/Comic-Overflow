@@ -582,6 +582,123 @@ Doctor Destiny, now in possession of Morpheus' Dreamstone uses it to unleash his
     },
   ];
   await Promise.all(mausArray.map((book) => Book.create(book)));
+
+  const danmeshiAndToYourEternity = [
+    {
+      title: "Dungeon Meshi",
+      author: "Ryouko Kui",
+      volume: 1,
+      description: `
+      It all started in a small village. One day the villagers heard moans coming from the mausoleum. They opened it and found a man there. That man was king more than a thousand years ago, now fallen, the golden kingdom, but the kingdom, once famous for its riches, was not just destroyed by the power of a mad wizard, it went underground, “To him who overcomes the wizard, I will give as a reward my kingdom” – These were the last words of the former king.
+      `,
+      imageURL: "/static/bookImages/danmeshi1.jpg",
+      genre: "adventure",
+      price: 599,
+      yearOfPublish: 2015,
+      stock: 99,
+    },
+    {
+      title: "Dungeon Meshi",
+      author: "Ryouko Kui",
+      volume: 2,
+      description: `
+      It all started in a small village. One day the villagers heard moans coming from the mausoleum. They opened it and found a man there. That man was king more than a thousand years ago, now fallen, the golden kingdom, but the kingdom, once famous for its riches, was not just destroyed by the power of a mad wizard, it went underground, “To him who overcomes the wizard, I will give as a reward my kingdom” – These were the last words of the former king.
+      `,
+      imageURL: "/static/bookImages/danmeshi2.jpg",
+      genre: "adventure",
+      price: 599,
+      yearOfPublish: 2015,
+      stock: 99,
+    },
+    {
+      title: "Dungeon Meshi",
+      author: "Ryouko Kui",
+      volume: 3,
+      description: `
+      It all started in a small village. One day the villagers heard moans coming from the mausoleum. They opened it and found a man there. That man was king more than a thousand years ago, now fallen, the golden kingdom, but the kingdom, once famous for its riches, was not just destroyed by the power of a mad wizard, it went underground, “To him who overcomes the wizard, I will give as a reward my kingdom” – These were the last words of the former king.
+      `,
+      imageURL: "/static/bookImages/danmeshi3.jpg",
+      genre: "adventure",
+      price: 599,
+      yearOfPublish: 2015,
+      stock: 99,
+    },
+    {
+      title: "Dungeon Meshi",
+      author: "Ryouko Kui",
+      volume: 4,
+      description: `
+      It all started in a small village. One day the villagers heard moans coming from the mausoleum. They opened it and found a man there. That man was king more than a thousand years ago, now fallen, the golden kingdom, but the kingdom, once famous for its riches, was not just destroyed by the power of a mad wizard, it went underground, “To him who overcomes the wizard, I will give as a reward my kingdom” – These were the last words of the former king.
+      `,
+      imageURL: "/static/bookImages/danmeshi4.jpg",
+      genre: "adventure",
+      price: 599,
+      yearOfPublish: 2015,
+      stock: 99,
+    },
+    {
+      title: "Dungeon Meshi",
+      author: "Ryouko Kui",
+      volume: 5,
+      description: `
+      It all started in a small village. One day the villagers heard moans coming from the mausoleum. They opened it and found a man there. That man was king more than a thousand years ago, now fallen, the golden kingdom, but the kingdom, once famous for its riches, was not just destroyed by the power of a mad wizard, it went underground, “To him who overcomes the wizard, I will give as a reward my kingdom” – These were the last words of the former king.
+      `,
+      imageURL: "/static/bookImages/danmeshi5.jpg",
+      genre: "adventure",
+      price: 599,
+      yearOfPublish: 2015,
+      stock: 99,
+    },
+    {
+      title: "To Your Eternity",
+      author: "Yoshitoki Oima",
+      volume: 1,
+      description: `
+      A new manga from the creator of the acclaimed A Silent Voice, featuring intimate, emotional drama and an epic story spanning time and space…A lonely boy wandering the Arctic regions of North America meets a wolf, and the two become fast friends, depending on each other to survive the harsh environment. But the boy has a history, and the wolf is more than meets the eye as well… To Your Eternity is a totally unique and moving manga about death, life, reincarnation, and the nature of love.      `,
+      imageURL: "/static/bookImages/toyoureternity1.jpg",
+      genre: "adventure",
+      price: 1299,
+      yearOfPublish: 2015,
+      stock: 99,
+    },
+    {
+      title: "To Your Eternity",
+      author: "Yoshitoki Oima",
+      volume: 2,
+      description: `
+      A new March, the girl who was chosen as a gift for the Oniguma, gave It the name “Fushi.” Parona, who once escaped a similar fate, plans to save March yet again. Fushi witnesses their struggles and begins to learn, taking Its first step toward agency…`,
+      imageURL: "/static/bookImages/toyoureternity2.jpg",
+      genre: "adventure",
+      price: 1299,
+      yearOfPublish: 2015,
+      stock: 99,
+    },
+    {
+      title: "To Your Eternity",
+      author: "Yoshitoki Oima",
+      volume: 7,
+      description: `
+      After Pioran’s death, Fushi lives alone on a desert island. One day, a girl named Hisame—a descendant of a former enemy—arrives to lead Fushi to a village once destroyed by Nokkers. When Fushi reenters society, he learns he has become central to the legend of the Immortal, whom some seek, and others fear …`,
+      imageURL: "/static/bookImages/toyoureternity7.jpg",
+      genre: "adventure",
+      price: 1299,
+      yearOfPublish: 2018,
+      stock: 99,
+    },
+    {
+      title: "To Your Eternity",
+      author: "Yoshitoki Oima",
+      volume: 12,
+      description: `
+      The fight for Renril reaches its peak, but when Kahaku’s left hand betrays Fushi and his allies, a great crisis descends upon the city… March arrives in time to see Fushi, but not to save him, and now Bon must mastermind a plan to turn the tide of battle.      `,
+      imageURL: "/static/bookImages/toyoureternity12.jpg",
+      genre: "adventure",
+      price: 1299,
+      yearOfPublish: 2020,
+      stock: 99,
+    },
+  ];
+  await Promise.all(danmeshiAndToYourEternity.map((book) => Book.create(book)));
   /***************************************************************/
 
   const [
