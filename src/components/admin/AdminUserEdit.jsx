@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios';
 import React, { useState } from 'react';
+import { Alert } from "@mui/material";
 
 const AdminUserEdit = ({fetchedUser, userHandler }) => {
 
@@ -11,6 +12,7 @@ const AdminUserEdit = ({fetchedUser, userHandler }) => {
     const [email, setEmail] = useState(`${fetchedUser.email}`)
     const [phoneNumber, setPhoneNumber] = useState(`${fetchedUser.phoneNumber}`)
    const [isDeactivated, setDeactivated] = useState(fetchedUser.isDeactivated);
+   const [errorMessage, setErrorMessage] = useState(false);
 
 
     const firstNameHandler = (event) => {
@@ -36,10 +38,14 @@ const AdminUserEdit = ({fetchedUser, userHandler }) => {
     }
 
     const updateHandler = async (event) =>{
-        event.preventDefault();
-        const updatedData = {address, email, phoneNumber, firstName, lastName, birthday, isDeactivated}
-        await axios.put(`/api/users/${fetchedUser.id}`, updatedData)
-        userHandler();
+        try {
+            event.preventDefault();
+            const updatedData = {address, email, phoneNumber, firstName, lastName, birthday, isDeactivated}
+            await axios.put(`/api/users/${fetchedUser.id}`, updatedData)
+            userHandler();
+        } catch (error) {
+            setErrorMessage(true);
+        }
     }
 
     return (
@@ -51,33 +57,33 @@ const AdminUserEdit = ({fetchedUser, userHandler }) => {
                         <p className='adminEditP'>First Name:  
                         {firstName.length < 1 ? " This is a required field" : ""}</p>
                         <input className='adminEditInput'
-                        value={firstName}
+                        placeholder={firstName}
                         onChange={firstNameHandler} />
                         <p className='adminEditP'>Last Name: 
                         {lastName.length < 1 ? "this is a required field" : ""}</p>
                         <input className='adminEditInput'
-                        value={lastName}
+                        placeholder={lastName}
                         onChange={lastNameHandler} />
-                        <p className='adminEditP'>Address:</p>
+                        <p className='adminEditP'>Address: <small>{ address.length < 1 ? " Address cannot be empty" : ""}</small></p>
                         <input className='adminEditInput'
                         type="text"
-                        value={fetchedUser.address ? address : ""}
+                        placeholder={address}
                         onChange={addressHandler} />
                         <p className='adminEditP'>Birthday:</p>
                         <p className='adminEditP'>
                             <small>Please follow the format xxxx-xx-xx</small>
                         </p>
                         <input className='adminEditInput'
-                        value={(birthday.length <= 4)? '0000-00-00': birthday}
+                        placeholder ="0000-00-00"
                         onChange={birthdayHandler} />
                         <p className='adminEditP'>Email:</p>
                         <input className='adminEditInput'
-                        value={email} 
+                        placeholder={email} 
                         onChange={emailHandler}/>
                         <p className='adminEditP'>Phone Number: <small>{(phoneNumber.length > 10 || phoneNumber.length < 10)? "Please enter 10 digit numbers": ""}</small></p>
                         <input className='adminEditInput'
                         type="number"
-                        value={phoneNumber}
+                        placeholder={phoneNumber}
                         onChange={phoneNumberHandler} />
                         <p className='adminEditP'>Deactivation Status</p>
                         <p className='adminEditSmallP'><small>Enter True or False</small></p>
@@ -85,6 +91,11 @@ const AdminUserEdit = ({fetchedUser, userHandler }) => {
                         value={isDeactivated}
                         onChange={deactivateHandler}></input>
                         <button type='submit'>Submit</button>
+                        {errorMessage && (
+                        <Alert severity="error" sx={{ marginTop: "5px" }}>
+                            You must fill out the form completely!
+                        </Alert>
+                        )}
                     </div>
                 </form>
             </div>
