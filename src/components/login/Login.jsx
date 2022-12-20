@@ -10,11 +10,14 @@ import {
   TextField,
   FormControl,
   Card,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { user } = useSelector((state) => state.user);
+  const [accountNotFoundOpen ,setAccountNotFoundOpen] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
@@ -77,6 +80,7 @@ const Login = () => {
   };
 
   const loginWithToken = async () => {
+
     const token = window.localStorage.getItem("token");
     if (token) {
       const response = await axios.get("/api/auth", {
@@ -119,12 +123,22 @@ const Login = () => {
     navigate("/");
   };
 
+  const handleAccountNotFoundAlert = (event , reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setAccountNotFoundOpen(false);
+  }
   const attemptLogin = async (event) => {
     event.preventDefault();
-    const response = await axios.post("/api/auth", credentials);
-    const token = response.data;
-    window.localStorage.setItem("token", token);
-    loginWithToken(token);
+    try {
+      const response = await axios.post("/api/auth", credentials);
+      const token = response.data;
+      window.localStorage.setItem("token", token);
+      loginWithToken(token);
+    } catch (error) {
+      setAccountNotFoundOpen(true)
+    }
   };
 
   // This would only be seen if a user manually went to this route,
@@ -180,6 +194,14 @@ const Login = () => {
           <p style={{ cursor: "pointer" }}>Sign up now!</p>
         </Link>
       </Card>
+      <Snackbar
+      onClose={handleAccountNotFoundAlert}
+      anchorOrigin={{vertical:'bottom', horizontal:'center'}}
+      autoHideDuration={3000}
+      open={accountNotFoundOpen}
+      >
+        <Alert severity="warning" variant="filled">User not found!</Alert>
+      </Snackbar>
     </div>
   );
 };
