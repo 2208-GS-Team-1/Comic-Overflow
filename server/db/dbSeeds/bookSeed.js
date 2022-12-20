@@ -541,6 +541,47 @@ Doctor Destiny, now in possession of Morpheus' Dreamstone uses it to unleash his
   ];
   await Promise.all(bloodborneAndSandman.map((book) => Book.create(book)));
 
+  const mausArray = [
+    {
+      title: "Maus: A Survivor's Tale",
+      author: "Art Spiegelman",
+      volume: 1,
+      description: `
+      Maus tells alternating stories, both of Art Spiegelman's father Vladek during WWII and the story of the contemporary relationship between Art and his father. The book starts out with Art trying to get his father to tell him his story so Art can draw a comic of it. Throughout the book the panels alternate between the present struggle of Art's relationship with is father and the story that his father tells.`,
+      imageURL: "/static/bookImages/maus-1.jpg",
+      genre: "history",
+      price: 899,
+      yearOfPublish: 1986,
+      stock: 20,
+    },
+    {
+      title: "Maus: A Survivor's Tale",
+      author: "Art Spiegelman",
+      volume: 2,
+      description: `
+      It is the story of Vladek Spiegelman, a Jewish survivor of Hitler's Europe, and his son, a cartoonist coming to terms with his father's story. Maus approaches the unspeakable through the diminutive. Its form, the cartoon (the Nazis are cats, the Jews mice), shocks us out of any lingering sense of familiarity. Maus is a haunting tale within a tale. Vladek's harrowing story of survival is woven into the author's account of his tortured relationship with his aging father. Against the backdrop of guilt brought by survival, they stage a normal life of small arguments and unhappy visits. This astonishing retelling of our century's grisliest news is a story of survival, not only of Vladek but of the children who survive even the survivors. Maus studies the bloody pawprints of history and tracks its meaning for all of us.`,
+      imageURL: "/static/bookImages/maus-2.jpg",
+      genre: "history",
+      price: 899,
+      yearOfPublish: 1991,
+      stock: 20,
+    },
+    {
+      title: "The Complete Maus",
+      author: "Art Spiegelman",
+      edition: "The Definitive Edition",
+      description: `
+      THE DEFINITIVE EDITION: The Pulitzer Prize-winning graphic novel acclaimed as “the most affecting and successful narrative ever done about the Holocaust” (Wall Street Journal) and “the first masterpiece in comic book history” (The New Yorker).
+      A brutally moving work of art—widely hailed as the greatest graphic novel ever written—Maus recounts the chilling experiences of the author’s father during the Holocaust, with Jews drawn as wide-eyed mice and Nazis as menacing cats.
+      Maus is a haunting tale within a tale, weaving the author’s account of his tortured relationship with his aging father into an astonishing retelling of one of history’s most unspeakable tragedies. It is an unforgettable story of survival and a disarming look at the legacy of trauma.`,
+      imageURL: "/static/bookImages/maus-complete.jpg",
+      genre: "history",
+      price: 1899,
+      yearOfPublish: 2003,
+      stock: 9999,
+    },
+  ];
+  await Promise.all(mausArray.map((book) => Book.create(book)));
   /***************************************************************/
 
   const [
