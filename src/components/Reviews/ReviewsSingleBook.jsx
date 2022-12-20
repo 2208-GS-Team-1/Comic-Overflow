@@ -10,7 +10,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
-import "./reviewsSingleBook.css";
+import "./ReviewsSingleBook.css";
 
 const ReviewsSingleBook = ({ book }) => {
   const navigate = useNavigate;
