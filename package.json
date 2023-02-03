@@ -1,17 +1,18 @@
 {
-  "name": "acme-shopping-2207-fsa-pt",
-  "version": "1.0.0",
-  "description": "- A user should be able to see products - A logged in user should be able to   - see the items in their cart   - add a new product to their cart   - remove an item from their cart   - create an order - A user should be able to see their orders - A user should be able to create an account - A user should be able to see their past orders - A non-logged in user should be able to add to their cart and have those items added to their cart after authenticating - A user should be able to review a product - A user should be able to update their profile - An administrator should be able to add a new product",
+  "name": "Comic Overflow - An Ecommerce Site",
+  "version": "1.0.1",
+  "description": "Comic Overflow is a basic e-commerce web application.",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
     "build:dev": "npm run build -- --watch --mode=development",
     "test": "JWT=shhhhh mocha",
-    "test:dev": "DATABASE_URL=postgres://localhost/acme_shopping_test_db npm run test -- --watch",
+    "test:dev": "DATABASE_URL=postgresql://rosalie0:v2_3yhR7_GJiuWQsWDZSpFPM6jQzm9jf@db.bit.io:5432/rosalie0/comic-overflow?ssl=true npm run test -- --watch",
     "test:dev:quiet": "QUIET=true npm run test:dev",
-    "start:dev": "JWT=felix nodemon server/index.js --ignore dist/ --ignore src/ & npm run build:dev",
-    "seed": "node server/db/seed.js",
-    "start": "node server/db/seed.js && node server/index.js"
+    "seed": "DATABASE_URL=postgresql://rosalie0:v2_3yhR7_GJiuWQsWDZSpFPM6jQzm9jf@db.bit.io:5432/rosalie0/comic-overflow?ssl=true node server/db/seed.js",
+    "seed:dev": "node server/db/seed.js",
+    "start": "node server/index.js",
+    "start:dev": "JWT=felix nodemon server/index.js --ignore dist/ --ignore src/ & npm run build:dev"
   },
   "keywords": [],
   "author": "",
