@@ -45,3 +45,25 @@ And you're all set to start shopping!
 
 ![Database schema version 6](excalidraws/schema6.png)
 ![A closer look at Cart item and order](excalidraws/cartitemOrder.png)
+
+## What are we hoping to do?
+
+### COLLABORATION
+
+This is your first real time working on a development team. To that end, you'll have to practice your social skills while maintaining your programming skills.
+
+### SYNTHESIS
+
+This project will touch on all of the things you've learned so far. To that end, it's a real test of your education up to this point as well as a great way to reinforce all of the content in the course.
+
+### PLANNING
+
+You'll have to act as an agile team. This means daily stand-ups / touch-bases, keeping a planning board, and using pull requests to modify the code base. On top of that you'll have to have code reviews and maintain a release schedule.
+
+It will be important to use git and GitHub with a good workflow to prevent code problems. You'll have to review pull requests to make sure that the incoming code is safe and sanitary for the health of the code base.
+
+It's hard work, but getting good at it makes sure that you're a good team member and a valuable asset to the project.
+
+### BUILDING SOMETHING BIGGER
+
+Up until now projects have felt relatively small in scope (even though they might have required enormous amounts of work). This project can be as big as you want, since there are no end to features you can add to an e-commerce site.
