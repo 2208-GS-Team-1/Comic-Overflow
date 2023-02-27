@@ -52,7 +52,7 @@ const EditUser = () => {
             {user.firstName} {user.lastName}'s Account
           </h1>
           <div className="formInput">
-            <p>Address:</p>
+            <label>Address:</label>
             <input
               className="editInput"
               value={address || ""}
