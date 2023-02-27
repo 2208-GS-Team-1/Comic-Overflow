@@ -16,7 +16,7 @@ const Home = () => {
     <div>
       <div>
         <Slider />
-        {/* <Popup trigger= {popTrigger} setPopTrigger = {setPopTrigger} /> */}
+        <Popup trigger={popTrigger} setPopTrigger={setPopTrigger} />
         <StoreOpenBanner />
       </div>
     </div>
