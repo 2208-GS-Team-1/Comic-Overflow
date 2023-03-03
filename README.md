@@ -1,7 +1,8 @@
 # What is this?
-Live Website: https://comic-overflow.onrender.com/
 Comic Overflow is a basic e-commerce web application.
+[Live Website](https://comic-overflow.onrender.com/) ||  [Demo Video](https://www.youtube.com/watch?v=rbbKldsF4Gw)
 
+With Comic Overflow, you can...
 - You can browse & purchase comic books with an account
   - Items can be purchased using the integrated Stripe API.
 - Items are categorized, and there is a way to see items by category
@@ -10,7 +11,7 @@ Comic Overflow is a basic e-commerce web application.
 - Adding items to your cart as a guest is allowed, and if you make an account, the items are transfered over.
 - An admin is a special type of user with the ability to create new items for the store
 
-# Basic Features
+## Basic Features
 
 - A user should be able to see products
 - A logged in user should be able to
@@ -50,10 +51,6 @@ And you're all set to start shopping!
 ### COLLABORATION
 
 This is your first real time working on a development team. To that end, you'll have to practice your social skills while maintaining your programming skills.
-
-### SYNTHESIS
-
-This project will touch on all of the things you've learned so far. To that end, it's a real test of your education up to this point as well as a great way to reinforce all of the content in the course.
 
 ### PLANNING
 
